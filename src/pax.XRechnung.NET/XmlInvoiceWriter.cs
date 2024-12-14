@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using pax.XRechnung.NET.XmlModels;
 
@@ -36,6 +37,26 @@ public static class XmlInvoiceWriter
     /// </summary>
     public const string InvoiceSchema =
         "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2";
+
+    /// <summary>
+    /// XmlSchemaSet
+    /// </summary>
+    /// <returns>XmlSchemaSet</returns>
+    public static XmlSchemaSet GetSchemaSet()
+    {
+        var schemaPath = "/data/xrechnung/XmlSchemas/ubl/2.1/xsd";
+        var schemaSet = new XmlSchemaSet();
+        schemaSet.Add(InvoiceSchema, Path.Combine(schemaPath, "maindoc", "UBL-Invoice-2.1.xsd"));
+        schemaSet.Add(CommonAggregateComponents, Path.Combine(schemaPath, "common", "UBL-CommonAggregateComponents-2.1.xsd"));
+        schemaSet.Add(CommonBasicComponents, Path.Combine(schemaPath, "common", "UBL-CommonBasicComponents-2.1.xsd"));
+        
+        schemaSet.Add("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", Path.Combine(schemaPath, "common", "UBL-CommonExtensionComponents-2.1.xsd"));
+        schemaSet.Add("urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2", Path.Combine(schemaPath, "common", "UBL-QualifiedDataTypes-2.1.xsd"));
+        schemaSet.Add("urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2", Path.Combine(schemaPath, "common", "UBL-UnqualifiedDataTypes-2.1.xsd"));
+        schemaSet.Add("urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2", Path.Combine(schemaPath, "common", "CCTS_CCT_SchemaModule-2.1.xsd"));
+        schemaSet.Add("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", Path.Combine(schemaPath, "common", "UBL-ExtensionContentDataType-2.1.xsd"));
+        return schemaSet;
+    }
 
     private static XmlSerializerNamespaces GetNamespaces()
     {

@@ -12,23 +12,23 @@ public class XmlPostalAddress
     ///  Die Hauptzeile in einer Anschrift. Üblicherweise ist dies entweder Strasse und Hausnummer oder der 
     ///  Text „Postfach“ gefolgt von der Postfachnummer
     /// </summary>
-    [XmlElement("AddressLine1", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("StreetName", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-35")]
     public string? StreetName { get; set; }
     /// <summary>
     /// Eine zusätzliche Adresszeile in einer Anschrift, die verwendet werden kann, um weitere Einzelheiten 
     /// in Ergänzung zur Hauptzeile anzugeben.
     /// </summary>
-    [XmlElement("AddressLine2", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("AdditionalStreetName", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-36")]
-    public string? AddressLine2 { get; set; }
+    public string? AdditionalStreetName { get; set; }
     /// <summary>
     /// Eine zusätzliche Adresszeile in einer Anschrift, die verwendet werden kann, um weitere Einzelheiten 
     /// in Ergänzung zur Hauptzeile anzugeben.
     /// </summary>
-    [XmlElement("AddressLine3", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("BlockName", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-162")]
-    public string? AddressLine3 { get; set; }
+    public string? BlockName { get; set; }
     /// <summary>
     ///  Die Bezeichnung der Stadt oder Gemeinde, in der sich die Verkäuferanschrift befindet.
     /// </summary>

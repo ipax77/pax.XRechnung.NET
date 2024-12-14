@@ -13,14 +13,14 @@ public class XmlInvoiceLinePriceDetails
     /// <summary>
     /// Der Preis eines Postens, ohne Umsatzsteuer, nach Abzug des für diese Rechnungsposition geltenden Rabatts.
     /// </summary>
-    [XmlElement("PriceAmount")]
+    [XmlElement("PriceAmount", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-146")]
     public Amount PriceAmount { get; set; } = new();
 
     /// <summary>
     /// Der gesamte zur Berechnung des Netto-Postenpreises vom Brutto-Postenpreis subtrahierte Rabatt.
     /// </summary>
-    [XmlElement("PriceDiscount")]
+    [XmlElement("PriceDiscount", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-147")]
     public Amount? PriceDiscount { get; set; }
 

@@ -1,12 +1,13 @@
-﻿using pax.XRechnung.NET.XmlModels;
+﻿using System.Xml;
+using System.Xml.Schema;
+using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET.tests;
 
 [TestClass]
-public sealed class Test1
+public sealed class InvoiceTests
 {
-    [TestMethod]
-    public void CanSerialize()
+    public static XmlInvoice GetTestInvoice()
     {
         XmlInvoice invoice = new()
         {
@@ -127,8 +128,40 @@ public sealed class Test1
                 PriceAmount = new Amount() { Value = 22.45M, CurrencyID = "EUR" }
             }
         });
+        return invoice;
+    }
 
+    [TestMethod]
+    public void CanSerialize()
+    {
+        var invoice = GetTestInvoice();
         var xmlText = XmlInvoiceWriter.Serialize(invoice);
         Assert.IsTrue(xmlText.Length > 0);
+
+        File.WriteAllText("/data/xrechnung/testinvoice2.xml", xmlText);
+    }
+
+    [TestMethod]
+    public void CanValidate()
+    {
+        var invoice = GetTestInvoice();
+        var xmlText = XmlInvoiceWriter.Serialize(invoice);
+        XmlDocument document = new();
+        document.Schemas = XmlInvoiceWriter.GetSchemaSet();
+
+        var lines = xmlText.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+        var adjustedText = String.Join(Environment.NewLine, lines[1..]);
+        document.LoadXml(adjustedText);
+
+        // Act
+        bool validationErrorsFound = false;
+        document.Validate((sender, e) =>
+        {
+            validationErrorsFound = true;
+            Console.WriteLine($"{e.Severity}: {e.Message}");
+        });
+
+        // Assert
+        Assert.IsFalse(validationErrorsFound, "XML validation errors were found.");
     }
 }

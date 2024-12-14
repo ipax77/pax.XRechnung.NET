@@ -56,6 +56,13 @@ public class XmlInvoice
     [CodeList("UNTDID_1001")]
     public string InvoiceTypeCode { get; set; } = "380";
     /// <summary>
+    ///  Eine Gruppe von Informationselementen für rechnungsrelevante Erläuterungen mit Hinweisen auf den 
+    ///  Rechnungsbetreff.
+    /// </summary>
+    [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [SpecificationId("BG-1")]
+    public string? Note { get; set; }
+    /// <summary>
     /// Die Währung, in der alle Rechnungsbeträge angegeben werden, ausgenommen ist der Umsatzsteuer-Gesamtbetrag,
     /// der in der Abrechnungswährung anzugeben ist
     /// </summary>
@@ -69,13 +76,7 @@ public class XmlInvoice
     [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-10")]
     public string BuyerReference { get; set; } = string.Empty;
-    /// <summary>
-    ///  Eine Gruppe von Informationselementen für rechnungsrelevante Erläuterungen mit Hinweisen auf den 
-    ///  Rechnungsbetreff.
-    /// </summary>
-    [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BG-1")]
-    public string? Note { get; set; }
+
     /// <summary>
     ///  Eine Gruppe von Informationselementen mit Informationen über rechnungsbegründende Unterlagen, 
     ///  die Belege für die in der Rechnung gestellten Ansprüche enthalten.
@@ -102,21 +103,44 @@ public class XmlInvoice
     [SpecificationId("BG-16")]
     public XmlPaymentInstructions PaymentMeans { get; set; } = new();
     /// <summary>
-    /// Eine Gruppe von Informationselementen, die die monetären Gesamtbeträge der Rechnung enthalten.
-    /// </summary>
-    [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
-    [SpecificationId("BG-22")]
-    public XmlDocumentTotals LegalMonetaryTotal { get; set; } = new();
-    /// <summary>
     /// 
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-23")]
     public XmlVatBreakdown TaxTotal { get; set; } = new();
     /// <summary>
+    /// Eine Gruppe von Informationselementen, die die monetären Gesamtbeträge der Rechnung enthalten.
+    /// </summary>
+    [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [SpecificationId("BG-22")]
+    public XmlDocumentTotals LegalMonetaryTotal { get; set; } = new();
+    /// <summary>
     ///  Eine Gruppe von Informationselementen, die Informationen über einzelne Rechnungspositionen enthalten.
     /// </summary>
     [XmlElement("InvoiceLine", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-25")]
     public List<XmlInvoiceLine> InvoiceLines { get; set; } = [];
+}
+
+/// <summary>
+/// Eine Gruppe von Informationselementen für rechnungsrelevante Erläuterungen mit Hinweisen auf den Rechnungsbetreff.
+/// </summary>
+public class XmlInvoiceNote
+{
+    /// <summary>
+    /// Der Betreff für den nachfolgenden Textvermerk zur Rechnung.
+    /// </summary>
+    [XmlElement("SubjectCode", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [SpecificationId("BT-21")]
+    [CodeList("UNTDID_4451")]
+    public string? SubjectCode { get; set; }
+    /// <summary>
+    /// Ein Textvermerk, der unstrukturierte Informationen enthält, die für die Rechnung als Ganzes maßgeblich sind. 
+    /// Erforderlichenfalls können Angaben zur Aufbewahrungspflicht gem. § 14 Abs. 4 Nr. 9 UStG hier aufgenommen werden.
+    ///   Anmerkung: Im Falle einer bereits fakturierten Rechnung kann hier z. B. der Grund der Korrektur angegeben 
+    ///   werden.
+    /// </summary>
+    [XmlElement("Note", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [SpecificationId("BT-21")]
+    public string Note { get; set; } = string.Empty;
 }
