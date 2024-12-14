@@ -1,5 +1,6 @@
 
 using System.Globalization;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -44,18 +45,33 @@ public static class XmlInvoiceWriter
     /// <returns>XmlSchemaSet</returns>
     public static XmlSchemaSet GetSchemaSet()
     {
-        var schemaPath = "/data/xrechnung/XmlSchemas/ubl/2.1/xsd";
+        var schemaRoute = "pax.XRechnung.NET.Ressources.XmlSchemas.ubl._2._1.xsd";
         var schemaSet = new XmlSchemaSet();
-        schemaSet.Add(InvoiceSchema, Path.Combine(schemaPath, "maindoc", "UBL-Invoice-2.1.xsd"));
-        schemaSet.Add(CommonAggregateComponents, Path.Combine(schemaPath, "common", "UBL-CommonAggregateComponents-2.1.xsd"));
-        schemaSet.Add(CommonBasicComponents, Path.Combine(schemaPath, "common", "UBL-CommonBasicComponents-2.1.xsd"));
-        
-        schemaSet.Add("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", Path.Combine(schemaPath, "common", "UBL-CommonExtensionComponents-2.1.xsd"));
-        schemaSet.Add("urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2", Path.Combine(schemaPath, "common", "UBL-QualifiedDataTypes-2.1.xsd"));
-        schemaSet.Add("urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2", Path.Combine(schemaPath, "common", "UBL-UnqualifiedDataTypes-2.1.xsd"));
-        schemaSet.Add("urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2", Path.Combine(schemaPath, "common", "CCTS_CCT_SchemaModule-2.1.xsd"));
-        schemaSet.Add("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", Path.Combine(schemaPath, "common", "UBL-ExtensionContentDataType-2.1.xsd"));
+        AddSchema(InvoiceSchema, schemaRoute + ".maindoc." + "UBL-Invoice-2.1.xsd", schemaSet);
+        AddSchema(CommonAggregateComponents, schemaRoute + ".common." + "UBL-CommonAggregateComponents-2.1.xsd", schemaSet);
+        AddSchema(CommonBasicComponents, schemaRoute + ".common." + "UBL-CommonBasicComponents-2.1.xsd", schemaSet);
+        AddSchema("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", schemaRoute + ".common." + "UBL-CommonExtensionComponents-2.1.xsd", schemaSet);
+        AddSchema("urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2", schemaRoute + ".common." + "UBL-QualifiedDataTypes-2.1.xsd", schemaSet);
+        AddSchema("urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2", schemaRoute + ".common." + "UBL-UnqualifiedDataTypes-2.1.xsd", schemaSet);
+        AddSchema("urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2", schemaRoute + ".common." + "CCTS_CCT_SchemaModule-2.1.xsd", schemaSet);
+        AddSchema("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", schemaRoute + ".common." + "UBL-ExtensionContentDataType-2.1.xsd", schemaSet);
         return schemaSet;
+    }
+
+    private static void AddSchema(string targetNameSpace, string source, XmlSchemaSet xmlSchemaSet)
+    {
+        using var reader = LoadEmbeddedResource(source);
+        xmlSchemaSet.Add(targetNameSpace, reader);
+    }
+
+    private static XmlReader LoadEmbeddedResource(string resourceName)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var stream = assembly.GetManifestResourceStream(resourceName);
+        if (stream == null)
+            throw new FileNotFoundException($"Embedded resource not found: {resourceName}");
+
+        return XmlReader.Create(stream);
     }
 
     private static XmlSerializerNamespaces GetNamespaces()
