@@ -50,7 +50,7 @@ public static class XmlInvoiceWriter
         AddSchema(InvoiceSchema, schemaRoute + ".maindoc." + "UBL-Invoice-2.1.xsd", schemaSet);
         AddSchema(CommonAggregateComponents, schemaRoute + ".common." + "UBL-CommonAggregateComponents-2.1.xsd", schemaSet);
         AddSchema(CommonBasicComponents, schemaRoute + ".common." + "UBL-CommonBasicComponents-2.1.xsd", schemaSet);
-        AddSchema("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", schemaRoute + ".common." + "UBL-CommonExtensionComponents-2.1.xsd", schemaSet);
+        AddSchema(CommonExtensionComponents, schemaRoute + ".common." + "UBL-CommonExtensionComponents-2.1.xsd", schemaSet);
         AddSchema("urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2", schemaRoute + ".common." + "UBL-QualifiedDataTypes-2.1.xsd", schemaSet);
         AddSchema("urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2", schemaRoute + ".common." + "UBL-UnqualifiedDataTypes-2.1.xsd", schemaSet);
         AddSchema("urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2", schemaRoute + ".common." + "CCTS_CCT_SchemaModule-2.1.xsd", schemaSet);

@@ -1,5 +1,4 @@
 ﻿using System.Xml;
-using System.Xml.Schema;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET.tests;
@@ -149,6 +148,7 @@ public sealed class InvoiceTests
         XmlDocument document = new();
         document.Schemas = XmlInvoiceWriter.GetSchemaSet();
 
+        // remove xml declaration
         var lines = xmlText.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
         var adjustedText = String.Join(Environment.NewLine, lines[1..]);
         document.LoadXml(adjustedText);
