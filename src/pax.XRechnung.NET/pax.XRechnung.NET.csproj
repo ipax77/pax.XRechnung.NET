@@ -30,7 +30,7 @@
     <LangVersion>12.0</LangVersion>
     <WarningsNotAsErrors></WarningsNotAsErrors>
     <DisabledWarnings></DisabledWarnings>
-    <NoWarn></NoWarn>
+    <NoWarn>CA2227,CA1002</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

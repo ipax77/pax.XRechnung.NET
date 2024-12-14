@@ -101,6 +101,22 @@ public class XmlInvoice
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-16")]
     public XmlPaymentInstructions PaymentMeans { get; set; } = new();
+    /// <summary>
+    /// Eine Gruppe von Informationselementen, die die monetären Gesamtbeträge der Rechnung enthalten.
+    /// </summary>
+    [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [SpecificationId("BG-22")]
+    public XmlDocumentTotals LegalMonetaryTotal { get; set; } = new();
+    /// <summary>
+    /// 
+    /// </summary>
+    [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [SpecificationId("BG-23")]
+    public XmlVatBreakdown TaxTotal { get; set; } = new();
+    /// <summary>
+    ///  Eine Gruppe von Informationselementen, die Informationen über einzelne Rechnungspositionen enthalten.
+    /// </summary>
+    [XmlElement("InvoiceLine", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [SpecificationId("BG-25")]
+    public List<XmlInvoiceLine> InvoiceLines { get; set; } = [];
 }
-
-

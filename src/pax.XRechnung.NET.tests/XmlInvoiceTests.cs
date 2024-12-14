@@ -75,7 +75,58 @@ public sealed class Test1
                     }
                 ]
             },
+            LegalMonetaryTotal = new()
+            {
+                LineExtensionAmount = new() { Value = 22.45M, CurrencyID = "EUR" },
+                TaxExclusiveAmount = new() { Value = 22.45M, CurrencyID = "EUR" },
+                TaxInclusiveAmount = new() { Value = 26.72M, CurrencyID = "EUR" },
+                PayableAmount = new() { Value = 26.72M, CurrencyID = "EUR" },
+            },
+            TaxTotal = new()
+            {
+                TaxAmount = new() { Value = 4.27M, CurrencyID = "EUR" },
+                TaxSubTotal = [
+                    new() {
+                        TaxableAmount = new() { Value = 22.45M, CurrencyID = "EUR" },
+                        TaxAmount = new() { Value = 4.27M, CurrencyID = "EUR" },
+                        TaxCategory = new() {
+                            Id = new() { Content = "S" },
+                            Percent = 19.0M,
+                            TaxScheme = new()
+                            {
+                                Id = new() { Content = "VAT" }
+                            }
+                        }
+                    }
+                ]
+            }
         };
+
+        invoice.InvoiceLines.Add(new()
+        {
+            Id = new() { Content = "0" },
+            Note = "Und es war Sommer",
+            Item = new()
+            {
+                Name = "Test",
+                Description = "XRechnung validation",
+                ClassifiedTaxCategory = new()
+                {
+                    Id = new() { Content = "S" },
+                    Percent = 19,
+                    TaxScheme = new()
+                    {
+                        Id = new() { Content = "VAT" }
+                    }
+                },
+            },
+            InvoicedQuantity = new() { Value = 1, UnitCode = "XPP" },
+            LineExtensionAmount = new() { Value = 22.45M, CurrencyID = "EUR" },
+            PriceDetails = new()
+            {
+                PriceAmount = new Amount() { Value = 22.45M, CurrencyID = "EUR" }
+            }
+        });
 
         var xmlText = XmlInvoiceWriter.Serialize(invoice);
         Assert.IsTrue(xmlText.Length > 0);
