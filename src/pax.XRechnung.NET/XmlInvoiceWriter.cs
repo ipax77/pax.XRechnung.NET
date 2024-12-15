@@ -64,12 +64,12 @@ public static class XmlInvoiceWriter
         xmlSchemaSet.Add(targetNameSpace, reader);
     }
 
-    private static XmlReader LoadEmbeddedResource(string resourceName)
+    private static XmlReader LoadEmbeddedResource(string ressourceName)
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var stream = assembly.GetManifestResourceStream(resourceName);
+        var stream = assembly.GetManifestResourceStream(ressourceName);
         if (stream == null)
-            throw new FileNotFoundException($"Embedded resource not found: {resourceName}");
+            throw new FileNotFoundException($"Embedded resource not found: {ressourceName}");
 
         return XmlReader.Create(stream);
     }
