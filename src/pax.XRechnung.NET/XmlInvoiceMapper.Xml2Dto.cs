@@ -1,4 +1,5 @@
-﻿using pax.XRechnung.NET.XmlModels;
+﻿using pax.XRechnung.NET.Dtos;
+using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
 

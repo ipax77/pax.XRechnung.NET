@@ -1,5 +1,6 @@
 using System.Xml;
 using System.Xml.Schema;
+using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
 
@@ -8,6 +9,18 @@ namespace pax.XRechnung.NET;
 /// </summary>
 public static class XmlInvoiceValidator
 {
+    /// <summary>
+    /// ValidateXmlInvoice
+    /// </summary>
+    /// <param name="xmlInvoice"></param>
+    /// <returns></returns>
+    public static ValidationResult ValidateXmlInvoice(XmlInvoice xmlInvoice)
+    {
+        ArgumentNullException.ThrowIfNull(xmlInvoice);
+        var xml = XmlInvoiceWriter.Serialize(xmlInvoice);
+        return ValidateXml(xml);
+    }
+
     /// <summary>
     /// Validate xml Invoice
     /// </summary>
@@ -42,28 +55,28 @@ public static class XmlInvoiceValidator
         }
         catch (ArgumentNullException e)
         {
-            return new ValidationResult([])
+            return new ValidationResult()
             {
                 Error = $"Argument error: {e.Message}"
             };
         }
         catch (FileNotFoundException e)
         {
-            return new ValidationResult([])
+            return new ValidationResult()
             {
                 Error = $"File error: {e.Message}"
             };
         }
         catch (XmlException e)
         {
-            return new ValidationResult([])
+            return new ValidationResult()
             {
                 Error = $"XML error: {e.Message}"
             };
         }
         catch (Exception e)
         {
-            return new ValidationResult([])
+            return new ValidationResult()
             {
                 Error = $"Unexpected error: {e.Message}"
             };
@@ -98,7 +111,7 @@ public static class XmlInvoiceValidator
         }
         catch (Exception e)
         {
-            var validationResult = new ValidationResult([])
+            var validationResult = new ValidationResult()
             {
                 Error = e.Message
             };

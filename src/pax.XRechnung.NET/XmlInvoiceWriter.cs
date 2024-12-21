@@ -94,7 +94,7 @@ public static class XmlInvoiceWriter
             _writerSettings = new XmlWriterSettings
             {
                 Indent = true,
-                Encoding = Encoding.UTF8,
+                Encoding = new UTF8Encoding(false),
                 OmitXmlDeclaration = false
             };
         }
@@ -113,7 +113,7 @@ public static class XmlInvoiceWriter
         RemoveNullElements(xml);
         FormatDateTimeElements(xml);
 
-        return WriteToString(xml, GetSettings());
+        return WriteToString(xml);
     }
 
     private static void RemoveNullElements(XDocument xml)
@@ -152,10 +152,13 @@ public static class XmlInvoiceWriter
         return xDocument;
     }
 
-    private static string WriteToString(XDocument xml, XmlWriterSettings settings)
+    private static string WriteToString(XDocument xml)
     {
-        var memory = new MemoryStream();
-        xml.Save(memory);
+        using var memory = new MemoryStream();
+        using var writer = new StreamWriter(memory, new UTF8Encoding(false));
+        xml.Save(writer);
+        writer.Flush();
         return Encoding.UTF8.GetString(memory.ToArray());
     }
+
 }

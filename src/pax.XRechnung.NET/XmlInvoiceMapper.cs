@@ -1,4 +1,5 @@
 
+using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
@@ -13,7 +14,7 @@ public static partial class XmlInvoiceMapper
     /// </summary>
     /// <param name="xmlInvoice"></param>
     /// <returns></returns>
-    public static InvoiceDto GetInvoiceDto(XmlInvoice xmlInvoice)
+    public static InvoiceDto MapToInvoiceDto(XmlInvoice xmlInvoice)
     {
         ArgumentNullException.ThrowIfNull(xmlInvoice);
         return Map2InvoiceDto(xmlInvoice);
@@ -24,7 +25,7 @@ public static partial class XmlInvoiceMapper
     /// </summary>
     /// <param name="invoiceDto"></param>
     /// <returns></returns>
-    public static XmlInvoice GetXmlInvoice(InvoiceDto invoiceDto)
+    public static XmlInvoice MapToXmlInvoice(InvoiceDto invoiceDto)
     {
         ArgumentNullException.ThrowIfNull(invoiceDto);
         return Map2XmlInvoice(invoiceDto);

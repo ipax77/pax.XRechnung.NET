@@ -1,13 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace pax.XRechnung.NET;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+namespace pax.XRechnung.NET.Dtos;
 
 /// <summary>
 /// Das Wurzelelement INVOICE
 /// </summary>
-public class InvoiceDto
+public record InvoiceDto
 {
     /// <summary>
     /// CustomizationID
@@ -18,7 +16,7 @@ public class InvoiceDto
     /// </summary>
     public string ProfileId { get; set; } = "urn:fdc:peppol.eu:2017:poacc:billing:01:1.0";
     /// <summary>
-    ///  Eine eindeutige Kennung der Rechnung, die diese im System des Verkäufers identifiziert.
+    ///  Eine eindeutige Kennung der Rechnung, die diese im System des VerkÃ¤ufers identifiziert.
     /// </summary>
     [Required]
     public required string Id { get; set; }
@@ -28,56 +26,56 @@ public class InvoiceDto
     [Required]
     public DateTime IssueDate { get; set; }
     /// <summary>
-    /// Das Fälligkeitsdatum des Rechnungsbetrages
+    /// Das FÃ¤lligkeitsdatum des Rechnungsbetrages
     /// </summary>
     public DateTime? DueDate { get; set; }
     /// <summary>
     /// Ein Code, der den Funktionstyp der Rechnung angibt.
-    ///   Anmerkung: Der Rechnungstyp muss gemäß UNTDID 1001, spezifiziert werden.
+    ///   Anmerkung: Der Rechnungstyp muss gemÃ¤ÃŸ UNTDID 1001, spezifiziert werden.
     ///   Folgende Codes aus der Codeliste sollen verwendet werden:
-    ///     • 326 (Partial invoice)
-    ///     • 380 (Commercial invoice)
-    ///     • 384 (Corrected invoice)
-    ///     • 389 (Self-billed invoice)
-    ///     • 381 (Credit note)
-    ///     • 875 (Partial construction invoice)
-    ///     • 876 (Partial final construction invoice)
-    ///     • 877 (Final construction invoice)
+    ///     * 326 (Partial invoice)
+    ///     * 380 (Commercial invoice)
+    ///     * 384 (Corrected invoice)
+    ///     * 389 (Self-billed invoice)
+    ///     * 381 (Credit note)
+    ///     * 875 (Partial construction invoice)
+    ///     * 876 (Partial final construction invoice)
+    ///     * 877 (Final construction invoice)
     /// </summary>
     [Required]
     public string InvoiceTypeCode { get; set; } = "380";
     /// <summary>
-    ///  Eine Gruppe von Informationselementen für rechnungsrelevante Erläuterungen mit Hinweisen auf den 
+    ///  Eine Gruppe von Informationselementen fÃ¼r rechnungsrelevante ErlÃ¤uterungen mit Hinweisen auf den 
     ///  Rechnungsbetreff.
     /// </summary>
     public string? Note { get; set; }
     /// <summary>
-    /// Die Währung, in der alle Rechnungsbeträge angegeben werden, ausgenommen ist der Umsatzsteuer-Gesamtbetrag,
-    /// der in der Abrechnungswährung anzugeben ist
+    /// Die WÃ¤hrung, in der alle RechnungsbetrÃ¤ge angegeben werden, ausgenommen ist der Umsatzsteuer-Gesamtbetrag,
+    /// der in der AbrechnungswÃ¤hrung anzugeben ist
     /// </summary>
     [Required]
     public string DocumentCurrencyCode { get; set; } = string.Empty;
     /// <summary>
-    /// Ein vom Erwerber zugewiesener und für interne Lenkungszwecke benutzter Bezeichner
+    /// Ein vom Erwerber zugewiesener und fÃ¼r interne Lenkungszwecke benutzter Bezeichner
     /// </summary>
     [Required]
     public string BuyerReference { get; set; } = string.Empty;
 
     ///// <summary>
-    /////  Eine Gruppe von Informationselementen mit Informationen über rechnungsbegründende Unterlagen, 
-    /////  die Belege für die in der Rechnung gestellten Ansprüche enthalten.
+    /////  Eine Gruppe von Informationselementen mit Informationen ï¿½ber rechnungsbegrï¿½ndende Unterlagen, 
+    /////  die Belege fï¿½r die in der Rechnung gestellten Ansprï¿½che enthalten.
     ///// </summary>
     //public XmlAdditionalDocumentReference? AdditionalDocumentReference { get; set; }
     ///// <summary>
-    ///// Eine Gruppe von Informationselementen, die Informationen über den Verkäufer enthalten.
+    ///// Eine Gruppe von Informationselementen, die Informationen ï¿½ber den Verkï¿½ufer enthalten.
     ///// </summary>
     //public XmlSellerParty SellerParty { get; set; } = new();
     ///// <summary>
-    ///// Eine Gruppe von Informationselementen, die Informationen über den Erwerber enthalten.
+    ///// Eine Gruppe von Informationselementen, die Informationen ï¿½ber den Erwerber enthalten.
     ///// </summary>
     //public XmlBuyerParty BuyerParty { get; set; } = new();
     ///// <summary>
-    ///// Eine Gruppe von Informationselementen, die Informationen darüber enthalten, wie die Zahlung erfolgen soll.
+    ///// Eine Gruppe von Informationselementen, die Informationen darï¿½ber enthalten, wie die Zahlung erfolgen soll.
     ///// </summary>
     //public XmlPaymentInstructions PaymentMeans { get; set; } = new();
     ///// <summary>
@@ -85,13 +83,12 @@ public class InvoiceDto
     ///// </summary>
     //public XmlVatBreakdown TaxTotal { get; set; } = new();
     ///// <summary>
-    ///// Eine Gruppe von Informationselementen, die die monetären Gesamtbeträge der Rechnung enthalten.
+    ///// Eine Gruppe von Informationselementen, die die monetï¿½ren Gesamtbetrï¿½ge der Rechnung enthalten.
     ///// </summary>
     //public XmlDocumentTotals LegalMonetaryTotal { get; set; } = new();
     ///// <summary>
-    /////  Eine Gruppe von Informationselementen, die Informationen über einzelne Rechnungspositionen enthalten.
+    /////  Eine Gruppe von Informationselementen, die Informationen ï¿½ber einzelne Rechnungspositionen enthalten.
     ///// </summary>
     //public List<XmlInvoiceLine> InvoiceLines { get; set; } = [];
 }
 
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

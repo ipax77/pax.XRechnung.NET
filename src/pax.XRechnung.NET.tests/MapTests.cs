@@ -1,4 +1,5 @@
-﻿using pax.XRechnung.NET.XmlModels;
+﻿using pax.XRechnung.NET.Dtos;
+using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET.tests;
 
@@ -19,7 +20,7 @@ public class MapTests
             BuyerReference = "123"
         };
 
-        var xmlInvoice = XmlInvoiceMapper.GetXmlInvoice(invoiceDto);
+        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
 
         Assert.IsNotNull(xmlInvoice);
         Assert.AreEqual("1", xmlInvoice.Id.Content);
@@ -47,7 +48,7 @@ public class MapTests
         };
 
         // Act
-        var xmlInvoice = XmlInvoiceMapper.GetXmlInvoice(invoiceDto);
+        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
 
         // Assert
         Assert.IsNotNull(xmlInvoice);
@@ -74,7 +75,7 @@ public class MapTests
             BuyerReference = "123"
         };
 
-        var invoiceDto = XmlInvoiceMapper.GetInvoiceDto(xmlInvoice);
+        var invoiceDto = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
 
         Assert.IsNotNull(invoiceDto);
         Assert.AreEqual("1", invoiceDto.Id);
@@ -84,5 +85,27 @@ public class MapTests
         Assert.AreEqual("EUR", invoiceDto.DocumentCurrencyCode);
         Assert.AreEqual("123", invoiceDto.BuyerReference);
         Assert.AreEqual("Test Note", invoiceDto.Note);
+    }
+
+    [TestMethod]
+    public void CanMapTwice()
+    {
+        InvoiceDto invoiceDto = new()
+        {
+            Id = "1",
+            IssueDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(14),
+            InvoiceTypeCode = "380",
+            Note = "Test Note",
+            DocumentCurrencyCode = "EUR",
+            BuyerReference = "123"
+        };
+
+        XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        var validationResult = XmlInvoiceValidator.ValidateXmlInvoice(xmlInvoice);
+        InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
+
+        Assert.IsTrue(validationResult.IsValid, validationResult.Error);
+        Assert.AreEqual(invoiceDto, invoiceDto2);
     }
 }
