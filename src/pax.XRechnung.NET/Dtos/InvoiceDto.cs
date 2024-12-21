@@ -73,4 +73,24 @@ public record InvoiceDto
     /// AccountingCustomerParty
     /// </summary>
     public BuyerDto Buyer { get; set; } = new();
+    /// <summary>
+    /// Eine Gruppe von Informationselementen, die Informationen darüber enthalten, wie die Zahlung erfolgen soll.
+    /// </summary>
+    public PaymentInstructionsDto PaymentMeans { get; set; } = new();
+    /// <summary>
+    /// Represents the VAT breakdown for different categories, rates, and exemptions.
+    /// </summary>
+    public VatBreakdownDto TaxTotal { get; set; } = new();
+    /// <summary>
+    /// Eine Gruppe von Informationselementen, die die monetären Gesamtbeträge der Rechnung enthalten.
+    /// </summary>
+    public DocumentTotalsDto LegalMonetaryTotal { get; set; } = new();
+}
+
+/// <summary>
+///  Eine Gruppe von Informationselementen, die Informationen über einzelne Rechnungspositionen enthalten.
+/// </summary>
+public record InvoiceLineDto
+{
+
 }

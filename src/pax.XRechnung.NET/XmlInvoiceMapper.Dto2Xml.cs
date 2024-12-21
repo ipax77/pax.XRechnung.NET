@@ -20,7 +20,57 @@ public static partial class XmlInvoiceMapper
             BuyerReference = invoiceDto.BuyerReference,
             AdditionalDocumentReference = GetAdditionalDocumentReference(invoiceDto.AdditionalDocumentReference),
             SellerParty = GetSellerParty(invoiceDto.Seller),
-            BuyerParty = GetBuyerParty(invoiceDto.Buyer)
+            BuyerParty = GetBuyerParty(invoiceDto.Buyer),
+            PaymentMeans = GetPaymentInstructions(invoiceDto.PaymentMeans),
+            TaxTotal = GetTaxTotal(invoiceDto.TaxTotal),
+            LegalMonetaryTotal = GetLegalMonetaryTotal(invoiceDto.LegalMonetaryTotal),
+        };
+    }
+
+    private static XmlDocumentTotals GetLegalMonetaryTotal(DocumentTotalsDto dto)
+    {
+        return new()
+        {
+            LineExtensionAmount = new() { Value = dto.LineExtensionAmount },
+            TaxExclusiveAmount = new() { Value = dto.TaxExclusiveAmount },
+            TaxInclusiveAmount = new() { Value = dto.TaxInclusiveAmount },
+            PayableAmount = new() { Value = dto.PayableAmount },
+        };
+    }
+
+    private static XmlVatBreakdown GetTaxTotal(VatBreakdownDto dto)
+    {
+        return new()
+        {
+            TaxAmount = new Amount() { Value = dto.TaxAmount },
+            TaxSubTotal = [
+                new() {
+                    TaxAmount = new Amount() { Value = dto.TaxAmount },
+                    TaxableAmount = new Amount() { Value = dto.TaxableAmount },
+                    TaxCategory = new() {
+                        Id = new() { Content = dto.TaxCategoryId },
+                        Percent = dto.Percent,
+                        TaxScheme = new() { Id = new() { Content = dto.TaxScheme }}
+                    },
+                }
+            ],
+        };
+    }
+
+    private static XmlPaymentInstructions GetPaymentInstructions(PaymentInstructionsDto dto)
+    {
+        return new()
+        {
+            PaymentMeansTypeCode = dto.PaymentMeansTypeCode,
+            PaymentMeansText = dto.PaymentMeansText,
+            PayeeFinancialAccount = string.IsNullOrEmpty(dto.IBAN) ? [] :
+            [
+                new() {
+                    Id = new() { Content = dto.IBAN },
+                    Identifier = string.IsNullOrEmpty(dto.BIC) ? null : new() { Content = dto.BIC },
+                    Name = dto.BankName
+                }
+            ]
         };
     }
 

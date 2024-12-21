@@ -35,7 +35,7 @@ public class XmlPaymentInstructions
     /// </summary>
     [XmlElement("PayeeFinancialAccount", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-17")]
-    public List<XmlCreditTransfer>? PayeeFinancialAccount { get; set; }
+    public List<XmlCreditTransfer> PayeeFinancialAccount { get; set; } = [];
 
     /// <summary>
     /// Information about the payment card used.

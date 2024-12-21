@@ -21,6 +21,44 @@ public static partial class XmlInvoiceMapper
             AdditionalDocumentReference = GetAdditionalDocumentReference(xmlInvoice.AdditionalDocumentReference),
             Seller = GetSellerDto(xmlInvoice.SellerParty),
             Buyer = GetBuyerDto(xmlInvoice.BuyerParty),
+            PaymentMeans = GetPaymentInstructions(xmlInvoice.PaymentMeans),
+            TaxTotal = GetTaxTotal(xmlInvoice.TaxTotal),
+            LegalMonetaryTotal = GetLegalMonetaryTotal(xmlInvoice.LegalMonetaryTotal),
+        };
+    }
+
+    private static DocumentTotalsDto GetLegalMonetaryTotal(XmlDocumentTotals xml)
+    {
+        return new()
+        {
+            LineExtensionAmount = xml.LineExtensionAmount.Value,
+            TaxExclusiveAmount = xml.TaxExclusiveAmount.Value,
+            TaxInclusiveAmount = xml.TaxInclusiveAmount.Value,
+            PayableAmount = xml.PayableAmount.Value,
+        };
+    }
+
+    private static VatBreakdownDto GetTaxTotal(XmlVatBreakdown xml)
+    {
+        return new()
+        {
+            TaxAmount = xml.TaxAmount.Value,
+            TaxableAmount = xml.TaxSubTotal.FirstOrDefault()?.TaxableAmount.Value ?? 0,
+            TaxCategoryId = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.Id.Content ?? "",
+            Percent = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.Percent ?? 0,
+            TaxScheme = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.TaxScheme.Id.Content ?? "",
+        };
+    }
+
+    private static PaymentInstructionsDto GetPaymentInstructions(XmlPaymentInstructions xml)
+    {
+        return new()
+        {
+            PaymentMeansTypeCode = xml.PaymentMeansTypeCode,
+            PaymentMeansText = xml.PaymentMeansText,
+            IBAN = xml.PayeeFinancialAccount.FirstOrDefault()?.Id.Content,
+            BankName = xml.PayeeFinancialAccount.FirstOrDefault()?.Name,
+            BIC = xml.PayeeFinancialAccount.FirstOrDefault()?.Identifier?.Content,
         };
     }
 
@@ -30,7 +68,7 @@ public static partial class XmlInvoiceMapper
         {
             ContactName = buyerParty.Party.Contact?.Name,
             ContactTelephone = buyerParty.Party.Contact?.Telephone,
-            ContactEmail = buyerParty.Party.Contact?.Email,
+            ContactEmail = buyerParty.Party.Contact?.Email ?? "",
             Email = buyerParty.Party.EndpointId.Content,
             Name = buyerParty.Party.PartyName.Name,
             StreetName = buyerParty.Party.PostalAddress?.StreetName,

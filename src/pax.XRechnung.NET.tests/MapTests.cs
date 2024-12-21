@@ -1,4 +1,5 @@
-﻿using pax.XRechnung.NET.Dtos;
+﻿using System.Text.Json;
+using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET.tests;
@@ -179,4 +180,84 @@ public class MapTests
         Assert.AreEqual(invoiceDto, invoiceDto2);
     }
 
+    [TestMethod]
+    public void CanMapTwiceWithPaymentInstructions()
+    {
+        InvoiceDto invoiceDto = new()
+        {
+            Id = "1",
+            IssueDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(14),
+            InvoiceTypeCode = "380",
+            Note = "Test Note",
+            DocumentCurrencyCode = "EUR",
+            BuyerReference = "123",
+            PaymentMeans = new()
+            {
+                PaymentMeansTypeCode = "30",
+                IBAN = "DE21081508151234123412",
+                BankName = "Test Bank"
+            }
+        };
+
+        XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
+
+        Assert.AreEqual(invoiceDto, invoiceDto2);
+    }
+
+    [TestMethod]
+    public void CanMapTwiceWithTaxTotal()
+    {
+        InvoiceDto invoiceDto = new()
+        {
+            Id = "1",
+            IssueDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(14),
+            InvoiceTypeCode = "380",
+            Note = "Test Note",
+            DocumentCurrencyCode = "EUR",
+            BuyerReference = "123",
+            TaxTotal = new()
+            {
+                TaxAmount = 4.27M,
+                TaxableAmount = 22.45M,
+                TaxCategoryId = "S",
+                Percent = 19.0M,
+                TaxScheme = "VAT"
+            },
+        };
+
+        XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
+
+        Assert.AreEqual(invoiceDto, invoiceDto2);
+    }
+
+    [TestMethod]
+    public void CanMapTwiceWithMonetaryTotal()
+    {
+        InvoiceDto invoiceDto = new()
+        {
+            Id = "1",
+            IssueDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(14),
+            InvoiceTypeCode = "380",
+            Note = "Test Note",
+            DocumentCurrencyCode = "EUR",
+            BuyerReference = "123",
+            LegalMonetaryTotal = new()
+            {
+                LineExtensionAmount = 22.45M,
+                TaxExclusiveAmount = 22.45M,
+                TaxInclusiveAmount = 26.72M,
+                PayableAmount = 26.72M,
+            },
+        };
+
+        XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
+
+        Assert.AreEqual(invoiceDto, invoiceDto2);
+    }
 }

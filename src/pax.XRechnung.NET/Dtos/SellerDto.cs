@@ -71,7 +71,7 @@ public record SellerDto
     /// <summary>
     /// tax scheme
     /// </summary>
-    public string TaxSchemeId { get; set; } = "VAT";
+    public string TaxSchemeId { get; set; } = string.Empty;
     /// <summary>
     /// Seller Name
     /// </summary>
