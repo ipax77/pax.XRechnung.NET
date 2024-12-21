@@ -155,7 +155,10 @@ public class MapTests
                 PostCode = "12345",
                 ContactName = "ContactName",
                 ContactTelephone = "12345",
-                ContactEmail = "contact@email.com"
+                ContactEmail = "contact@email.com",
+                TaxCompanyId = "DE1234567",
+                TaxSchemeId = "VAT",
+                RegistrationName = "Seller Name",
             },
             Buyer = new()
             {

@@ -30,7 +30,7 @@ public static partial class XmlInvoiceMapper
         {
             Party = new()
             {
-                Contact = new()
+                Contact = string.IsNullOrEmpty(dto.ContactName) ? null : new()
                 {
                     Name = dto.ContactName,
                     Telephone = dto.ContactTelephone,
@@ -77,7 +77,13 @@ public static partial class XmlInvoiceMapper
                     City = dto.City,
                     PostCode = dto.PostCode,
                     Country = new XmlCountry() { IdentificationCode = dto.Country }
-                }
+                },
+                PartyTaxScheme = string.IsNullOrEmpty(dto.TaxCompanyId) ? null : new()
+                {
+                    CompanyId = dto.TaxCompanyId,
+                    TaxScheme = new() { Id = new() { Content = dto.TaxSchemeId } }
+                },
+                PartyLegalEntity = new() { RegistrationName = dto.RegistrationName }
             }
         };
     }

@@ -1,9 +1,9 @@
 namespace pax.XRechnung.NET.Dtos;
 
 /// <summary>
-/// Buyer/Seller Participant
+/// AccountingCustomerParty
 /// </summary>
-public record InvoiceParticipantDto
+public record BuyerDto
 {
     /// <summary>
     ///  identifier
