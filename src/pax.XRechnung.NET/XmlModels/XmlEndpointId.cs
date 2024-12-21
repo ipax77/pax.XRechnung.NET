@@ -1,6 +1,7 @@
 namespace pax.XRechnung.NET.XmlModels;
 
 using System.Xml.Serialization;
+using pax.XRechnung.NET.Attributes;
 
 /// <summary>
 /// EndpointId
@@ -8,15 +9,19 @@ using System.Xml.Serialization;
 public class XmlEndpointId
 {
     /// <summary>
-    /// E-Mail
+    /// Eine von einer offiziellen Registrierstelle ausgegebene Kennung, die den Verkäufer als Rechtsträger oder 
+    /// juristische Person identifiziert.
     /// </summary>
     [XmlText]
+    [SpecificationId("BT-30")]
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
     /// schemeID
     /// </summary>
     [XmlAttribute("schemeID")]
-    public string? SchemeId { get; set; } = "EM";
+    [SpecificationId("BT-30")]
+    [CodeList("ICD")]
+    public string? SchemeId { get; set; }
 
 }

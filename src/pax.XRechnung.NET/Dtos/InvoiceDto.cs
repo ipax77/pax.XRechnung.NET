@@ -60,35 +60,17 @@ public record InvoiceDto
     /// </summary>
     [Required]
     public string BuyerReference { get; set; } = string.Empty;
-
-    ///// <summary>
-    /////  Eine Gruppe von Informationselementen mit Informationen �ber rechnungsbegr�ndende Unterlagen, 
-    /////  die Belege f�r die in der Rechnung gestellten Anspr�che enthalten.
-    ///// </summary>
-    //public XmlAdditionalDocumentReference? AdditionalDocumentReference { get; set; }
-    ///// <summary>
-    ///// Eine Gruppe von Informationselementen, die Informationen �ber den Verk�ufer enthalten.
-    ///// </summary>
-    //public XmlSellerParty SellerParty { get; set; } = new();
-    ///// <summary>
-    ///// Eine Gruppe von Informationselementen, die Informationen �ber den Erwerber enthalten.
-    ///// </summary>
-    //public XmlBuyerParty BuyerParty { get; set; } = new();
-    ///// <summary>
-    ///// Eine Gruppe von Informationselementen, die Informationen dar�ber enthalten, wie die Zahlung erfolgen soll.
-    ///// </summary>
-    //public XmlPaymentInstructions PaymentMeans { get; set; } = new();
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public XmlVatBreakdown TaxTotal { get; set; } = new();
-    ///// <summary>
-    ///// Eine Gruppe von Informationselementen, die die monet�ren Gesamtbetr�ge der Rechnung enthalten.
-    ///// </summary>
-    //public XmlDocumentTotals LegalMonetaryTotal { get; set; } = new();
-    ///// <summary>
-    /////  Eine Gruppe von Informationselementen, die Informationen �ber einzelne Rechnungspositionen enthalten.
-    ///// </summary>
-    //public List<XmlInvoiceLine> InvoiceLines { get; set; } = [];
+    /// <summary>
+    ///  Eine Gruppe von Informationselementen mit Informationen über rechnungsbegründende Unterlagen, 
+    ///  die Belege für die in der Rechnung gestellten Ansprüche enthalten.
+    /// </summary>
+    public AdditionalDocumentReferenceDto? AdditionalDocumentReference { get; set; }
+    /// <summary>
+    /// AccountingSupplierParty
+    /// </summary>
+    public SellerDto Seller { get; set; } = new();
+    /// <summary>
+    /// AccountingCustomerParty
+    /// </summary>
+    public BuyerDto Buyer { get; set; } = new();
 }
-

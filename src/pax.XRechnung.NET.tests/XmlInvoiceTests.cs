@@ -23,7 +23,7 @@ public sealed class InvoiceTests
                 {
                     EndpointId = new() { Content = "buyer@email.com" },
                     PartyName = new() { Name = "Verkäufer" },
-                    // TaxRegistrationIdentifier = new() { Content = "000/000/00000" },
+                    //TaxRegistrationIdentifier = new() { Content = "000/000/00000" },
                     PostalAddress = new()
                     {
                         StreetName = "TestStraße",

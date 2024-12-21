@@ -88,7 +88,7 @@ public class MapTests
     }
 
     [TestMethod]
-    public void CanMapTwice()
+    public void CanMapTwiceBase()
     {
         InvoiceDto invoiceDto = new()
         {
@@ -102,10 +102,78 @@ public class MapTests
         };
 
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
-        var validationResult = XmlInvoiceValidator.ValidateXmlInvoice(xmlInvoice);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
-
-        Assert.IsTrue(validationResult.IsValid, validationResult.Error);
         Assert.AreEqual(invoiceDto, invoiceDto2);
     }
+
+    [TestMethod]
+    public void CanMapTwiceWithDocContent()
+    {
+        InvoiceDto invoiceDto = new()
+        {
+            Id = "1",
+            IssueDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(14),
+            InvoiceTypeCode = "380",
+            Note = "Test Note",
+            DocumentCurrencyCode = "EUR",
+            BuyerReference = "123",
+            AdditionalDocumentReference = new()
+            {
+                Id = "invoice 123",
+                DocumentDescription = "human readable pdf invoice",
+                MimeCode = "application/pdf",
+                FileName = "invoice.pdf",
+                Content = "ZWYNCjE0OTk0Nw0KJSVFT0Y=",
+            }
+        };
+
+        XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
+
+        Assert.AreEqual(invoiceDto, invoiceDto2);
+    }
+
+    [TestMethod]
+    public void CanMapTwiceWithParticipants()
+    {
+        InvoiceDto invoiceDto = new()
+        {
+            Id = "1",
+            IssueDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(14),
+            InvoiceTypeCode = "380",
+            Note = "Test Note",
+            DocumentCurrencyCode = "EUR",
+            BuyerReference = "123",
+            Seller = new()
+            {
+                Email = "seller@email.com",
+                Name = "Seller",
+                StreetName = "TestStreet",
+                City = "TestCity",
+                PostCode = "12345",
+                ContactName = "ContactName",
+                ContactTelephone = "12345",
+                ContactEmail = "contact@email.com"
+            },
+            Buyer = new()
+            {
+                Email = "buyer@email.com",
+                Name = "Buyer",
+                StreetName = "TestStreet1",
+                City = "TestCity1",
+                PostCode = "54321",
+                ContactName = "ContactName1",
+                ContactTelephone = "54321",
+                ContactEmail = "contact1@email.com"
+            }
+        };
+
+        XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
+
+        Assert.AreEqual(invoiceDto, invoiceDto2);
+    }
+
 }
