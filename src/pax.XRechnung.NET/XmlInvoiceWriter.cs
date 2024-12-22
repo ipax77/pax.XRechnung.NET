@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
@@ -106,6 +107,22 @@ public static class XmlInvoiceWriter
     /// </summary>
     /// <param name="invoice"></param>
     /// <returns></returns>
+    public static string Serialize(InvoiceDto invoice)
+    {
+        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoice);
+        var xml = SerializeToXDocument(xmlInvoice, GetNamespaces());
+
+        RemoveNullElements(xml);
+        FormatDateTimeElements(xml);
+
+        return WriteToString(xml);
+    }
+
+    /// <summary>
+    /// Serialize to xml string
+    /// </summary>
+    /// <param name="invoice"></param>
+    /// <returns></returns>
     public static string Serialize(XmlInvoice invoice)
     {
         var xml = SerializeToXDocument(invoice, GetNamespaces());
@@ -134,7 +151,8 @@ public static class XmlInvoiceWriter
 
         foreach (var element in xml.Descendants())
         {
-            if (DateTime.TryParseExact(element.Value, dateTimeFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dateTime))
+            if (DateTime.TryParseExact(element.Value, dateTimeFormats,
+                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dateTime))
             {
                 element.Value = dateTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
             }
@@ -155,7 +173,7 @@ public static class XmlInvoiceWriter
     private static string WriteToString(XDocument xml)
     {
         using var memory = new MemoryStream();
-        using var writer = new StreamWriter(memory, new UTF8Encoding(false));
+        using var writer = new StreamWriter(memory, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         xml.Save(writer);
         writer.Flush();
         return Encoding.UTF8.GetString(memory.ToArray());
