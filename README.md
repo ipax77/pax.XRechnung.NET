@@ -1,3 +1,4 @@
+![NuGet Version](https://img.shields.io/nuget/v/pax.XRechnung.NET)
 [![.NET](https://github.com/ipax77/pax.XRechnung.NET/actions/workflows/dotnet.yml/badge.svg)](https://github.com/ipax77/pax.XRechnung.NET/actions/workflows/dotnet.yml)
 
 # Introduction
