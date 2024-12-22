@@ -7,6 +7,8 @@ namespace pax.XRechnung.NET.tests;
 [TestClass]
 public class MapTests
 {
+    private JsonSerializerOptions jsonOptions = new() { WriteIndented = true };
+
     [TestMethod]
     public void CanMap2Xml()
     {
@@ -104,7 +106,11 @@ public class MapTests
 
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
-        Assert.AreEqual(invoiceDto, invoiceDto2);
+        
+        var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
+        var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
+
+        Assert.AreEqual(json1, json2);
     }
 
     [TestMethod]
@@ -132,7 +138,10 @@ public class MapTests
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
 
-        Assert.AreEqual(invoiceDto, invoiceDto2);
+        var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
+        var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
+
+        Assert.AreEqual(json1, json2);
     }
 
     [TestMethod]
@@ -177,7 +186,10 @@ public class MapTests
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
 
-        Assert.AreEqual(invoiceDto, invoiceDto2);
+        var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
+        var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
+
+        Assert.AreEqual(json1, json2);
     }
 
     [TestMethod]
@@ -203,7 +215,10 @@ public class MapTests
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
 
-        Assert.AreEqual(invoiceDto, invoiceDto2);
+        var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
+        var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
+
+        Assert.AreEqual(json1, json2);
     }
 
     [TestMethod]
@@ -231,7 +246,10 @@ public class MapTests
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
 
-        Assert.AreEqual(invoiceDto, invoiceDto2);
+        var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
+        var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
+
+        Assert.AreEqual(json1, json2);
     }
 
     [TestMethod]
@@ -258,6 +276,47 @@ public class MapTests
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
 
-        Assert.AreEqual(invoiceDto, invoiceDto2);
+        var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
+        var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
+
+        Assert.AreEqual(json1, json2);
+    }
+
+    [TestMethod]
+    public void CanMapTwiceWithInvoiceLine()
+    {
+        InvoiceDto invoiceDto = new()
+        {
+            Id = "1",
+            IssueDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(14),
+            InvoiceTypeCode = "380",
+            Note = "Test Note",
+            DocumentCurrencyCode = "EUR",
+            BuyerReference = "123",
+            InvoiceLines = [
+                new() {
+                    Id = "1",
+                    Note = "Test Note",
+                    Name = "Test",
+                    Description ="Test Desc",
+                    TaxId = "S",
+                    TaxPercent = 19.0M,
+                    TaxScheme = "VAT",
+                    InvoicedQuantity = 1,
+                    InvoicedQuantityCode = "XPP",
+                    LineExtensionAmount = 22.45M,
+                    PriceAmount = 22.45M,
+                },
+            ]
+        };
+
+        XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
+
+        var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
+        var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
+
+        Assert.AreEqual(json1, json2);
     }
 }

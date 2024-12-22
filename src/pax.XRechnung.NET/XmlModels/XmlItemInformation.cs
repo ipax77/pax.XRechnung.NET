@@ -48,7 +48,7 @@ public class XmlItemInformation
     /// </summary>
     [XmlElement("ClassificationIdentifier", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-158")]
-    public List<Identifier>? ClassificationIdentifiers { get; set; } = [];
+    public List<Identifier> ClassificationIdentifiers { get; set; } = [];
 
     /// <summary>
     /// Ursprungsland des Postens. (Optional)

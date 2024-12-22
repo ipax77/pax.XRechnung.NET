@@ -85,12 +85,8 @@ public record InvoiceDto
     /// Eine Gruppe von Informationselementen, die die monetären Gesamtbeträge der Rechnung enthalten.
     /// </summary>
     public DocumentTotalsDto LegalMonetaryTotal { get; set; } = new();
-}
-
-/// <summary>
-///  Eine Gruppe von Informationselementen, die Informationen über einzelne Rechnungspositionen enthalten.
-/// </summary>
-public record InvoiceLineDto
-{
-
+    /// <summary>
+    ///  Eine Gruppe von Informationselementen, die Informationen über einzelne Rechnungspositionen enthalten.
+    /// </summary>
+    public List<InvoiceLineDto> InvoiceLines { get; set; } = [];
 }

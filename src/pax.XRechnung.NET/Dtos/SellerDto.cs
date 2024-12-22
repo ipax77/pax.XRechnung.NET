@@ -63,7 +63,7 @@ public record SellerDto
     /// <summary>
     /// Steuerliche Kennung des Verkäufers (optional).
     /// </summary>
-    public string? TaxRegistrationIdentifier { get; set; }
+    public string? TaxRegistrationName { get; set; }
     /// <summary>
     /// tax-related identifier
     /// </summary>

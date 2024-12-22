@@ -61,14 +61,6 @@ public class XmlSeller
     [SpecificationId("BT-31")]
     public Identifier? VATIdentifier { get; set; }
     /// <summary>
-    ///  Eine örtliche steuerrechtliche Kennung des Verkäufers (bestimmt durch dessen Adresse) oder ein Verweis auf 
-    ///  seinen eingetragenen Steuerstatus. (Hier ist ggf. die Angabe „Steuerschuldnerschaft des Leistungsempfängers“ 
-    ///  oder die USt-Befreiung des Rechnungsstellers einzutragen.)
-    /// </summary>
-    [XmlElement("TaxRegistrationIdentifier", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-32")]
-    public Identifier? TaxRegistrationIdentifier { get; set; }
-    /// <summary>
     /// Weitere rechtliche Informationen, die für den Verkäufer maßgeblich sind (wie z. B. Grundkapital).
     /// </summary>
     [XmlElement("LegalInformation", Namespace = XmlInvoiceWriter.CommonBasicComponents)]

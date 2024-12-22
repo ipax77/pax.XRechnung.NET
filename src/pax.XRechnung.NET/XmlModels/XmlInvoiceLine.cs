@@ -43,21 +43,18 @@ public class XmlInvoiceLine
     [XmlElement("LineExtensionAmount", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-131")]
     public Amount LineExtensionAmount { get; set; } = new();
-
     /// <summary>
     /// Eine vom Erwerber ausgegebene Kennung für eine referenzierte Position einer Bestellung/eines Auftrags.
     /// </summary>
     [XmlElement("ReferencedPurchaseOrderLineReference", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-132")]
     public string? ReferencedPurchaseOrderLineReference { get; set; }
-
     /// <summary>
     /// Ein Textwert, der angibt, an welcher Stelle die betreffenden Daten in den Finanzkonten des Erwerbers zu buchen sind.
     /// </summary>
     [XmlElement("BuyerAccountingReference", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-133")]
     public string? BuyerAccountingReference { get; set; }
-
     /// <summary>
     ///  Eine Gruppe von Informationselementen, die Informationen über die in Rechnung gestellten Waren und
     ///  Dienstleistungen enthalten.
@@ -65,7 +62,6 @@ public class XmlInvoiceLine
     [XmlElement("Item", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-30")]
     public XmlItemInformation Item { get; set; } = new();
-
     /// <summary>
     /// Eine Gruppe von Informationselementen, die Informationen über die für die betreffende Rechnungsposition geltenden Nachlässe enthalten.
     /// </summary>

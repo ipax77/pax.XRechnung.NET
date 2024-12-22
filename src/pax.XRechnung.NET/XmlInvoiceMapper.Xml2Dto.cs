@@ -24,6 +24,43 @@ public static partial class XmlInvoiceMapper
             PaymentMeans = GetPaymentInstructions(xmlInvoice.PaymentMeans),
             TaxTotal = GetTaxTotal(xmlInvoice.TaxTotal),
             LegalMonetaryTotal = GetLegalMonetaryTotal(xmlInvoice.LegalMonetaryTotal),
+            InvoiceLines = [.. xmlInvoice.InvoiceLines.Select(s => GetInvoiceLine(s))],
+        };
+    }
+
+    private static InvoiceLineDto GetInvoiceLine(XmlInvoiceLine xml)
+    {
+        return new()
+        {
+            Id = xml.Id.Content,
+            Note = xml.Note,
+            ObjectIdentifier = xml.ObjectIdentifier?.Content,
+            ObjectIdentifierSchema = xml.ObjectIdentifier?.SchemeIdentifier,
+            InvoicedQuantity = xml.InvoicedQuantity.Value,
+            InvoicedQuantityCode = xml.InvoicedQuantity.UnitCode,
+            LineExtensionAmount = xml.LineExtensionAmount.Value,
+            ReferencedPurchaseOrderLineReference = xml.ReferencedPurchaseOrderLineReference,
+            BuyerAccountingReference = xml.BuyerAccountingReference,
+            Description = xml.Item.Description,
+            Name = xml.Item.Name,
+            SellersIdentifier = xml.Item.SellersIdentifier?.Content,
+            BuyersIdentifier = xml.Item.BuyersIdentifier?.Content,
+            StandardIdentifier = xml.Item.StandardIdentifier?.Content,
+            ClassificationIdentifiers = [.. xml.Item.ClassificationIdentifiers.Select(s => s.Content)],
+            CountryOfOrigin = xml.Item.CountryOfOrigin,
+            Attributes = [.. xml.Item.Attributes.Select(s => new ItemAttributeDto() {
+                Name = s.Name,
+                Value = s.Value,
+            })],
+            TaxId = xml.Item.ClassifiedTaxCategory.Id.Content,
+            TaxPercent = xml.Item.ClassifiedTaxCategory.Percent,
+            TaxScheme = xml.Item.ClassifiedTaxCategory.TaxScheme.Id.Content,
+            PriceAmount = xml.PriceDetails.PriceAmount.Value,
+            PriceDiscount = xml.PriceDetails.PriceDiscount?.Value,
+            GrossPrice = xml.PriceDetails.GrossPrice?.Value,
+            PriceBaseQuantity = xml.PriceDetails.PriceBaseQuantity?.Value,
+            PriceBaseQuantityUnitOfMeasureCode = xml.PriceDetails.PriceBaseQuantityUnitOfMeasureCode,
+            InvoiceLines = [.. xml.InvoiceLines.Select(s => GetInvoiceLine(s))],
         };
     }
 
@@ -84,7 +121,7 @@ public static partial class XmlInvoiceMapper
     {
         return new()
         {
-            TaxRegistrationIdentifier = sellerParty.Party.TaxRegistrationIdentifier?.Content,
+            TaxRegistrationName = sellerParty.Party.PartyTaxScheme?.RegistrationName?.Content,
             ContactName = sellerParty.Party.Contact?.Name ?? "unknown",
             ContactTelephone = sellerParty.Party.Contact?.Telephone ?? "unknown",
             ContactEmail = sellerParty.Party.Contact?.Email ?? "unknown",
@@ -98,7 +135,7 @@ public static partial class XmlInvoiceMapper
             Country = sellerParty.Party.PostalAddress?.Country?.IdentificationCode ?? string.Empty,
             TaxCompanyId = sellerParty.Party.PartyTaxScheme?.CompanyId ?? "",
             TaxSchemeId = sellerParty.Party.PartyTaxScheme?.TaxScheme.Id.Content ?? "",
-            RegistrationName = sellerParty.Party.PartyLegalEntity.RegistrationName,
+            RegistrationName = sellerParty.Party.PartyLegalEntity.RegistrationName.Content,
         };
     }
 

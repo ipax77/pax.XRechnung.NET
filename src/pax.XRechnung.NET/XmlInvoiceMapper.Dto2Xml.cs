@@ -24,6 +24,54 @@ public static partial class XmlInvoiceMapper
             PaymentMeans = GetPaymentInstructions(invoiceDto.PaymentMeans),
             TaxTotal = GetTaxTotal(invoiceDto.TaxTotal),
             LegalMonetaryTotal = GetLegalMonetaryTotal(invoiceDto.LegalMonetaryTotal),
+            InvoiceLines = [.. invoiceDto.InvoiceLines.Select(s => GetInvoiceLine(s))],
+        };
+    }
+
+    private static XmlInvoiceLine GetInvoiceLine(InvoiceLineDto dto)
+    {
+        return new()
+        {
+            Id = new() { Content = dto.Id },
+            Note = dto.Note,
+            ObjectIdentifier = string.IsNullOrEmpty(dto.ObjectIdentifier) ? null :
+             new() { Content = dto.ObjectIdentifier, SchemeIdentifier = dto.ObjectIdentifierSchema },
+            InvoicedQuantity = new() { Value = dto.InvoicedQuantity, UnitCode = dto.InvoicedQuantityCode },
+            LineExtensionAmount = new() { Value = dto.LineExtensionAmount },
+            ReferencedPurchaseOrderLineReference = dto.ReferencedPurchaseOrderLineReference,
+            BuyerAccountingReference = dto.BuyerAccountingReference,
+            Item = new()
+            {
+                Description = dto.Description,
+                Name = dto.Name,
+                SellersIdentifier = string.IsNullOrEmpty(dto.SellersIdentifier) ? null :
+                 new() { Content = dto.SellersIdentifier },
+                BuyersIdentifier = string.IsNullOrEmpty(dto.BuyersIdentifier) ? null :
+                 new() { Content = dto.BuyersIdentifier },
+                StandardIdentifier = string.IsNullOrEmpty(dto.StandardIdentifier) ? null :
+                 new() { Content = dto.StandardIdentifier },
+                ClassificationIdentifiers = [.. dto.ClassificationIdentifiers.Select(s => new Identifier() { Content = s })],
+                CountryOfOrigin = dto.CountryOfOrigin,
+                Attributes = [.. dto.Attributes.Select(s => new XmlItemAttributes() {
+                    Name = s.Name,
+                    Value = s.Value,
+                })],
+                ClassifiedTaxCategory = new()
+                {
+                    Id = new() { Content = dto.TaxId },
+                    Percent = dto.TaxPercent,
+                    TaxScheme = new() { Id = new() { Content = dto.TaxScheme } },
+                },
+            },
+            PriceDetails = new()
+            {
+                PriceAmount = new() { Value = dto.PriceAmount },
+                PriceDiscount = dto.PriceDiscount == null ? null : new() { Value = dto.PriceDiscount.Value },
+                GrossPrice = dto.GrossPrice == null ? null : new() { Value = dto.GrossPrice.Value },
+                PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new() { Value = dto.PriceBaseQuantity.Value },
+                PriceBaseQuantityUnitOfMeasureCode = dto.PriceBaseQuantityUnitOfMeasureCode,
+            },
+            InvoiceLines = [.. dto.InvoiceLines.Select(s => GetInvoiceLine(s))],
         };
     }
 
@@ -107,10 +155,6 @@ public static partial class XmlInvoiceMapper
         {
             Party = new()
             {
-                TaxRegistrationIdentifier = string.IsNullOrEmpty(dto.TaxRegistrationIdentifier) ? null : new()
-                {
-                    Content = dto.TaxRegistrationIdentifier,
-                },
                 Contact = new()
                 {
                     Name = dto.ContactName,
@@ -130,10 +174,17 @@ public static partial class XmlInvoiceMapper
                 },
                 PartyTaxScheme = string.IsNullOrEmpty(dto.TaxCompanyId) ? null : new()
                 {
+                    RegistrationName = string.IsNullOrEmpty(dto.TaxRegistrationName) ? null : new()
+                    {
+                        Content = dto.TaxRegistrationName,
+                    },
                     CompanyId = dto.TaxCompanyId,
                     TaxScheme = new() { Id = new() { Content = dto.TaxSchemeId } }
                 },
-                PartyLegalEntity = new() { RegistrationName = dto.RegistrationName }
+                PartyLegalEntity = new()
+                {
+                    RegistrationName = new() { Content = dto.RegistrationName }
+                }
             }
         };
     }
