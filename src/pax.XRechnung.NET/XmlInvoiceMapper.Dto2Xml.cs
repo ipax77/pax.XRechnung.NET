@@ -68,8 +68,11 @@ public static partial class XmlInvoiceMapper
                 PriceAmount = new() { Value = dto.PriceAmount },
                 PriceDiscount = dto.PriceDiscount == null ? null : new() { Value = dto.PriceDiscount.Value },
                 GrossPrice = dto.GrossPrice == null ? null : new() { Value = dto.GrossPrice.Value },
-                PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new() { Value = dto.PriceBaseQuantity.Value },
-                PriceBaseQuantityUnitOfMeasureCode = dto.PriceBaseQuantityUnitOfMeasureCode,
+                PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new()
+                {
+                    Value = dto.PriceBaseQuantity.Value,
+                    UnitCode = dto.PriceBaseQuantityUnitOfMeasureCode ?? "HUR",
+                },
             },
             InvoiceLines = [.. dto.InvoiceLines.Select(s => GetInvoiceLine(s))],
         };

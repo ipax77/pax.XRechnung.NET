@@ -104,10 +104,52 @@ public class DtoValidationTests
     }
 
     [TestMethod]
-    public void CanValidateExtendedDto()
+    public void CanValidateDtoWithTaxRegistrationName()
     {
         var invoiceDto = GetStandardInvoiceDto();
         invoiceDto.Seller.TaxRegistrationName = "000/000/00000";
+        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
+
+        var message = validationResult.Error != null ? validationResult.Error
+         : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
+
+        Assert.IsTrue(validationResult.IsValid, message);
+    }
+
+    [TestMethod]
+    public void CanValidateDtoWithAdditionalItemProperty()
+    {
+        var invoiceDto = GetStandardInvoiceDto();
+
+        invoiceDto.InvoiceLines[0].Attributes = [
+            new() { Name = "Startzeit", Value = "08:00" },
+            new() { Name = "Endzeit", Value = "12:00" },
+        ];
+
+        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
+
+        var message = validationResult.Error != null ? validationResult.Error
+         : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
+
+        Assert.IsTrue(validationResult.IsValid, message);
+    }
+
+    [TestMethod]
+    public void CanValidateDtoWithItemQuantity()
+    {
+        var invoiceDto = GetStandardInvoiceDto();
+
+        var line = invoiceDto.InvoiceLines[0];
+        line.PriceBaseQuantity = 1;
+        line.PriceBaseQuantityUnitOfMeasureCode = "HUR";
+        line.PriceAmount = 60;
+        line.InvoicedQuantity = 8;
+        line.InvoicedQuantityCode = "HUR";
+        line.LineExtensionAmount = 480;
+
+
         var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
 

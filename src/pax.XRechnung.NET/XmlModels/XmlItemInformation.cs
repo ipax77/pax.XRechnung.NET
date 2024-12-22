@@ -57,18 +57,16 @@ public class XmlItemInformation
     [SpecificationId("BT-159")]
     [CodeList("Country_Codes")]
     public string? CountryOfOrigin { get; set; }
-
-    /// <summary>
-    /// Liste von Attributen für die Unterposition (0..*).
-    /// </summary>
-    [XmlElement("Attribute", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
-    [SpecificationId("BG-32")]
-    public List<XmlItemAttributes> Attributes { get; set; } = [];
-
     /// <summary>
     /// Eine Gruppe von Informationselementen, die Informationen über die für die betreffende Rechnungsposition
     /// geltende Umsatzsteuer enthalten.
     /// </summary>
     [XmlElement("ClassifiedTaxCategory", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     public XmlTaxCategory ClassifiedTaxCategory { get; set; } = new();
+    /// <summary>
+    /// Liste von Attributen für die Unterposition (0..*).
+    /// </summary>
+    [XmlElement("AdditionalItemProperty", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [SpecificationId("BG-32")]
+    public List<XmlItemAttributes> Attributes { get; set; } = [];
 }

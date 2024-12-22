@@ -59,7 +59,7 @@ public static partial class XmlInvoiceMapper
             PriceDiscount = xml.PriceDetails.PriceDiscount?.Value,
             GrossPrice = xml.PriceDetails.GrossPrice?.Value,
             PriceBaseQuantity = xml.PriceDetails.PriceBaseQuantity?.Value,
-            PriceBaseQuantityUnitOfMeasureCode = xml.PriceDetails.PriceBaseQuantityUnitOfMeasureCode,
+            PriceBaseQuantityUnitOfMeasureCode = xml.PriceDetails.PriceBaseQuantity?.UnitCode,
             InvoiceLines = [.. xml.InvoiceLines.Select(s => GetInvoiceLine(s))],
         };
     }
