@@ -105,7 +105,8 @@ try
     var validationResult = XmlInvoiceValidator.Validate(invoiceDto);
     if (!validationResult.IsValid)
     {
-        Console.WriteLine($"Validation errors: {string.Join(", ", validationResult.Validations.Select(s => s.Message))}");
+        var error = valitationResult.Error ?? string.Join(", ", validationResult.Validations.Select(s => s.Message);
+        Console.WriteLine($"Validation errors: {error}");
     }
     else
     {
@@ -131,7 +132,8 @@ try
 
     if (!validationResult.IsValid)
     {
-        Console.WriteLine($"Validation errors: {string.Join(", ", validationResult.Validations.Select(s => s.Message))}");
+        var error = valitationResult.Error ?? string.Join(", ", validationResult.Validations.Select(s => s.Message);
+        Console.WriteLine($"Validation errors: {error}");
     }
     else
     {
