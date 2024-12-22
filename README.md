@@ -150,8 +150,10 @@ catch (Exception ex)
 # ChangeLog
 
 <details open="open"><summary>v0.0.1</summary>
-- Initial release
-- Support for invoice validation and serialization
-- Partial DTO implementation
+
+>- Initial release
+>- Support for invoice validation and serialization
+>- Partial DTO implementation
+
 </details>
 
