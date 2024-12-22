@@ -136,7 +136,7 @@ public sealed class InvoiceTests
         var xmlText = XmlInvoiceWriter.Serialize(invoice);
         Assert.IsTrue(xmlText.Length > 0);
 
-        File.WriteAllText("/data/xrechnung/testinvoice2.xml", xmlText);
+        // File.WriteAllText("/data/xrechnung/testinvoice2.xml", xmlText);
     }
 
     [TestMethod]
