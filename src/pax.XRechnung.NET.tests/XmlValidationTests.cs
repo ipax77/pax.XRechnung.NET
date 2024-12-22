@@ -26,7 +26,7 @@ public sealed class ValidationTests
         }
         var filePath = Path.Combine(assemblyPath, "Ressources", "Standard", fileName);
 
-        var result = XmlInvoiceValidator.ValidateFile(filePath);
+        var result = XmlInvoiceValidator.Validate(filePath);
         Assert.IsNull(result.Error, result.Error);
         Assert.IsTrue(result.IsValid);
     }

@@ -95,7 +95,7 @@ public class DtoValidationTests
     {
         var invoiceDto = GetStandardInvoiceDto();
         var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
-        var validationResult = XmlInvoiceValidator.ValidateXmlInvoice(xmlInvoice);
+        var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
 
         var message = validationResult.Error != null ? validationResult.Error
          : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
@@ -109,7 +109,7 @@ public class DtoValidationTests
         var invoiceDto = GetStandardInvoiceDto();
         invoiceDto.Seller.TaxRegistrationName = "000/000/00000";
         var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
-        var validationResult = XmlInvoiceValidator.ValidateXmlInvoice(xmlInvoice);
+        var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
 
         var message = validationResult.Error != null ? validationResult.Error
          : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));

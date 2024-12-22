@@ -1,5 +1,6 @@
 using System.Xml;
 using System.Xml.Schema;
+using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
@@ -10,15 +11,28 @@ namespace pax.XRechnung.NET;
 public static class XmlInvoiceValidator
 {
     /// <summary>
-    /// ValidateXmlInvoice
+    /// Validate InvoiceDto
+    /// </summary>
+    /// <param name="invoiceDto"></param>
+    /// <returns></returns>
+    public static ValidationResult Validate(InvoiceDto invoiceDto)
+    {
+        ArgumentNullException.ThrowIfNull(invoiceDto);
+        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
+        var xml = XmlInvoiceWriter.Serialize(xmlInvoice);
+        return ValidateXmlText(xml);
+    }
+
+    /// <summary>
+    /// Validate XmlInvoice
     /// </summary>
     /// <param name="xmlInvoice"></param>
     /// <returns></returns>
-    public static ValidationResult ValidateXmlInvoice(XmlInvoice xmlInvoice)
+    public static ValidationResult Validate(XmlInvoice xmlInvoice)
     {
         ArgumentNullException.ThrowIfNull(xmlInvoice);
         var xml = XmlInvoiceWriter.Serialize(xmlInvoice);
-        return ValidateXml(xml);
+        return ValidateXmlText(xml);
     }
 
     /// <summary>
@@ -26,7 +40,7 @@ public static class XmlInvoiceValidator
     /// </summary>
     /// <param name="xmlFilePath">xml file path</param>
     /// <returns></returns>
-    public static ValidationResult ValidateFile(string xmlFilePath)
+    public static ValidationResult Validate(string xmlFilePath)
     {
         try
         {
@@ -88,7 +102,7 @@ public static class XmlInvoiceValidator
     /// Validate xml Invoice
     /// </summary>
     /// <param name="xmlText">xml string</param>
-    public static ValidationResult ValidateXml(string xmlText)
+    public static ValidationResult ValidateXmlText(string xmlText)
     {
         try
         {
@@ -122,6 +136,8 @@ public static class XmlInvoiceValidator
 
     private static string GetRawXmlText(string xmlText)
     {
+        // remove BOM if exists
+        xmlText = xmlText.TrimStart('\uFEFF');
         if (xmlText.StartsWith("<?xml", StringComparison.Ordinal))
         {
             var declarationEndIndex = xmlText.IndexOf("?>", StringComparison.Ordinal);
