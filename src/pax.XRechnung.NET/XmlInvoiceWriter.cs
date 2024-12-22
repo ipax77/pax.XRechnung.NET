@@ -46,7 +46,7 @@ public static class XmlInvoiceWriter
     /// <returns>XmlSchemaSet</returns>
     public static XmlSchemaSet GetSchemaSet()
     {
-        var schemaRoute = "pax.XRechnung.NET.Ressources.XmlSchemas.ubl._2._1.xsd";
+        var schemaRoute = "pax.XRechnung.NET.Resources.XmlSchemas.ubl._2._1.xsd";
         var schemaSet = new XmlSchemaSet();
         AddSchema(InvoiceSchema, schemaRoute + ".maindoc." + "UBL-Invoice-2.1.xsd", schemaSet);
         AddSchema(CommonAggregateComponents, schemaRoute + ".common." + "UBL-CommonAggregateComponents-2.1.xsd", schemaSet);

@@ -6,8 +6,6 @@ namespace pax.XRechnung.NET.tests;
 [TestClass]
 public sealed class ValidationTests
 {
-    public static readonly string? assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
     [DataTestMethod]
     [DataRow("02.01a-INVOICE_ubl.xml")]
     [DataRow("02.02a-INVOICE_ubl.xml")]
@@ -19,14 +17,15 @@ public sealed class ValidationTests
     [DataRow("03.02a-INVOICE_ubl.xml")]
     public void CanValidate(string fileName)
     {
-        Assert.IsTrue(assemblyPath != null, "Could not get ExecutionAssembly path");
-        if (assemblyPath == null)
-        {
-            return;
-        }
-        var filePath = Path.Combine(assemblyPath, "Ressources", "Standard", fileName);
+        var assembly = Assembly.GetExecutingAssembly();
+        var ressourceName = "pax.XRechnung.NET.tests.Resources.standard." + fileName;
+        using var stream = assembly.GetManifestResourceStream(ressourceName);
+        Assert.IsNotNull(stream, $"File error: {ressourceName}");
 
-        var result = XmlInvoiceValidator.Validate(filePath);
+        using var reader = new StreamReader(stream);
+        var xmlContent = reader.ReadToEnd();
+
+        var result = XmlInvoiceValidator.ValidateXmlText(xmlContent);
         Assert.IsNull(result.Error, result.Error);
         Assert.IsTrue(result.IsValid);
     }

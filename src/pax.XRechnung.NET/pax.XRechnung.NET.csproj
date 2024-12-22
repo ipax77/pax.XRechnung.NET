@@ -34,30 +34,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Ressources\CodeListFiles\Country_Codes_8.json" />
-    <None Remove="Ressources\CodeListFiles\Currency_Codes_3.json" />
-    <None Remove="Ressources\CodeListFiles\EAS_5.json" />
-    <None Remove="Ressources\CodeListFiles\ICD_5.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_1001_4.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_1153_3.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_2005_4.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_4451_4.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_4461_3.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_5189_3.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_5305_3.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_7143_4.json" />
-    <None Remove="Ressources\CodeListFiles\UNTDID_7161_3.json" />
-    <None Remove="Ressources\CodeListFiles\UN_ECE_Recommendation_N_20_3.json" />
-    <None Remove="Ressources\CodeListFiles\UN_ECE_Recommendation_N_21_3.json" />
-    <None Remove="Ressources\CodeListFiles\VATEX_1.json" />
-    <None Remove="Ressources\XmlSchemas\ubl\2.1\xsd\common\CCTS_CCT_SchemaModule-2.1.xsd" />
-    <None Remove="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-CommonAggregateComponents-2.1.xsd" />
-    <None Remove="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-CommonBasicComponents-2.1.xsd" />
-    <None Remove="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-CommonExtensionComponents-2.1.xsd" />
-    <None Remove="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-QualifiedDataTypes-2.1.xsd" />
-    <None Remove="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-ExtensionContentDataType-2.1.xsd" />
-    <None Remove="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-UnqualifiedDataTypes-2.1.xsd" />
-    <None Remove="Ressources\XmlSchemas\ubl\2.1\xsd\maindoc\UBL-Invoice-2.1.xsd" />
+    <None Remove="Resources/CodeListFiles/Country_Codes_8.json" />
+    <None Remove="Resources/CodeListFiles/Currency_Codes_3.json" />
+    <None Remove="Resources/CodeListFiles/EAS_5.json" />
+    <None Remove="Resources/CodeListFiles/ICD_5.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_1001_4.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_1153_3.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_2005_4.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_4451_4.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_4461_3.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_5189_3.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_5305_3.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_7143_4.json" />
+    <None Remove="Resources/CodeListFiles/UNTDID_7161_3.json" />
+    <None Remove="Resources/CodeListFiles/UN_ECE_Recommendation_N_20_3.json" />
+    <None Remove="Resources/CodeListFiles/UN_ECE_Recommendation_N_21_3.json" />
+    <None Remove="Resources/CodeListFiles/VATEX_1.json" />
+    <None Remove="Resources/XmlSchemas/ubl/2.1/xsd/common/CCTS_CCT_SchemaModule-2.1.xsd" />
+    <None Remove="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-CommonAggregateComponents-2.1.xsd" />
+    <None Remove="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-CommonBasicComponents-2.1.xsd" />
+    <None Remove="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-CommonExtensionComponents-2.1.xsd" />
+    <None Remove="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-QualifiedDataTypes-2.1.xsd" />
+    <None Remove="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-ExtensionContentDataType-2.1.xsd" />
+    <None Remove="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-UnqualifiedDataTypes-2.1.xsd" />
+    <None Remove="Resources/XmlSchemas/ubl/2.1/xsd/maindoc/UBL-Invoice-2.1.xsd" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,30 +67,30 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Ressources\CodeListFiles\Country_Codes_8.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\Currency_Codes_3.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\EAS_5.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\ICD_5.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_1001_4.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_1153_3.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_2005_4.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_4451_4.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_4461_3.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_5189_3.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_5305_3.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_7143_4.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UNTDID_7161_3.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UN_ECE_Recommendation_N_20_3.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\UN_ECE_Recommendation_N_21_3.json" />
-    <EmbeddedResource Include="Ressources\CodeListFiles\VATEX_1.json" />
-    <EmbeddedResource Include="Ressources\XmlSchemas\ubl\2.1\xsd\common\CCTS_CCT_SchemaModule-2.1.xsd" />
-    <EmbeddedResource Include="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-CommonAggregateComponents-2.1.xsd" />
-    <EmbeddedResource Include="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-CommonBasicComponents-2.1.xsd" />
-    <EmbeddedResource Include="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-CommonExtensionComponents-2.1.xsd" />
-    <EmbeddedResource Include="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-QualifiedDataTypes-2.1.xsd" />
-    <EmbeddedResource Include="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-UnqualifiedDataTypes-2.1.xsd" />
-    <EmbeddedResource Include="Ressources\XmlSchemas\ubl\2.1\xsd\common\UBL-ExtensionContentDataType-2.1.xsd" />
-    <EmbeddedResource Include="Ressources\XmlSchemas\ubl\2.1\xsd\maindoc\UBL-Invoice-2.1.xsd" />
+    <EmbeddedResource Include="Resources/CodeListFiles/Country_Codes_8.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/Currency_Codes_3.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/EAS_5.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/ICD_5.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_1001_4.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_1153_3.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_2005_4.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_4451_4.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_4461_3.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_5189_3.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_5305_3.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_7143_4.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UNTDID_7161_3.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UN_ECE_Recommendation_N_20_3.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/UN_ECE_Recommendation_N_21_3.json" />
+    <EmbeddedResource Include="Resources/CodeListFiles/VATEX_1.json" />
+    <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/CCTS_CCT_SchemaModule-2.1.xsd" />
+    <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-CommonAggregateComponents-2.1.xsd" />
+    <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-CommonBasicComponents-2.1.xsd" />
+    <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-CommonExtensionComponents-2.1.xsd" />
+    <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-QualifiedDataTypes-2.1.xsd" />
+    <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-UnqualifiedDataTypes-2.1.xsd" />
+    <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-ExtensionContentDataType-2.1.xsd" />
+    <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/maindoc/UBL-Invoice-2.1.xsd" />
   </ItemGroup>
 
     <ItemGroup>
