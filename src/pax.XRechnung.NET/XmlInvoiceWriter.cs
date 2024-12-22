@@ -18,6 +18,8 @@ public static class XmlInvoiceWriter
 {
     private static XmlSerializerNamespaces? _namespaces;
     private static XmlWriterSettings? _writerSettings;
+    private static XmlSchemaSet? xmlSchemaSet;
+    private static readonly object schemaLock = new();
 
     /// <summary>
     /// CommonAggregateComponents Schema
@@ -46,17 +48,25 @@ public static class XmlInvoiceWriter
     /// <returns>XmlSchemaSet</returns>
     public static XmlSchemaSet GetSchemaSet()
     {
-        var schemaRoute = "pax.XRechnung.NET.Resources.XmlSchemas.ubl._2._1.xsd";
-        var schemaSet = new XmlSchemaSet();
-        AddSchema(InvoiceSchema, schemaRoute + ".maindoc." + "UBL-Invoice-2.1.xsd", schemaSet);
-        AddSchema(CommonAggregateComponents, schemaRoute + ".common." + "UBL-CommonAggregateComponents-2.1.xsd", schemaSet);
-        AddSchema(CommonBasicComponents, schemaRoute + ".common." + "UBL-CommonBasicComponents-2.1.xsd", schemaSet);
-        AddSchema(CommonExtensionComponents, schemaRoute + ".common." + "UBL-CommonExtensionComponents-2.1.xsd", schemaSet);
-        AddSchema("urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2", schemaRoute + ".common." + "UBL-QualifiedDataTypes-2.1.xsd", schemaSet);
-        AddSchema("urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2", schemaRoute + ".common." + "UBL-UnqualifiedDataTypes-2.1.xsd", schemaSet);
-        AddSchema("urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2", schemaRoute + ".common." + "CCTS_CCT_SchemaModule-2.1.xsd", schemaSet);
-        AddSchema("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", schemaRoute + ".common." + "UBL-ExtensionContentDataType-2.1.xsd", schemaSet);
-        return schemaSet;
+        lock (schemaLock)
+        {
+            if (xmlSchemaSet is not null)
+            {
+                return xmlSchemaSet;
+            }
+            var schemaRoute = "pax.XRechnung.NET.Resources.XmlSchemas.ubl._2._1.xsd";
+            var schemaSet = new XmlSchemaSet();
+            AddSchema(InvoiceSchema, schemaRoute + ".maindoc." + "UBL-Invoice-2.1.xsd", schemaSet);
+            AddSchema(CommonAggregateComponents, schemaRoute + ".common." + "UBL-CommonAggregateComponents-2.1.xsd", schemaSet);
+            AddSchema(CommonBasicComponents, schemaRoute + ".common." + "UBL-CommonBasicComponents-2.1.xsd", schemaSet);
+            AddSchema(CommonExtensionComponents, schemaRoute + ".common." + "UBL-CommonExtensionComponents-2.1.xsd", schemaSet);
+            AddSchema("urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2", schemaRoute + ".common." + "UBL-QualifiedDataTypes-2.1.xsd", schemaSet);
+            AddSchema("urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2", schemaRoute + ".common." + "UBL-UnqualifiedDataTypes-2.1.xsd", schemaSet);
+            AddSchema("urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2", schemaRoute + ".common." + "CCTS_CCT_SchemaModule-2.1.xsd", schemaSet);
+            AddSchema("urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2", schemaRoute + ".common." + "UBL-ExtensionContentDataType-2.1.xsd", schemaSet);
+            xmlSchemaSet = schemaSet;
+            return xmlSchemaSet;
+        }
     }
 
     private static void AddSchema(string targetNameSpace, string source, XmlSchemaSet xmlSchemaSet)
