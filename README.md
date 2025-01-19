@@ -68,6 +68,7 @@ InvoiceDto invoiceDto = new()
     {
         PaymentMeansTypeCode = "30",
         IBAN = "DE21081508151234123412",
+        BIC =  "BIC12345",
         BankName = "Test Bank"
     },
     TaxTotal = new()
@@ -153,7 +154,14 @@ catch (Exception ex)
 * **Incomplete XML Validation**: Not all XML element names or attributes are verified for strict compliance with XRechnung standards.
 # ChangeLog
 
-<details open="open"><summary>v0.0.1</summary>
+<details open="open"><summary>v0.1.0</summary>
+
+>- **Breaking Changes**
+>- Added FinancialInstitutionBranch to FinancialAccountType (XmlPaymentInstructions)
+
+</details>
+
+<details><summary>v0.0.1</summary>
 
 >- Initial release
 >- Support for invoice validation and serialization

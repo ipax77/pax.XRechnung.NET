@@ -118,8 +118,12 @@ public static partial class XmlInvoiceMapper
             [
                 new() {
                     Id = new() { Content = dto.IBAN },
-                    Identifier = string.IsNullOrEmpty(dto.BIC) ? null : new() { Content = dto.BIC },
-                    Name = dto.BankName
+                    Name = dto.AccountHolder,
+                    FinancialInstitutionBranch = string.IsNullOrEmpty(dto.BIC) ? null :
+                        new() {
+                            Id = new() { Content = dto.BIC },
+                            Name = dto.BankName
+                        }
                 }
             ]
         };

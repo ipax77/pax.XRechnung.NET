@@ -18,6 +18,10 @@ public record PaymentInstructionsDto
     /// </summary>
     public string? RemittanceInformation { get; set; }
     /// <summary>
+    /// Account Holder Name
+    /// </summary>
+    public string? AccountHolder { get; set; }
+    /// <summary>
     /// Konto IBAN
     /// </summary>
     public string? IBAN { get; set; }

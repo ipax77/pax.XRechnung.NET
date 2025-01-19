@@ -26,7 +26,7 @@ public class XmlPaymentInstructions
     /// <summary>
     /// Text for linking payment to the issued invoice.
     /// </summary>
-    [XmlElement("RemittanceInformation", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("AliasName", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-83")]
     public string? RemittanceInformation { get; set; }
 

@@ -208,6 +208,7 @@ public class MapTests
             {
                 PaymentMeansTypeCode = "30",
                 IBAN = "DE21081508151234123412",
+                BIC = "BIC12345",
                 BankName = "Test Bank"
             }
         };

@@ -77,25 +77,28 @@ public static partial class XmlInvoiceMapper
 
     private static VatBreakdownDto GetTaxTotal(XmlVatBreakdown xml)
     {
+        var tax = xml.TaxSubTotal.FirstOrDefault();
         return new()
         {
             TaxAmount = xml.TaxAmount.Value,
-            TaxableAmount = xml.TaxSubTotal.FirstOrDefault()?.TaxableAmount.Value ?? 0,
-            TaxCategoryId = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.Id.Content ?? "",
-            Percent = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.Percent ?? 0,
-            TaxScheme = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.TaxScheme.Id.Content ?? "",
+            TaxableAmount = tax?.TaxableAmount.Value ?? 0,
+            TaxCategoryId = tax?.TaxCategory.Id.Content ?? "",
+            Percent = tax?.TaxCategory.Percent ?? 0,
+            TaxScheme = tax?.TaxCategory.TaxScheme.Id.Content ?? "",
         };
     }
 
     private static PaymentInstructionsDto GetPaymentInstructions(XmlPaymentInstructions xml)
     {
+        var account = xml.PayeeFinancialAccount.FirstOrDefault();
         return new()
         {
             PaymentMeansTypeCode = xml.PaymentMeansTypeCode,
             PaymentMeansText = xml.PaymentMeansText,
-            IBAN = xml.PayeeFinancialAccount.FirstOrDefault()?.Id.Content,
-            BankName = xml.PayeeFinancialAccount.FirstOrDefault()?.Name,
-            BIC = xml.PayeeFinancialAccount.FirstOrDefault()?.Identifier?.Content,
+            IBAN = account?.Id.Content,
+            AccountHolder = account?.Name,
+            BIC = account?.FinancialInstitutionBranch?.Id.Content,
+            BankName = account?.FinancialInstitutionBranch?.Name,
         };
     }
 
