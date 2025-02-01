@@ -6,7 +6,7 @@ namespace pax.XRechnung.NET.tests;
 [TestClass]
 public class DtoValidationTests
 {
-    private static InvoiceDto GetStandardInvoiceDto()
+    public static InvoiceDto GetStandardInvoiceDto()
     {
         InvoiceDto invoiceDto = new()
         {
