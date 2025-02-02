@@ -75,7 +75,7 @@ public static class XmlInvoiceWriter
         xmlSchemaSet.Add(targetNameSpace, reader);
     }
 
-    private static XmlReader LoadEmbeddedResource(string ressourceName)
+    internal static XmlReader LoadEmbeddedResource(string ressourceName)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var stream = assembly.GetManifestResourceStream(ressourceName);

@@ -8,7 +8,7 @@ namespace pax.XRechnung.NET;
 /// <summary>
 /// XmlInvoiceValidator
 /// </summary>
-public static class XmlInvoiceValidator
+public static partial class XmlInvoiceValidator
 {
     /// <summary>
     /// Validate InvoiceDto
