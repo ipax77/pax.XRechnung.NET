@@ -158,6 +158,8 @@ catch (Exception ex)
 
 >- **Breaking Changes**
 >- Added FinancialInstitutionBranch to FinancialAccountType (XmlPaymentInstructions)
+>- Seller/Buyer cleanup and reference XmlParty
+>- Changed XmlAdditionalDocumentReference to XmlAdditionalDocumentReferences as list
 
 </details>
 

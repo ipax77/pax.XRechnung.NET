@@ -18,7 +18,7 @@ public static partial class XmlInvoiceMapper
             Note = string.IsNullOrWhiteSpace(invoiceDto.Note) ? null : invoiceDto.Note,
             DocumentCurrencyCode = invoiceDto.DocumentCurrencyCode,
             BuyerReference = invoiceDto.BuyerReference,
-            AdditionalDocumentReference = GetAdditionalDocumentReference(invoiceDto.AdditionalDocumentReference),
+            AdditionalDocumentReferences = GetAdditionalDocumentReference(invoiceDto.AdditionalDocumentReferences),
             SellerParty = GetSellerParty(invoiceDto.Seller),
             BuyerParty = GetBuyerParty(invoiceDto.Buyer),
             PaymentMeans = GetPaymentInstructions(invoiceDto.PaymentMeans),
@@ -198,26 +198,26 @@ public static partial class XmlInvoiceMapper
         };
     }
 
-    private static XmlAdditionalDocumentReference? GetAdditionalDocumentReference(AdditionalDocumentReferenceDto? dto)
+    private static List<XmlAdditionalDocumentReference> GetAdditionalDocumentReference(List<AdditionalDocumentReferenceDto> dtos)
     {
-        if (dto is null)
+        if (dtos is null || dtos.Count == 0)
         {
-            return null;
+            return [];
         }
-        return new()
+        return [.. dtos.Select(s => new XmlAdditionalDocumentReference()
         {
-            Id = new Identifier() { Content = dto.Id },
-            DocumentDescription = dto.DocumentDescription,
-            DocumentLocation = dto.DocumentLocation,
-            Attachment = string.IsNullOrEmpty(dto.Content) ? null : new()
+            Id = new Identifier() { Content = s.Id },
+            DocumentDescription = s.DocumentDescription,
+            DocumentLocation = s.DocumentLocation,
+            Attachment = string.IsNullOrEmpty(s.Content) ? null : new()
             {
                 EmbeddedDocumentBinaryObject = new()
                 {
-                    MimeCode = dto.MimeCode,
-                    FileName = dto.FileName,
-                    Content = dto.Content
+                    MimeCode = s.MimeCode,
+                    FileName = s.FileName,
+                    Content = s.Content
                 }
             }
-        };
+        })];
     }
 }

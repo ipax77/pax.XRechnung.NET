@@ -106,7 +106,7 @@ public class MapTests
 
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
-        
+
         var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
         var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
 
@@ -125,14 +125,14 @@ public class MapTests
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
             BuyerReference = "123",
-            AdditionalDocumentReference = new()
+            AdditionalDocumentReferences = [new()
             {
                 Id = "invoice 123",
                 DocumentDescription = "human readable pdf invoice",
                 MimeCode = "application/pdf",
                 FileName = "invoice.pdf",
                 Content = "ZWYNCjE0OTk0Nw0KJSVFT0Y=",
-            }
+            }]
         };
 
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);

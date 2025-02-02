@@ -17,14 +17,14 @@ public class DtoValidationTests
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
             BuyerReference = "123",
-            AdditionalDocumentReference = new()
+            AdditionalDocumentReferences = [new()
             {
                 Id = "invoice 123",
                 DocumentDescription = "human readable pdf invoice",
                 MimeCode = "application/pdf",
                 FileName = "invoice.pdf",
                 Content = "ZWYNCjE0OTk0Nw0KJSVFT0Y=",
-            },
+            }],
             Seller = new()
             {
                 Email = "seller@email.com",

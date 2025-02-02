@@ -18,7 +18,7 @@ public static partial class XmlInvoiceMapper
             Note = xmlInvoice.Note,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
             BuyerReference = xmlInvoice.BuyerReference,
-            AdditionalDocumentReference = GetAdditionalDocumentReference(xmlInvoice.AdditionalDocumentReference),
+            AdditionalDocumentReferences = GetAdditionalDocumentReference(xmlInvoice.AdditionalDocumentReferences),
             Seller = GetSellerDto(xmlInvoice.SellerParty),
             Buyer = GetBuyerDto(xmlInvoice.BuyerParty),
             PaymentMeans = GetPaymentInstructions(xmlInvoice.PaymentMeans),
@@ -144,26 +144,20 @@ public static partial class XmlInvoiceMapper
         };
     }
 
-    private static AdditionalDocumentReferenceDto? GetAdditionalDocumentReference(XmlAdditionalDocumentReference? xml)
+    private static List<AdditionalDocumentReferenceDto> GetAdditionalDocumentReference(List<XmlAdditionalDocumentReference> xmls)
     {
-        if (xml is null)
+        if (xmls is null || xmls.Count == 0)
         {
-            return null;
-        }
-        var dto = new AdditionalDocumentReferenceDto()
-        {
-            Id = xml.Id.Content,
-            DocumentDescription = xml.DocumentDescription,
-            DocumentLocation = xml.DocumentLocation,
-        };
-
-        if (xml.Attachment is not null)
-        {
-            dto.MimeCode = xml.Attachment.EmbeddedDocumentBinaryObject.MimeCode;
-            dto.FileName = xml.Attachment.EmbeddedDocumentBinaryObject.FileName;
-            dto.Content = xml.Attachment.EmbeddedDocumentBinaryObject.Content;
+            return [];
         }
 
-        return dto;
+        return [.. xmls.Select(s => new AdditionalDocumentReferenceDto() {
+            Id = s.Id.Content,
+            DocumentDescription = s.DocumentDescription,
+            DocumentLocation = s.DocumentLocation,
+            MimeCode = s.Attachment?.EmbeddedDocumentBinaryObject.MimeCode ?? string.Empty,
+            FileName = s.Attachment?.EmbeddedDocumentBinaryObject.FileName ?? string.Empty,
+            Content = s.Attachment?.EmbeddedDocumentBinaryObject.Content,
+        })];
     }
 }
