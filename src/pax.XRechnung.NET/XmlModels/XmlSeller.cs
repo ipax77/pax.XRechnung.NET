@@ -12,13 +12,13 @@ public class XmlSellerParty
     /// Party
     /// </summary>
     [XmlElement("Party", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
-    public XmlSeller Party { get; set; } = new();
+    public XmlParty Party { get; set; } = new();
 }
 
 /// <summary>
 /// Seller
 /// </summary>
-public class XmlSeller
+public class XmlParty
 {
     /// <summary>
     /// Website
@@ -84,5 +84,5 @@ public class XmlSeller
     /// </summary>
     [XmlElement("Contact", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-6")]
-    public XmlContact Contact { get; set; } = new();
+    public XmlContact? Contact { get; set; } = new();
 }
