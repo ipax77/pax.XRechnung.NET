@@ -168,6 +168,8 @@ public static partial class XmlInvoiceMapper
                     Telephone = dto.ContactTelephone,
                     Email = dto.ContactEmail
                 },
+                Website = dto.Website,
+                LogoReferenceId = dto.LogoReferenceId,
                 EndpointId = new XmlEndpointId() { Content = dto.Email },
                 PartyName = new() { Name = dto.Name },
                 PostalAddress = new()

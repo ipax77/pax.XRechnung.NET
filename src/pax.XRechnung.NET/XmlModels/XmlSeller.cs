@@ -21,10 +21,35 @@ public class XmlSellerParty
 public class XmlSeller
 {
     /// <summary>
+    /// Website
+    /// </summary>
+    [XmlElement("WebsiteURI", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public string? Website { get; set; }
+    /// <summary>
+    /// LogoReferenceId
+    /// </summary>
+    [XmlElement("LogoReferenceID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public string? LogoReferenceId { get; set; }
+    /// <summary>
     /// EndpointID
     /// </summary>
     [XmlElement("EndpointID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     public XmlEndpointId EndpointId { get; set; } = new();
+    /// <summary>
+    ///  Eine von einer offiziellen Registrierstelle ausgegebene Kennung, die den Verkäufer als Rechtsträger oder 
+    ///  juristische Person identifiziert.
+    /// </summary>
+    [XmlElement("IndustryClassificationCode", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [SpecificationId("BT-30")]
+    [CodeList("ICD")]
+    public Identifier? LegalRegistrationIdentifier { get; set; }
+    /// <summary>
+    /// Eine (i. d. R. vom Erwerber vergebene) Kennung des Verkäufers, wie z. B. die Kreditorennummer für das
+    /// Mittelbewirtschaftungsverfahren oder die Lieferantennummer für das Bestellsystem.
+    /// </summary>
+    [XmlElement("PartyIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [SpecificationId("BT-29")]
+    public List<Identifier> Identifiers { get; set; } = [];
     /// <summary>
     ///  Der vollständige Name, unter dem der Verkäufer im nationalen Register für juristische Personen oder als 
     ///  steuerpflichtige Person eingetragen ist oder anderweitig als Person(en) handelt (Firma).
@@ -32,34 +57,6 @@ public class XmlSeller
     [XmlElement("PartyName", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-27")]
     public XmlPartyName PartyName { get; set; } = new();
-    /// <summary>
-    /// Ein Name, unter dem der Verkäufer bekannt ist, sofern abweichend vom Namen des Verkäufers.
-    /// </summary>
-    [XmlElement("TradingName", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-28")]
-    public string? TradingName { get; set; }
-    /// <summary>
-    /// Eine (i. d. R. vom Erwerber vergebene) Kennung des Verkäufers, wie z. B. die Kreditorennummer für das
-    /// Mittelbewirtschaftungsverfahren oder die Lieferantennummer für das Bestellsystem.
-    /// </summary>
-    [XmlElement("Identifier", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
-    [SpecificationId("BT-29")]
-    public List<Identifier> Identifiers { get; set; } = [];
-    /// <summary>
-    ///  Eine von einer offiziellen Registrierstelle ausgegebene Kennung, die den Verkäufer als Rechtsträger oder 
-    ///  juristische Person identifiziert.
-    /// </summary>
-    [XmlElement("LegalRegistrationIdentifier", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-30")]
-    [CodeList("ICD")]
-    public Identifier? LegalRegistrationIdentifier { get; set; }
-    /// <summary>
-    ///  Die Umsatzsteuer-Identifikationsnummer des Verkäufers. Verfügt der Verkäufer über eine solche, ist sie hier 
-    ///  anzugeben, sofern nicht Angaben zum "SELLER TAX REPRESENTATIVE PARTY" (BG-11) gemacht werden.
-    /// </summary>
-    [XmlElement("VATIdentifier", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-31")]
-    public Identifier? VATIdentifier { get; set; }
     /// <summary>
     /// Weitere rechtliche Informationen, die für den Verkäufer maßgeblich sind (wie z. B. Grundkapital).
     /// </summary>

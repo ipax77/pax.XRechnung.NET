@@ -128,6 +128,8 @@ public static partial class XmlInvoiceMapper
             ContactName = sellerParty.Party.Contact?.Name ?? "unknown",
             ContactTelephone = sellerParty.Party.Contact?.Telephone ?? "unknown",
             ContactEmail = sellerParty.Party.Contact?.Email ?? "unknown",
+            Website = sellerParty.Party.Website,
+            LogoReferenceId = sellerParty.Party.LogoReferenceId,
             Email = sellerParty.Party.EndpointId.Content,
             Name = sellerParty.Party.PartyName.Name,
             StreetName = sellerParty.Party.PostalAddress?.StreetName,

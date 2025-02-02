@@ -6,6 +6,14 @@ namespace pax.XRechnung.NET.Dtos;
 public record SellerDto
 {
     /// <summary>
+    /// Website
+    /// </summary>
+    public string? Website { get; set; }
+    /// <summary>
+    /// LogoReferenceId
+    /// </summary>
+    public string? LogoReferenceId { get; set; }
+    /// <summary>
     ///  identifier
     /// </summary>
     public string Email { get; set; } = string.Empty;

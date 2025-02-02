@@ -17,8 +17,10 @@ public class XmlPartyTaxScheme
     [SpecificationId("BT-32")]
     public Identifier? RegistrationName { get; set; }
     /// <summary>
-    /// CompanyId
+    ///  Die Umsatzsteuer-Identifikationsnummer des Verkäufers. Verfügt der Verkäufer über eine solche, ist sie hier 
+    ///  anzugeben, sofern nicht Angaben zum "SELLER TAX REPRESENTATIVE PARTY" (BG-11) gemacht werden.
     /// </summary>
+    [SpecificationId("BT-31")]
     [XmlElement("CompanyID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     public string CompanyId { get; set; } = string.Empty;
     /// <summary>
