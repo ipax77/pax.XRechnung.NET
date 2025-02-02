@@ -15,8 +15,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -42,7 +42,7 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             DueDate = null,
             InvoiceTypeCode = "380",
             DocumentCurrencyCode = "EUR",
@@ -70,8 +70,8 @@ public class MapTests
         XmlInvoice xmlInvoice = new()
         {
             Id = new() { Content = "1" },
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -96,8 +96,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -119,8 +119,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -150,8 +150,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -198,8 +198,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -228,8 +228,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -259,8 +259,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -289,8 +289,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",

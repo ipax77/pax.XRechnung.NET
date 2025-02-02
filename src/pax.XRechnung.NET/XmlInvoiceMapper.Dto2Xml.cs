@@ -1,12 +1,11 @@
-﻿using System.Globalization;
-using pax.XRechnung.NET.Dtos;
+﻿using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
 
 public static partial class XmlInvoiceMapper
 {
-    private static XmlInvoice Map2XmlInvoice(InvoiceDto invoiceDto)
+    private static XmlInvoice Map2XmlInvoice(InvoiceDto invoiceDto, string currencyID = "EUR")
     {
         return new XmlInvoice()
         {
@@ -23,13 +22,13 @@ public static partial class XmlInvoiceMapper
             SellerParty = GetSellerParty(invoiceDto.Seller),
             BuyerParty = GetBuyerParty(invoiceDto.Buyer),
             PaymentMeans = GetPaymentInstructions(invoiceDto.PaymentMeans),
-            TaxTotal = GetTaxTotal(invoiceDto.TaxTotal),
-            LegalMonetaryTotal = GetLegalMonetaryTotal(invoiceDto.LegalMonetaryTotal),
-            InvoiceLines = [.. invoiceDto.InvoiceLines.Select(s => GetInvoiceLine(s))],
+            TaxTotal = GetTaxTotal(invoiceDto.TaxTotal, currencyID),
+            LegalMonetaryTotal = GetLegalMonetaryTotal(invoiceDto.LegalMonetaryTotal, currencyID),
+            InvoiceLines = [.. invoiceDto.InvoiceLines.Select(s => GetInvoiceLine(s, currencyID))],
         };
     }
 
-    private static XmlInvoiceLine GetInvoiceLine(InvoiceLineDto dto)
+    private static XmlInvoiceLine GetInvoiceLine(InvoiceLineDto dto, string currencyId)
     {
         return new()
         {
@@ -66,39 +65,39 @@ public static partial class XmlInvoiceMapper
             },
             PriceDetails = new()
             {
-                PriceAmount = new() { Value = dto.PriceAmount },
-                PriceDiscount = dto.PriceDiscount == null ? null : new() { Value = dto.PriceDiscount.Value },
-                GrossPrice = dto.GrossPrice == null ? null : new() { Value = dto.GrossPrice.Value },
+                PriceAmount = new() { Value = dto.PriceAmount, CurrencyID = currencyId },
+                PriceDiscount = dto.PriceDiscount == null ? null : new() { Value = dto.PriceDiscount.Value, CurrencyID = currencyId },
+                GrossPrice = dto.GrossPrice == null ? null : new() { Value = dto.GrossPrice.Value, CurrencyID = currencyId },
                 PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new()
                 {
                     Value = dto.PriceBaseQuantity.Value,
                     UnitCode = dto.PriceBaseQuantityUnitOfMeasureCode ?? "HUR",
                 },
             },
-            InvoiceLines = [.. dto.InvoiceLines.Select(s => GetInvoiceLine(s))],
+            InvoiceLines = [.. dto.InvoiceLines.Select(s => GetInvoiceLine(s, currencyId))],
         };
     }
 
-    private static XmlDocumentTotals GetLegalMonetaryTotal(DocumentTotalsDto dto)
+    private static XmlDocumentTotals GetLegalMonetaryTotal(DocumentTotalsDto dto, string currencyId)
     {
         return new()
         {
-            LineExtensionAmount = new() { Value = dto.LineExtensionAmount },
-            TaxExclusiveAmount = new() { Value = dto.TaxExclusiveAmount },
-            TaxInclusiveAmount = new() { Value = dto.TaxInclusiveAmount },
-            PayableAmount = new() { Value = dto.PayableAmount },
+            LineExtensionAmount = new() { Value = dto.LineExtensionAmount, CurrencyID = currencyId },
+            TaxExclusiveAmount = new() { Value = dto.TaxExclusiveAmount, CurrencyID = currencyId },
+            TaxInclusiveAmount = new() { Value = dto.TaxInclusiveAmount, CurrencyID = currencyId },
+            PayableAmount = new() { Value = dto.PayableAmount, CurrencyID = currencyId },
         };
     }
 
-    private static XmlVatBreakdown GetTaxTotal(VatBreakdownDto dto)
+    private static XmlVatBreakdown GetTaxTotal(VatBreakdownDto dto, string currencyId)
     {
         return new()
         {
             TaxAmount = new Amount() { Value = dto.TaxAmount },
             TaxSubTotal = [
                 new() {
-                    TaxAmount = new Amount() { Value = dto.TaxAmount },
-                    TaxableAmount = new Amount() { Value = dto.TaxableAmount },
+                    TaxAmount = new Amount() { Value = dto.TaxAmount, CurrencyID = currencyId },
+                    TaxableAmount = new Amount() { Value = dto.TaxableAmount, CurrencyID = currencyId },
                     TaxCategory = new() {
                         Id = new() { Content = dto.TaxCategoryId },
                         Percent = dto.Percent,
