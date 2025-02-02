@@ -135,6 +135,9 @@ public static class XmlInvoiceWriter
     /// <returns></returns>
     public static string Serialize(XmlInvoice invoice)
     {
+        ArgumentNullException.ThrowIfNull(invoice);
+        invoice.IssueDate = XmlInvoiceMapper.GetXmlDate(invoice.IssueDate);
+        invoice.DueDate = XmlInvoiceMapper.GetXmlDate(invoice.DueDate);
         var xml = SerializeToXDocument(invoice, GetNamespaces());
 
         RemoveNullElements(xml);
@@ -154,9 +157,8 @@ public static class XmlInvoiceWriter
     private static void FormatDateTimeElements(XDocument xml)
     {
         string[] dateTimeFormats = [
-            "yyyy-MM-ddTHH:mm:ss.fffffffZ",
-            "yyyy-MM-ddTHH:mm:ss.ffffffZ",
-            "yyyy-MM-ddTHH:mm:ss.fffffZ"
+            // 2025-02-02T00:00:00Z
+            "yyyy-MM-ddTHH:mm:ssZ"
         ];
 
         foreach (var element in xml.Descendants())

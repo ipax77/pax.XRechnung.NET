@@ -1,4 +1,5 @@
-﻿using pax.XRechnung.NET.Dtos;
+﻿using System.Globalization;
+using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
@@ -12,8 +13,8 @@ public static partial class XmlInvoiceMapper
             CustomizationId = invoiceDto.CustomizationId,
             ProfileId = invoiceDto.ProfileId,
             Id = new() { Content = invoiceDto.Id },
-            IssueDate = invoiceDto.IssueDate,
-            DueDate = invoiceDto.DueDate == DateTime.MinValue || invoiceDto.DueDate == null ? null : invoiceDto.DueDate,
+            IssueDate = GetXmlDate(invoiceDto.IssueDate),
+            DueDate = invoiceDto.DueDate == DateTime.MinValue || invoiceDto.DueDate == null ? null : GetXmlDate(invoiceDto.DueDate),
             InvoiceTypeCode = invoiceDto.InvoiceTypeCode,
             Note = string.IsNullOrWhiteSpace(invoiceDto.Note) ? null : invoiceDto.Note,
             DocumentCurrencyCode = invoiceDto.DocumentCurrencyCode,
@@ -219,5 +220,20 @@ public static partial class XmlInvoiceMapper
                 }
             }
         })];
+    }
+
+    internal static DateTime? GetXmlDate(DateTime? date)
+    {
+        if (date is null)
+        {
+            return null;
+        }
+        return GetXmlDate(date.Value);
+    }
+
+    internal static DateTime GetXmlDate(DateTime date)
+    {
+        var xmlDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
+        return xmlDate;
     }
 }
