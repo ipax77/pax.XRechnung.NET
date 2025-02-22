@@ -37,7 +37,7 @@ public static partial class XmlInvoiceMapper
             ObjectIdentifier = string.IsNullOrEmpty(dto.ObjectIdentifier) ? null :
              new() { Content = dto.ObjectIdentifier, SchemeIdentifier = dto.ObjectIdentifierSchema },
             InvoicedQuantity = new() { Value = dto.InvoicedQuantity, UnitCode = dto.InvoicedQuantityCode },
-            LineExtensionAmount = new() { Value = dto.LineExtensionAmount },
+            LineExtensionAmount = new() { Value = dto.LineExtensionAmount, CurrencyID = currencyId },
             ReferencedPurchaseOrderLineReference = dto.ReferencedPurchaseOrderLineReference,
             BuyerAccountingReference = dto.BuyerAccountingReference,
             Item = new()
@@ -93,7 +93,7 @@ public static partial class XmlInvoiceMapper
     {
         return new()
         {
-            TaxAmount = new Amount() { Value = dto.TaxAmount },
+            TaxAmount = new Amount() { Value = dto.TaxAmount, CurrencyID = currencyId },
             TaxSubTotal = [
                 new() {
                     TaxAmount = new Amount() { Value = dto.TaxAmount, CurrencyID = currencyId },
@@ -141,7 +141,7 @@ public static partial class XmlInvoiceMapper
                     Telephone = dto.ContactTelephone,
                     Email = dto.ContactEmail
                 },
-                EndpointId = new XmlEndpointId() { Content = dto.Email },
+                EndpointId = new XmlEndpointId() { Content = dto.Email, SchemeId = "EM" },
                 PartyName = new() { Name = dto.Name },
                 PostalAddress = new()
                 {
@@ -151,6 +151,10 @@ public static partial class XmlInvoiceMapper
                     City = dto.City,
                     PostCode = dto.PostCode,
                     Country = new XmlCountry() { IdentificationCode = dto.Country }
+                },
+                PartyLegalEntity = new()
+                {
+                    RegistrationName = new() { Content = dto.Name }
                 }
             }
         };
@@ -170,7 +174,7 @@ public static partial class XmlInvoiceMapper
                 },
                 Website = dto.Website,
                 LogoReferenceId = dto.LogoReferenceId,
-                EndpointId = new XmlEndpointId() { Content = dto.Email },
+                EndpointId = new XmlEndpointId() { Content = dto.Email, SchemeId = "EM" },
                 PartyName = new() { Name = dto.Name },
                 PostalAddress = new()
                 {
