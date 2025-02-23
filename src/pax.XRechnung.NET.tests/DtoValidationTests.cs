@@ -27,6 +27,7 @@ public class DtoValidationTests
             }],
             Seller = new()
             {
+                Website = "www.example.com",
                 Email = "seller@email.com",
                 Name = "Seller",
                 StreetName = "TestStreet",
@@ -36,7 +37,8 @@ public class DtoValidationTests
                 ContactTelephone = "12345",
                 ContactEmail = "contact@email.com",
                 TaxCompanyId = "DE1234567",
-                TaxSchemeId = "VAT",
+                TaxSchemeId = "S",
+                TaxId = "000/0000/000",
                 RegistrationName = "Seller Name",
             },
             Buyer = new()
@@ -107,7 +109,7 @@ public class DtoValidationTests
     public void CanValidateDtoWithTaxRegistrationName()
     {
         var invoiceDto = GetStandardInvoiceDto();
-        invoiceDto.Seller.TaxRegistrationName = "000/000/00000";
+        invoiceDto.Seller.TaxRegistrationName = "Test";
         var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
 

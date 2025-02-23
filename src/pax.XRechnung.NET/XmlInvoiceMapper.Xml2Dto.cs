@@ -140,6 +140,7 @@ public static partial class XmlInvoiceMapper
             Country = sellerParty.Party.PostalAddress?.Country?.IdentificationCode ?? string.Empty,
             TaxCompanyId = sellerParty.Party.PartyTaxScheme?.CompanyId ?? "",
             TaxSchemeId = sellerParty.Party.PartyTaxScheme?.TaxScheme.Id.Content ?? "",
+            TaxId = sellerParty.Party.Identifiers.Count > 0 ? sellerParty.Party.Identifiers.First().Id.Content : string.Empty,
             RegistrationName = sellerParty.Party.PartyLegalEntity.RegistrationName.Content,
         };
     }

@@ -68,11 +68,11 @@ public static partial class XmlInvoiceMapper
                 PriceAmount = new() { Value = dto.PriceAmount, CurrencyID = currencyId },
                 PriceDiscount = dto.PriceDiscount == null ? null : new() { Value = dto.PriceDiscount.Value, CurrencyID = currencyId },
                 GrossPrice = dto.GrossPrice == null ? null : new() { Value = dto.GrossPrice.Value, CurrencyID = currencyId },
-                PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new()
-                {
-                    Value = dto.PriceBaseQuantity.Value,
-                    UnitCode = dto.PriceBaseQuantityUnitOfMeasureCode ?? "HUR",
-                },
+                // PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new()
+                // {
+                //     Value = dto.PriceBaseQuantity.Value,
+                //     UnitCode = dto.PriceBaseQuantityUnitOfMeasureCode ?? "HUR",
+                // },
             },
             InvoiceLines = [.. dto.InvoiceLines.Select(s => GetInvoiceLine(s, currencyId))],
         };
@@ -176,6 +176,9 @@ public static partial class XmlInvoiceMapper
                 LogoReferenceId = dto.LogoReferenceId,
                 EndpointId = new XmlEndpointId() { Content = dto.Email, SchemeId = "EM" },
                 PartyName = new() { Name = dto.Name },
+                Identifiers = string.IsNullOrEmpty(dto.TaxId) ? [] : [
+                    new() { Id = new() { Content = dto.TaxId } }
+                ],
                 PostalAddress = new()
                 {
                     StreetName = dto.StreetName,
@@ -197,7 +200,7 @@ public static partial class XmlInvoiceMapper
                 PartyLegalEntity = new()
                 {
                     RegistrationName = new() { Content = dto.RegistrationName }
-                }
+                },
             }
         };
     }

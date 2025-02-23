@@ -49,7 +49,7 @@ public class XmlParty
     /// </summary>
     [XmlElement("PartyIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-29")]
-    public List<Identifier> Identifiers { get; set; } = [];
+    public List<XmlPartyIdentificationType> Identifiers { get; set; } = [];
     /// <summary>
     ///  Der vollständige Name, unter dem der Verkäufer im nationalen Register für juristische Personen oder als 
     ///  steuerpflichtige Person eingetragen ist oder anderweitig als Person(en) handelt (Firma).

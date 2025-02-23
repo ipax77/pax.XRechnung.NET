@@ -77,6 +77,10 @@ public record SellerDto
     /// </summary>
     public string TaxCompanyId { get; set; } = string.Empty;
     /// <summary>
+    /// Steuernummer
+    /// </summary>
+    public string TaxId { get; set; } = string.Empty;
+    /// <summary>
     /// tax scheme
     /// </summary>
     public string TaxSchemeId { get; set; } = string.Empty;
