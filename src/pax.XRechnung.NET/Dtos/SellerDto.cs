@@ -88,4 +88,19 @@ public record SellerDto
     /// Seller Name
     /// </summary>
     public string RegistrationName { get; set; } = string.Empty;
+    /// <summary>
+    /// Seller Logo
+    /// </summary>
+    public SellerLogoDto? Logo { get; set; }
+}
+
+/// <summary>
+/// SellerLogoDto
+/// </summary>
+public class SellerLogoDto
+{
+    /// <summary>
+    /// PNG Base64String
+    /// </summary>
+    public string Base64String { get; set; } = string.Empty;
 }
