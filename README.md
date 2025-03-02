@@ -31,16 +31,17 @@ InvoiceDto invoiceDto = new()
     Note = "Test Note",
     DocumentCurrencyCode = "EUR",
     BuyerReference = "123",
-    AdditionalDocumentReference = new()
+    AdditionalDocumentReferences = [new()
     {
         Id = "invoice 123",
         DocumentDescription = "human readable pdf invoice",
         MimeCode = "application/pdf",
         FileName = "invoice.pdf",
         Content = "ZWYNCjE0OTk0Nw0KJSVFT0Y=",
-    },
+    }],
     Seller = new()
     {
+        Website = "www.example.com",
         Email = "seller@email.com",
         Name = "Seller",
         StreetName = "TestStreet",
@@ -50,7 +51,8 @@ InvoiceDto invoiceDto = new()
         ContactTelephone = "12345",
         ContactEmail = "contact@email.com",
         TaxCompanyId = "DE1234567",
-        TaxSchemeId = "VAT",
+        TaxSchemeId = "S",
+        TaxId = "000/0000/000",
         RegistrationName = "Seller Name",
     },
     Buyer = new()
@@ -68,7 +70,6 @@ InvoiceDto invoiceDto = new()
     {
         PaymentMeansTypeCode = "30",
         IBAN = "DE21081508151234123412",
-        BIC =  "BIC12345",
         BankName = "Test Bank"
     },
     TaxTotal = new()
