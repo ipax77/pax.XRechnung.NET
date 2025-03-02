@@ -5,30 +5,30 @@ namespace pax.XRechnung.NET;
 
 public static partial class XmlInvoiceMapper
 {
-    private static XmlInvoice Map2XmlInvoice(InvoiceDto invoiceDto)
+    private static XmlInvoice Map2XmlInvoice(InvoiceDto invoiceDto, string currencyID = "EUR")
     {
         return new XmlInvoice()
         {
             CustomizationId = invoiceDto.CustomizationId,
             ProfileId = invoiceDto.ProfileId,
             Id = new() { Content = invoiceDto.Id },
-            IssueDate = invoiceDto.IssueDate,
-            DueDate = invoiceDto.DueDate == DateTime.MinValue || invoiceDto.DueDate == null ? null : invoiceDto.DueDate,
+            IssueDate = GetXmlDate(invoiceDto.IssueDate),
+            DueDate = invoiceDto.DueDate == DateTime.MinValue || invoiceDto.DueDate == null ? null : GetXmlDate(invoiceDto.DueDate),
             InvoiceTypeCode = invoiceDto.InvoiceTypeCode,
             Note = string.IsNullOrWhiteSpace(invoiceDto.Note) ? null : invoiceDto.Note,
             DocumentCurrencyCode = invoiceDto.DocumentCurrencyCode,
             BuyerReference = invoiceDto.BuyerReference,
-            AdditionalDocumentReference = GetAdditionalDocumentReference(invoiceDto.AdditionalDocumentReference),
+            AdditionalDocumentReferences = GetAdditionalDocumentReference(invoiceDto.AdditionalDocumentReferences),
             SellerParty = GetSellerParty(invoiceDto.Seller),
             BuyerParty = GetBuyerParty(invoiceDto.Buyer),
             PaymentMeans = GetPaymentInstructions(invoiceDto.PaymentMeans),
-            TaxTotal = GetTaxTotal(invoiceDto.TaxTotal),
-            LegalMonetaryTotal = GetLegalMonetaryTotal(invoiceDto.LegalMonetaryTotal),
-            InvoiceLines = [.. invoiceDto.InvoiceLines.Select(s => GetInvoiceLine(s))],
+            TaxTotal = GetTaxTotal(invoiceDto.TaxTotal, currencyID),
+            LegalMonetaryTotal = GetLegalMonetaryTotal(invoiceDto.LegalMonetaryTotal, currencyID),
+            InvoiceLines = [.. invoiceDto.InvoiceLines.Select(s => GetInvoiceLine(s, currencyID))],
         };
     }
 
-    private static XmlInvoiceLine GetInvoiceLine(InvoiceLineDto dto)
+    private static XmlInvoiceLine GetInvoiceLine(InvoiceLineDto dto, string currencyId)
     {
         return new()
         {
@@ -37,7 +37,7 @@ public static partial class XmlInvoiceMapper
             ObjectIdentifier = string.IsNullOrEmpty(dto.ObjectIdentifier) ? null :
              new() { Content = dto.ObjectIdentifier, SchemeIdentifier = dto.ObjectIdentifierSchema },
             InvoicedQuantity = new() { Value = dto.InvoicedQuantity, UnitCode = dto.InvoicedQuantityCode },
-            LineExtensionAmount = new() { Value = dto.LineExtensionAmount },
+            LineExtensionAmount = new() { Value = dto.LineExtensionAmount, CurrencyID = currencyId },
             ReferencedPurchaseOrderLineReference = dto.ReferencedPurchaseOrderLineReference,
             BuyerAccountingReference = dto.BuyerAccountingReference,
             Item = new()
@@ -65,39 +65,39 @@ public static partial class XmlInvoiceMapper
             },
             PriceDetails = new()
             {
-                PriceAmount = new() { Value = dto.PriceAmount },
-                PriceDiscount = dto.PriceDiscount == null ? null : new() { Value = dto.PriceDiscount.Value },
-                GrossPrice = dto.GrossPrice == null ? null : new() { Value = dto.GrossPrice.Value },
-                PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new()
-                {
-                    Value = dto.PriceBaseQuantity.Value,
-                    UnitCode = dto.PriceBaseQuantityUnitOfMeasureCode ?? "HUR",
-                },
+                PriceAmount = new() { Value = dto.PriceAmount, CurrencyID = currencyId },
+                PriceDiscount = dto.PriceDiscount == null ? null : new() { Value = dto.PriceDiscount.Value, CurrencyID = currencyId },
+                GrossPrice = dto.GrossPrice == null ? null : new() { Value = dto.GrossPrice.Value, CurrencyID = currencyId },
+                // PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new()
+                // {
+                //     Value = dto.PriceBaseQuantity.Value,
+                //     UnitCode = dto.PriceBaseQuantityUnitOfMeasureCode ?? "HUR",
+                // },
             },
-            InvoiceLines = [.. dto.InvoiceLines.Select(s => GetInvoiceLine(s))],
+            InvoiceLines = [.. dto.InvoiceLines.Select(s => GetInvoiceLine(s, currencyId))],
         };
     }
 
-    private static XmlDocumentTotals GetLegalMonetaryTotal(DocumentTotalsDto dto)
+    private static XmlDocumentTotals GetLegalMonetaryTotal(DocumentTotalsDto dto, string currencyId)
     {
         return new()
         {
-            LineExtensionAmount = new() { Value = dto.LineExtensionAmount },
-            TaxExclusiveAmount = new() { Value = dto.TaxExclusiveAmount },
-            TaxInclusiveAmount = new() { Value = dto.TaxInclusiveAmount },
-            PayableAmount = new() { Value = dto.PayableAmount },
+            LineExtensionAmount = new() { Value = dto.LineExtensionAmount, CurrencyID = currencyId },
+            TaxExclusiveAmount = new() { Value = dto.TaxExclusiveAmount, CurrencyID = currencyId },
+            TaxInclusiveAmount = new() { Value = dto.TaxInclusiveAmount, CurrencyID = currencyId },
+            PayableAmount = new() { Value = dto.PayableAmount, CurrencyID = currencyId },
         };
     }
 
-    private static XmlVatBreakdown GetTaxTotal(VatBreakdownDto dto)
+    private static XmlVatBreakdown GetTaxTotal(VatBreakdownDto dto, string currencyId)
     {
         return new()
         {
-            TaxAmount = new Amount() { Value = dto.TaxAmount },
+            TaxAmount = new Amount() { Value = dto.TaxAmount, CurrencyID = currencyId },
             TaxSubTotal = [
                 new() {
-                    TaxAmount = new Amount() { Value = dto.TaxAmount },
-                    TaxableAmount = new Amount() { Value = dto.TaxableAmount },
+                    TaxAmount = new Amount() { Value = dto.TaxAmount, CurrencyID = currencyId },
+                    TaxableAmount = new Amount() { Value = dto.TaxableAmount, CurrencyID = currencyId },
                     TaxCategory = new() {
                         Id = new() { Content = dto.TaxCategoryId },
                         Percent = dto.Percent,
@@ -118,8 +118,12 @@ public static partial class XmlInvoiceMapper
             [
                 new() {
                     Id = new() { Content = dto.IBAN },
-                    Identifier = string.IsNullOrEmpty(dto.BIC) ? null : new() { Content = dto.BIC },
-                    Name = dto.BankName
+                    Name = dto.AccountHolder,
+                    FinancialInstitutionBranch = string.IsNullOrEmpty(dto.BIC) ? null :
+                        new() {
+                            Id = new() { Content = dto.BIC },
+                            Name = dto.BankName
+                        }
                 }
             ]
         };
@@ -137,7 +141,7 @@ public static partial class XmlInvoiceMapper
                     Telephone = dto.ContactTelephone,
                     Email = dto.ContactEmail
                 },
-                EndpointId = new XmlEndpointId() { Content = dto.Email },
+                EndpointId = new XmlEndpointId() { Content = dto.Email, SchemeId = "EM" },
                 PartyName = new() { Name = dto.Name },
                 PostalAddress = new()
                 {
@@ -147,6 +151,10 @@ public static partial class XmlInvoiceMapper
                     City = dto.City,
                     PostCode = dto.PostCode,
                     Country = new XmlCountry() { IdentificationCode = dto.Country }
+                },
+                PartyLegalEntity = new()
+                {
+                    RegistrationName = new() { Content = dto.Name }
                 }
             }
         };
@@ -164,8 +172,13 @@ public static partial class XmlInvoiceMapper
                     Telephone = dto.ContactTelephone,
                     Email = dto.ContactEmail
                 },
-                EndpointId = new XmlEndpointId() { Content = dto.Email },
+                Website = dto.Website,
+                LogoReferenceId = dto.LogoReferenceId,
+                EndpointId = new XmlEndpointId() { Content = dto.Email, SchemeId = "EM" },
                 PartyName = new() { Name = dto.Name },
+                Identifiers = string.IsNullOrEmpty(dto.TaxId) ? [] : [
+                    new() { Id = new() { Content = dto.TaxId } }
+                ],
                 PostalAddress = new()
                 {
                     StreetName = dto.StreetName,
@@ -187,31 +200,46 @@ public static partial class XmlInvoiceMapper
                 PartyLegalEntity = new()
                 {
                     RegistrationName = new() { Content = dto.RegistrationName }
-                }
+                },
             }
         };
     }
 
-    private static XmlAdditionalDocumentReference? GetAdditionalDocumentReference(AdditionalDocumentReferenceDto? dto)
+    private static List<XmlAdditionalDocumentReference> GetAdditionalDocumentReference(List<AdditionalDocumentReferenceDto> dtos)
     {
-        if (dto is null)
+        if (dtos is null || dtos.Count == 0)
         {
-            return null;
+            return [];
         }
-        return new()
+        return [.. dtos.Select(s => new XmlAdditionalDocumentReference()
         {
-            Id = new Identifier() { Content = dto.Id },
-            DocumentDescription = dto.DocumentDescription,
-            DocumentLocation = dto.DocumentLocation,
-            Attachment = string.IsNullOrEmpty(dto.Content) ? null : new()
+            Id = new Identifier() { Content = s.Id },
+            DocumentDescription = s.DocumentDescription,
+            DocumentLocation = s.DocumentLocation,
+            Attachment = string.IsNullOrEmpty(s.Content) ? null : new()
             {
                 EmbeddedDocumentBinaryObject = new()
                 {
-                    MimeCode = dto.MimeCode,
-                    FileName = dto.FileName,
-                    Content = dto.Content
+                    MimeCode = s.MimeCode,
+                    FileName = s.FileName,
+                    Content = s.Content
                 }
             }
-        };
+        })];
+    }
+
+    internal static DateTime? GetXmlDate(DateTime? date)
+    {
+        if (date is null)
+        {
+            return null;
+        }
+        return GetXmlDate(date.Value);
+    }
+
+    internal static DateTime GetXmlDate(DateTime date)
+    {
+        var xmlDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
+        return xmlDate;
     }
 }

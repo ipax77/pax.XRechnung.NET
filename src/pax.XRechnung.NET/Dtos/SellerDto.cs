@@ -6,6 +6,14 @@ namespace pax.XRechnung.NET.Dtos;
 public record SellerDto
 {
     /// <summary>
+    /// Website
+    /// </summary>
+    public string? Website { get; set; }
+    /// <summary>
+    /// LogoReferenceId
+    /// </summary>
+    public string? LogoReferenceId { get; set; }
+    /// <summary>
     ///  identifier
     /// </summary>
     public string Email { get; set; } = string.Empty;
@@ -69,6 +77,10 @@ public record SellerDto
     /// </summary>
     public string TaxCompanyId { get; set; } = string.Empty;
     /// <summary>
+    /// Steuernummer
+    /// </summary>
+    public string TaxId { get; set; } = string.Empty;
+    /// <summary>
     /// tax scheme
     /// </summary>
     public string TaxSchemeId { get; set; } = string.Empty;
@@ -76,4 +88,19 @@ public record SellerDto
     /// Seller Name
     /// </summary>
     public string RegistrationName { get; set; } = string.Empty;
+    /// <summary>
+    /// Seller Logo
+    /// </summary>
+    public SellerLogoDto? Logo { get; set; }
+}
+
+/// <summary>
+/// SellerLogoDto
+/// </summary>
+public class SellerLogoDto
+{
+    /// <summary>
+    /// PNG Base64String
+    /// </summary>
+    public string Base64String { get; set; } = string.Empty;
 }

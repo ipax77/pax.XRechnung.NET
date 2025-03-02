@@ -31,16 +31,17 @@ InvoiceDto invoiceDto = new()
     Note = "Test Note",
     DocumentCurrencyCode = "EUR",
     BuyerReference = "123",
-    AdditionalDocumentReference = new()
+    AdditionalDocumentReferences = [new()
     {
         Id = "invoice 123",
         DocumentDescription = "human readable pdf invoice",
         MimeCode = "application/pdf",
         FileName = "invoice.pdf",
         Content = "ZWYNCjE0OTk0Nw0KJSVFT0Y=",
-    },
+    }],
     Seller = new()
     {
+        Website = "www.example.com",
         Email = "seller@email.com",
         Name = "Seller",
         StreetName = "TestStreet",
@@ -50,7 +51,8 @@ InvoiceDto invoiceDto = new()
         ContactTelephone = "12345",
         ContactEmail = "contact@email.com",
         TaxCompanyId = "DE1234567",
-        TaxSchemeId = "VAT",
+        TaxSchemeId = "S",
+        TaxId = "000/0000/000",
         RegistrationName = "Seller Name",
     },
     Buyer = new()
@@ -153,7 +155,16 @@ catch (Exception ex)
 * **Incomplete XML Validation**: Not all XML element names or attributes are verified for strict compliance with XRechnung standards.
 # ChangeLog
 
-<details open="open"><summary>v0.0.1</summary>
+<details open="open"><summary>v0.1.0</summary>
+
+>- **Breaking Changes**
+>- Added FinancialInstitutionBranch to FinancialAccountType (XmlPaymentInstructions)
+>- Seller/Buyer cleanup and reference XmlParty
+>- Changed XmlAdditionalDocumentReference to XmlAdditionalDocumentReferences as list
+
+</details>
+
+<details><summary>v0.0.1</summary>
 
 >- Initial release
 >- Support for invoice validation and serialization

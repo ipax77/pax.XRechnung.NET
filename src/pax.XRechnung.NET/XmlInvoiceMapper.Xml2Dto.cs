@@ -18,7 +18,7 @@ public static partial class XmlInvoiceMapper
             Note = xmlInvoice.Note,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
             BuyerReference = xmlInvoice.BuyerReference,
-            AdditionalDocumentReference = GetAdditionalDocumentReference(xmlInvoice.AdditionalDocumentReference),
+            AdditionalDocumentReferences = GetAdditionalDocumentReference(xmlInvoice.AdditionalDocumentReferences),
             Seller = GetSellerDto(xmlInvoice.SellerParty),
             Buyer = GetBuyerDto(xmlInvoice.BuyerParty),
             PaymentMeans = GetPaymentInstructions(xmlInvoice.PaymentMeans),
@@ -77,25 +77,28 @@ public static partial class XmlInvoiceMapper
 
     private static VatBreakdownDto GetTaxTotal(XmlVatBreakdown xml)
     {
+        var tax = xml.TaxSubTotal.FirstOrDefault();
         return new()
         {
             TaxAmount = xml.TaxAmount.Value,
-            TaxableAmount = xml.TaxSubTotal.FirstOrDefault()?.TaxableAmount.Value ?? 0,
-            TaxCategoryId = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.Id.Content ?? "",
-            Percent = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.Percent ?? 0,
-            TaxScheme = xml.TaxSubTotal.FirstOrDefault()?.TaxCategory.TaxScheme.Id.Content ?? "",
+            TaxableAmount = tax?.TaxableAmount.Value ?? 0,
+            TaxCategoryId = tax?.TaxCategory.Id.Content ?? "",
+            Percent = tax?.TaxCategory.Percent ?? 0,
+            TaxScheme = tax?.TaxCategory.TaxScheme.Id.Content ?? "",
         };
     }
 
     private static PaymentInstructionsDto GetPaymentInstructions(XmlPaymentInstructions xml)
     {
+        var account = xml.PayeeFinancialAccount.FirstOrDefault();
         return new()
         {
             PaymentMeansTypeCode = xml.PaymentMeansTypeCode,
             PaymentMeansText = xml.PaymentMeansText,
-            IBAN = xml.PayeeFinancialAccount.FirstOrDefault()?.Id.Content,
-            BankName = xml.PayeeFinancialAccount.FirstOrDefault()?.Name,
-            BIC = xml.PayeeFinancialAccount.FirstOrDefault()?.Identifier?.Content,
+            IBAN = account?.Id.Content,
+            AccountHolder = account?.Name,
+            BIC = account?.FinancialInstitutionBranch?.Id.Content,
+            BankName = account?.FinancialInstitutionBranch?.Name,
         };
     }
 
@@ -125,6 +128,8 @@ public static partial class XmlInvoiceMapper
             ContactName = sellerParty.Party.Contact?.Name ?? "unknown",
             ContactTelephone = sellerParty.Party.Contact?.Telephone ?? "unknown",
             ContactEmail = sellerParty.Party.Contact?.Email ?? "unknown",
+            Website = sellerParty.Party.Website,
+            LogoReferenceId = sellerParty.Party.LogoReferenceId,
             Email = sellerParty.Party.EndpointId.Content,
             Name = sellerParty.Party.PartyName.Name,
             StreetName = sellerParty.Party.PostalAddress?.StreetName,
@@ -135,30 +140,25 @@ public static partial class XmlInvoiceMapper
             Country = sellerParty.Party.PostalAddress?.Country?.IdentificationCode ?? string.Empty,
             TaxCompanyId = sellerParty.Party.PartyTaxScheme?.CompanyId ?? "",
             TaxSchemeId = sellerParty.Party.PartyTaxScheme?.TaxScheme.Id.Content ?? "",
+            TaxId = sellerParty.Party.Identifiers.Count > 0 ? sellerParty.Party.Identifiers.First().Id.Content : string.Empty,
             RegistrationName = sellerParty.Party.PartyLegalEntity.RegistrationName.Content,
         };
     }
 
-    private static AdditionalDocumentReferenceDto? GetAdditionalDocumentReference(XmlAdditionalDocumentReference? xml)
+    private static List<AdditionalDocumentReferenceDto> GetAdditionalDocumentReference(List<XmlAdditionalDocumentReference> xmls)
     {
-        if (xml is null)
+        if (xmls is null || xmls.Count == 0)
         {
-            return null;
-        }
-        var dto = new AdditionalDocumentReferenceDto()
-        {
-            Id = xml.Id.Content,
-            DocumentDescription = xml.DocumentDescription,
-            DocumentLocation = xml.DocumentLocation,
-        };
-
-        if (xml.Attachment is not null)
-        {
-            dto.MimeCode = xml.Attachment.EmbeddedDocumentBinaryObject.MimeCode;
-            dto.FileName = xml.Attachment.EmbeddedDocumentBinaryObject.FileName;
-            dto.Content = xml.Attachment.EmbeddedDocumentBinaryObject.Content;
+            return [];
         }
 
-        return dto;
+        return [.. xmls.Select(s => new AdditionalDocumentReferenceDto() {
+            Id = s.Id.Content,
+            DocumentDescription = s.DocumentDescription,
+            DocumentLocation = s.DocumentLocation,
+            MimeCode = s.Attachment?.EmbeddedDocumentBinaryObject.MimeCode ?? string.Empty,
+            FileName = s.Attachment?.EmbeddedDocumentBinaryObject.FileName ?? string.Empty,
+            Content = s.Attachment?.EmbeddedDocumentBinaryObject.Content,
+        })];
     }
 }

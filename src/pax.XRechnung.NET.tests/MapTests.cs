@@ -15,8 +15,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -42,7 +42,7 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             DueDate = null,
             InvoiceTypeCode = "380",
             DocumentCurrencyCode = "EUR",
@@ -70,8 +70,8 @@ public class MapTests
         XmlInvoice xmlInvoice = new()
         {
             Id = new() { Content = "1" },
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -96,8 +96,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -106,7 +106,7 @@ public class MapTests
 
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         InvoiceDto invoiceDto2 = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
-        
+
         var json1 = JsonSerializer.Serialize(invoiceDto, jsonOptions);
         var json2 = JsonSerializer.Serialize(invoiceDto2, jsonOptions);
 
@@ -119,20 +119,20 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
             BuyerReference = "123",
-            AdditionalDocumentReference = new()
+            AdditionalDocumentReferences = [new()
             {
                 Id = "invoice 123",
                 DocumentDescription = "human readable pdf invoice",
                 MimeCode = "application/pdf",
                 FileName = "invoice.pdf",
                 Content = "ZWYNCjE0OTk0Nw0KJSVFT0Y=",
-            }
+            }]
         };
 
         XmlInvoice xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
@@ -150,8 +150,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -198,8 +198,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -208,6 +208,7 @@ public class MapTests
             {
                 PaymentMeansTypeCode = "30",
                 IBAN = "DE21081508151234123412",
+                BIC = "BIC12345",
                 BankName = "Test Bank"
             }
         };
@@ -227,8 +228,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -258,8 +259,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
@@ -288,8 +289,8 @@ public class MapTests
         InvoiceDto invoiceDto = new()
         {
             Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            DueDate = new DateTime(2025, 1, 14, 0, 0, 0, DateTimeKind.Utc),
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",

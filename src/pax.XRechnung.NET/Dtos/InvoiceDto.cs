@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace pax.XRechnung.NET.Dtos;
 
 /// <summary>
-/// Das Wurzelelement INVOICE
+/// Simplified Invoice DTO for all items have the same sales tax
 /// </summary>
 public record InvoiceDto
 {
@@ -64,7 +64,7 @@ public record InvoiceDto
     ///  Eine Gruppe von Informationselementen mit Informationen über rechnungsbegründende Unterlagen, 
     ///  die Belege für die in der Rechnung gestellten Ansprüche enthalten.
     /// </summary>
-    public AdditionalDocumentReferenceDto? AdditionalDocumentReference { get; set; }
+    public List<AdditionalDocumentReferenceDto> AdditionalDocumentReferences { get; set; } = [];
     /// <summary>
     /// AccountingSupplierParty
     /// </summary>

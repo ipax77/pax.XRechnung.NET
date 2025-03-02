@@ -6,7 +6,7 @@ namespace pax.XRechnung.NET.tests;
 [TestClass]
 public class DtoValidationTests
 {
-    private static InvoiceDto GetStandardInvoiceDto()
+    public static InvoiceDto GetStandardInvoiceDto()
     {
         InvoiceDto invoiceDto = new()
         {
@@ -17,16 +17,17 @@ public class DtoValidationTests
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
             BuyerReference = "123",
-            AdditionalDocumentReference = new()
+            AdditionalDocumentReferences = [new()
             {
                 Id = "invoice 123",
                 DocumentDescription = "human readable pdf invoice",
                 MimeCode = "application/pdf",
                 FileName = "invoice.pdf",
                 Content = "ZWYNCjE0OTk0Nw0KJSVFT0Y=",
-            },
+            }],
             Seller = new()
             {
+                Website = "www.example.com",
                 Email = "seller@email.com",
                 Name = "Seller",
                 StreetName = "TestStreet",
@@ -36,7 +37,8 @@ public class DtoValidationTests
                 ContactTelephone = "12345",
                 ContactEmail = "contact@email.com",
                 TaxCompanyId = "DE1234567",
-                TaxSchemeId = "VAT",
+                TaxSchemeId = "S",
+                TaxId = "000/0000/000",
                 RegistrationName = "Seller Name",
             },
             Buyer = new()
@@ -107,7 +109,7 @@ public class DtoValidationTests
     public void CanValidateDtoWithTaxRegistrationName()
     {
         var invoiceDto = GetStandardInvoiceDto();
-        invoiceDto.Seller.TaxRegistrationName = "000/000/00000";
+        invoiceDto.Seller.TaxRegistrationName = "Test";
         var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
         var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
 

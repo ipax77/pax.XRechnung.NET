@@ -81,9 +81,9 @@ public class XmlInvoice
     ///  Eine Gruppe von Informationselementen mit Informationen über rechnungsbegründende Unterlagen, 
     ///  die Belege für die in der Rechnung gestellten Ansprüche enthalten.
     /// </summary>
-    [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [XmlElement("AdditionalDocumentReference", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-24")]
-    public XmlAdditionalDocumentReference? AdditionalDocumentReference { get; set; }
+    public List<XmlAdditionalDocumentReference> AdditionalDocumentReferences { get; set; } = [];
     /// <summary>
     /// Eine Gruppe von Informationselementen, die Informationen über den Verkäufer enthalten.
     /// </summary>

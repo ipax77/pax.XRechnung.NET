@@ -21,6 +21,7 @@ public sealed class InvoiceTests
             {
                 Party = new()
                 {
+                    Website = "https://www.einvoicetest.com",
                     EndpointId = new() { Content = "buyer@email.com" },
                     PartyName = new() { Name = "Verkäufer" },
                     PostalAddress = new()

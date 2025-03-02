@@ -44,7 +44,7 @@ public record VatBreakdownDto
     /// <summary>
     /// Der Code der für den in Rechnung gestellten Posten geltenden Umsatzsteuerkategorie.
     /// </summary>
-    public string TaxCategoryId { get; set; } = string.Empty;
+    public string TaxCategoryId { get; set; } = "S";
     /// <summary>
     /// Der Prozentsatz der Umsatzsteuer, der für den in Rechnung gestellten Posten gilt
     /// </summary>

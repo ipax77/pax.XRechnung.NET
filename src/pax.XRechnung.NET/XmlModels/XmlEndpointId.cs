@@ -13,14 +13,14 @@ public class XmlEndpointId
     /// juristische Person identifiziert.
     /// </summary>
     [XmlText]
-    [SpecificationId("BT-30")]
+    [SpecificationId("BT-34")]
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
     /// schemeID
     /// </summary>
     [XmlAttribute("schemeID")]
-    [SpecificationId("BT-30")]
+    [SpecificationId("BT-34")]
     [CodeList("ICD")]
     public string? SchemeId { get; set; }
 
