@@ -28,7 +28,7 @@ public sealed class ValidationResult
     /// <summary>
     /// True if no valdation errors.
     /// </summary>
-    public bool IsValid { get; }
+    public bool IsValid { get; set; }
     /// <summary>
     /// Validations
     /// </summary>

@@ -91,6 +91,8 @@
     <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-UnqualifiedDataTypes-2.1.xsd" />
     <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-ExtensionContentDataType-2.1.xsd" />
     <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/maindoc/UBL-Invoice-2.1.xsd" />
+    <EmbeddedResource Include="Resources/Schematrons/iso_schematron_skeleton_for_saxon.xsl" />
+    <EmbeddedResource Include="Resources/Schematrons/PEPPOL-EN16931-UBL.sch" />
   </ItemGroup>
 
     <ItemGroup>
