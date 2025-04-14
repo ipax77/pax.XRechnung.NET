@@ -6,8 +6,13 @@ namespace pax.XRechnung.NET.XmlModels;
 /// <summary>
 /// Represents payment instructions for the invoice.
 /// </summary>
-public class XmlPaymentInstructions
+public class XmlPaymentMeans
 {
+    /// <summary>
+    /// Eine Kennung des Zahlungsmittels
+    /// </summary>
+    [XmlElement("ID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public Identifier? Id { get; set; } = new();
     /// <summary>
     /// Expected or used payment means as a code. UNTDID 4461
     /// </summary>
@@ -31,23 +36,16 @@ public class XmlPaymentInstructions
     public string? RemittanceInformation { get; set; }
 
     /// <summary>
+    /// Information about the payment card used.
+    /// </summary>
+    [XmlElement("CardAccount", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [SpecificationId("BG-18")]
+    public XmlCardAccount? PaymentCardInformation { get; set; }
+
+    /// <summary>
     /// Information about bank accounts for credit transfers.
     /// </summary>
     [XmlElement("PayeeFinancialAccount", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-17")]
     public List<XmlCreditTransfer> PayeeFinancialAccount { get; set; } = [];
-
-    /// <summary>
-    /// Information about the payment card used.
-    /// </summary>
-    [XmlElement("PaymentCardInformation", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
-    [SpecificationId("BG-18")]
-    public XmlPaymentCardInformation? PaymentCardInformation { get; set; }
-
-    /// <summary>
-    /// Information about direct debit.
-    /// </summary>
-    [XmlElement("DirectDebit", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
-    [SpecificationId("BG-19")]
-    public XmlDirectDebit? DirectDebit { get; set; }
 }

@@ -88,7 +88,7 @@ public static partial class XmlInvoiceMapper
         };
     }
 
-    private static PaymentInstructionsDto GetPaymentInstructions(XmlPaymentInstructions xml)
+    private static PaymentInstructionsDto GetPaymentInstructions(XmlPaymentMeans xml)
     {
         var account = xml.PayeeFinancialAccount.FirstOrDefault();
         return new()

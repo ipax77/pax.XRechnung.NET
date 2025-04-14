@@ -101,7 +101,7 @@ public class XmlInvoice
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-16")]
-    public XmlPaymentInstructions PaymentMeans { get; set; } = new();
+    public XmlPaymentMeans PaymentMeans { get; set; } = new();
     /// <summary>
     /// 
     /// </summary>

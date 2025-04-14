@@ -4,18 +4,6 @@ using System.Xml.Serialization;
 using pax.XRechnung.NET.Attributes;
 
 /// <summary>
-/// AccountingSupplierParty
-/// </summary>
-public class XmlSellerParty
-{
-    /// <summary>
-    /// Party
-    /// </summary>
-    [XmlElement("Party", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
-    public XmlParty Party { get; set; } = new();
-}
-
-/// <summary>
 /// Seller
 /// </summary>
 public class XmlParty
@@ -57,12 +45,6 @@ public class XmlParty
     [XmlElement("PartyName", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-27")]
     public XmlPartyName PartyName { get; set; } = new();
-    /// <summary>
-    /// Weitere rechtliche Informationen, die für den Verkäufer maßgeblich sind (wie z. B. Grundkapital).
-    /// </summary>
-    [XmlElement("LegalInformation", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-33")]
-    public string? LegalInformation { get; set; }
     /// <summary>
     /// Eine Gruppe von Informationselementen, die Informationen über die Verkäuferanschrift enthalten.
     /// </summary>

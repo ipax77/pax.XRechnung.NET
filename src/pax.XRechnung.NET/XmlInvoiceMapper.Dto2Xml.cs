@@ -108,7 +108,7 @@ public static partial class XmlInvoiceMapper
         };
     }
 
-    private static XmlPaymentInstructions GetPaymentInstructions(PaymentInstructionsDto dto)
+    private static XmlPaymentMeans GetPaymentInstructions(PaymentInstructionsDto dto)
     {
         return new()
         {

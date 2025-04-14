@@ -153,6 +153,15 @@ catch (Exception ex)
 # Known Limitations / ToDo
 * **Partial DTO Implementation**: Currently, the DTOs only support a subset of XRechnung properties. Missing properties will need manual extension.
 * **Incomplete XML Validation**: Not all XML element names or attributes are verified for strict compliance with XRechnung standards.
+
+Validated Xml Classes |
+-------- |
+XmlAdditionalDocumentReference   |
+XmlParty   |
+XmlContact  |
+XmlCountry  |
+XmlCardAccount  |
+
 # ChangeLog
 
 <details open="open"><summary>v0.1.0</summary>
