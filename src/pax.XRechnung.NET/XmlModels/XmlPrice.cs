@@ -6,9 +6,9 @@ namespace pax.XRechnung.NET.XmlModels;
 
 /// <summary>
 ///  Eine Gruppe von Informationselementen, die Informationen über den Preis für die in der betreffenden
-///  Rechnungsposition in Rechnung gestellten Waren und Dienstleistungen enthalten.
+///  Rechnungsposition in Rechnung gestellten Waren und Dienstleistungen enthalten. BG-29
 /// </summary>
-public class XmlInvoiceLinePriceDetails
+public class XmlPrice
 {
     /// <summary>
     /// Der Preis eines Postens, ohne Umsatzsteuer, nach Abzug des für diese Rechnungsposition geltenden Rabatts.
@@ -22,16 +22,4 @@ public class XmlInvoiceLinePriceDetails
     [XmlElement("BaseQuantity", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-149")]
     public Quantity? PriceBaseQuantity { get; set; }
-    /// <summary>
-    /// Der gesamte zur Berechnung des Netto-Postenpreises vom Brutto-Postenpreis subtrahierte Rabatt.
-    /// </summary>
-    [XmlElement("PriceDiscount", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-147")]
-    public Amount? PriceDiscount { get; set; }
-    /// <summary>
-    /// Der Postenpreis ohne Umsatzsteuer vor Abzug des Postenpreisrabatts.
-    /// </summary>
-    [XmlElement("GrossPrice")]
-    [SpecificationId("BT-148")]
-    public Amount? GrossPrice { get; set; }
 }

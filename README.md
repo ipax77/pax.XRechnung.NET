@@ -161,6 +161,22 @@ XmlParty   |
 XmlContact  |
 XmlCountry  |
 XmlCardAccount  |
+XmlContact  |
+XmlCountry  |
+XmlFinancialAccount |
+XmlMonetaryTotal    |
+XmlFinancialInstitutionBranch   |
+XmlPeriod   |
+XmlInvoiceLine  |
+XmlTaxTotal |
+XmlPrice    |
+XmlPeriod   |
+XmlItem |
+XmlItemAttributes   |
+XmlMonetaryTotal    |
+XmlOrderLineReference   |
+XmlTaxCategory  |
+
 
 # ChangeLog
 

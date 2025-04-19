@@ -39,7 +39,7 @@ public static partial class XmlInvoiceMapper
             InvoicedQuantity = xml.InvoicedQuantity.Value,
             InvoicedQuantityCode = xml.InvoicedQuantity.UnitCode,
             LineExtensionAmount = xml.LineExtensionAmount.Value,
-            ReferencedPurchaseOrderLineReference = xml.ReferencedPurchaseOrderLineReference,
+            ReferencedPurchaseOrderLineReference = xml.OrderLineReference,
             BuyerAccountingReference = xml.BuyerAccountingReference,
             Description = xml.Item.Description,
             Name = xml.Item.Name,
@@ -64,7 +64,7 @@ public static partial class XmlInvoiceMapper
         };
     }
 
-    private static DocumentTotalsDto GetLegalMonetaryTotal(XmlDocumentTotals xml)
+    private static DocumentTotalsDto GetLegalMonetaryTotal(XmlMonetaryTotal xml)
     {
         return new()
         {

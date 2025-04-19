@@ -47,5 +47,5 @@ public class XmlPaymentMeans
     /// </summary>
     [XmlElement("PayeeFinancialAccount", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-17")]
-    public List<XmlCreditTransfer> PayeeFinancialAccount { get; set; } = [];
+    public List<XmlFinancialAccount> PayeeFinancialAccount { get; set; } = [];
 }

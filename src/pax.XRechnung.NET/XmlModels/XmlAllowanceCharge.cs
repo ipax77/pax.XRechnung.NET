@@ -8,7 +8,7 @@ namespace pax.XRechnung.NET.XmlModels;
 ///  Eine Gruppe von Informationselementen, die Informationen über die für die betreffende Rechnungsposition
 ///  geltenden Nachlässe enthalten.
 /// </summary>
-public class XmlInvoiceLineAllowances
+public class XmlAllowanceCharge
 {
     /// <summary>
     /// Der Nachlassbetrag ohne Umsatzsteuer (erforderlich).

@@ -38,7 +38,7 @@ public static partial class XmlInvoiceMapper
              new() { Content = dto.ObjectIdentifier, SchemeIdentifier = dto.ObjectIdentifierSchema },
             InvoicedQuantity = new() { Value = dto.InvoicedQuantity, UnitCode = dto.InvoicedQuantityCode },
             LineExtensionAmount = new() { Value = dto.LineExtensionAmount, CurrencyID = currencyId },
-            ReferencedPurchaseOrderLineReference = dto.ReferencedPurchaseOrderLineReference,
+            OrderLineReference = dto.ReferencedPurchaseOrderLineReference,
             BuyerAccountingReference = dto.BuyerAccountingReference,
             Item = new()
             {
@@ -78,7 +78,7 @@ public static partial class XmlInvoiceMapper
         };
     }
 
-    private static XmlDocumentTotals GetLegalMonetaryTotal(DocumentTotalsDto dto, string currencyId)
+    private static XmlMonetaryTotal GetLegalMonetaryTotal(DocumentTotalsDto dto, string currencyId)
     {
         return new()
         {

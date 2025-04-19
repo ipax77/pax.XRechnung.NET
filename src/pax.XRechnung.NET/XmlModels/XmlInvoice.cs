@@ -113,7 +113,7 @@ public class XmlInvoice
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-22")]
-    public XmlDocumentTotals LegalMonetaryTotal { get; set; } = new();
+    public XmlMonetaryTotal LegalMonetaryTotal { get; set; } = new();
     /// <summary>
     ///  Eine Gruppe von Informationselementen, die Informationen über einzelne Rechnungspositionen enthalten.
     /// </summary>
