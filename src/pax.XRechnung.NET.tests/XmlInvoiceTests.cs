@@ -68,12 +68,12 @@ public sealed class InvoiceTests
             PaymentMeans = new()
             {
                 PaymentMeansTypeCode = "58",
-                PayeeFinancialAccount = [
-                    new() {
+                PayeeFinancialAccount =
+                    new()
+                    {
                         Id = new() { Content = "DE21081508151234123412" },
                         Name = "Test"
                     }
-                ]
             },
             LegalMonetaryTotal = new()
             {

@@ -52,7 +52,7 @@ public class XmlExternalReference
     /// <summary>
     /// URI
     /// </summary>
-    [XmlElement("Uri", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("URI", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
 #pragma warning disable CA1056 // URI-like properties should not be strings
     public string? Uri { get; set; }
 #pragma warning restore CA1056 // URI-like properties should not be strings
@@ -70,12 +70,12 @@ public class XmlExternalReference
     /// ExpiryDate
     /// </summary>
     [XmlElement("ExpiryDate", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public DateTime? ExpiryDate { get; set; }
+    public XmlDate? ExpiryDate { get; set; }
     /// <summary>
     /// ExpiryTime
     /// </summary>
     [XmlElement("ExpiryTime", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public DateTime? ExpiryTime { get; set; }
+    public XmlTime? ExpiryTime { get; set; }
     /// <summary>
     /// MimeCode
     /// </summary>

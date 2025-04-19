@@ -123,7 +123,6 @@ public static class XmlInvoiceWriter
         var xml = SerializeToXDocument(xmlInvoice, GetNamespaces());
 
         RemoveNullElements(xml);
-        FormatDateTimeElements(xml);
 
         return WriteToString(xml);
     }
@@ -136,12 +135,9 @@ public static class XmlInvoiceWriter
     public static string Serialize(XmlInvoice invoice)
     {
         ArgumentNullException.ThrowIfNull(invoice);
-        invoice.IssueDate = XmlInvoiceMapper.GetXmlDate(invoice.IssueDate);
-        invoice.DueDate = XmlInvoiceMapper.GetXmlDate(invoice.DueDate);
         var xml = SerializeToXDocument(invoice, GetNamespaces());
 
         RemoveNullElements(xml);
-        FormatDateTimeElements(xml);
 
         return WriteToString(xml);
     }
@@ -152,23 +148,6 @@ public static class XmlInvoiceWriter
         xml.Descendants()
            .Where(e => (string?)e.Attribute(xsiNamespace + "nil") == "true")
            .Remove();
-    }
-
-    private static void FormatDateTimeElements(XDocument xml)
-    {
-        string[] dateTimeFormats = [
-            // 2025-02-02T00:00:00Z
-            "yyyy-MM-ddTHH:mm:ssZ"
-        ];
-
-        foreach (var element in xml.Descendants())
-        {
-            if (DateTime.TryParseExact(element.Value, dateTimeFormats,
-                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dateTime))
-            {
-                element.Value = dateTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-            }
-        }
     }
 
     private static XDocument SerializeToXDocument(XmlInvoice invoice, XmlSerializerNamespaces namespaces)

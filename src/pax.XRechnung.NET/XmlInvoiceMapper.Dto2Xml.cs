@@ -12,8 +12,8 @@ public static partial class XmlInvoiceMapper
             CustomizationId = invoiceDto.CustomizationId,
             ProfileId = invoiceDto.ProfileId,
             Id = new() { Content = invoiceDto.Id },
-            IssueDate = GetXmlDate(invoiceDto.IssueDate),
-            DueDate = invoiceDto.DueDate == DateTime.MinValue || invoiceDto.DueDate == null ? null : GetXmlDate(invoiceDto.DueDate),
+            IssueDate = invoiceDto.IssueDate,
+            DueDate = invoiceDto.DueDate == DateTime.MinValue || invoiceDto.DueDate == null ? null : invoiceDto.DueDate,
             InvoiceTypeCode = invoiceDto.InvoiceTypeCode,
             Note = string.IsNullOrWhiteSpace(invoiceDto.Note) ? null : invoiceDto.Note,
             DocumentCurrencyCode = invoiceDto.DocumentCurrencyCode,
@@ -44,13 +44,13 @@ public static partial class XmlInvoiceMapper
             {
                 Description = dto.Description,
                 Name = dto.Name,
-                SellersIdentifier = string.IsNullOrEmpty(dto.SellersIdentifier) ? null :
-                 new() { Content = dto.SellersIdentifier },
-                BuyersIdentifier = string.IsNullOrEmpty(dto.BuyersIdentifier) ? null :
-                 new() { Content = dto.BuyersIdentifier },
-                StandardIdentifier = string.IsNullOrEmpty(dto.StandardIdentifier) ? null :
-                 new() { Content = dto.StandardIdentifier },
-                ClassificationIdentifiers = [.. dto.ClassificationIdentifiers.Select(s => new Identifier() { Content = s })],
+                // SellersIdentifier = string.IsNullOrEmpty(dto.SellersIdentifier) ? null :
+                //  new() { Content = dto.SellersIdentifier },
+                // BuyersIdentifier = string.IsNullOrEmpty(dto.BuyersIdentifier) ? null :
+                //  new() { Content = dto.BuyersIdentifier },
+                // StandardIdentifier = string.IsNullOrEmpty(dto.StandardIdentifier) ? null :
+                //  new() { Content = dto.StandardIdentifier },
+                // ClassificationIdentifiers = [.. dto.ClassificationIdentifiers.Select(s => new Identifier() { Content = s })],
                 // CountryOfOrigin = dto.CountryOfOrigin,
                 Attributes = [.. dto.Attributes.Select(s => new XmlItemAttributes() {
                     Name = s.Name,
@@ -112,18 +112,19 @@ public static partial class XmlInvoiceMapper
         {
             PaymentMeansTypeCode = dto.PaymentMeansTypeCode,
             PaymentMeansText = dto.PaymentMeansText,
-            PayeeFinancialAccount = string.IsNullOrEmpty(dto.IBAN) ? [] :
-            [
-                new() {
+            PayeeFinancialAccount = string.IsNullOrEmpty(dto.IBAN) ? null :
+
+                new()
+                {
                     Id = new() { Content = dto.IBAN },
                     Name = dto.AccountHolder,
                     FinancialInstitutionBranch = string.IsNullOrEmpty(dto.BIC) ? null :
-                        new() {
+                        new()
+                        {
                             Id = new() { Content = dto.BIC },
                             Name = dto.BankName
                         }
                 }
-            ]
         };
     }
 
@@ -224,20 +225,5 @@ public static partial class XmlInvoiceMapper
                 }
             }
         })];
-    }
-
-    internal static DateTime? GetXmlDate(DateTime? date)
-    {
-        if (date is null)
-        {
-            return null;
-        }
-        return GetXmlDate(date.Value);
-    }
-
-    internal static DateTime GetXmlDate(DateTime date)
-    {
-        var xmlDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
-        return xmlDate;
     }
 }

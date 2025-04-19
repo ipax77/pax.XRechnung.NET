@@ -31,13 +31,13 @@ public class XmlInvoice
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-2")]
-    public DateTime IssueDate { get; set; }
+    public XmlDate IssueDate { get; set; } = new();
     /// <summary>
     /// Das Fälligkeitsdatum des Rechnungsbetrages
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-9")]
-    public DateTime? DueDate { get; set; }
+    public XmlDate? DueDate { get; set; }
     /// <summary>
     /// Ein Code, der den Funktionstyp der Rechnung angibt.
     ///   Anmerkung: Der Rechnungstyp muss gemäß UNTDID 1001, spezifiziert werden.

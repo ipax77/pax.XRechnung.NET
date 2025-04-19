@@ -11,7 +11,7 @@ public class XmlOrderLineReference
     /// <summary>
     /// LineId
     /// </summary>
-    [XmlElement("LineId", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("LineID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     public Identifier LineId { get; set; } = new();
     /// <summary>
     /// UUID

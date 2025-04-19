@@ -24,16 +24,9 @@ public class XmlPaymentMeans
     /// <summary>
     /// Expected or used payment means as text.
     /// </summary>
-    [XmlElement("PaymentMeansText", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("InstructionNote", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-82")]
     public string? PaymentMeansText { get; set; }
-
-    /// <summary>
-    /// Text for linking payment to the issued invoice.
-    /// </summary>
-    [XmlElement("AliasName", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-83")]
-    public string? RemittanceInformation { get; set; }
 
     /// <summary>
     /// Information about the payment card used.
@@ -47,5 +40,5 @@ public class XmlPaymentMeans
     /// </summary>
     [XmlElement("PayeeFinancialAccount", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-17")]
-    public List<XmlFinancialAccount> PayeeFinancialAccount { get; set; } = [];
+    public XmlFinancialAccount? PayeeFinancialAccount { get; set; }
 }

@@ -27,8 +27,8 @@ public class MapTests
 
         Assert.IsNotNull(xmlInvoice);
         Assert.AreEqual("1", xmlInvoice.Id.Content);
-        Assert.AreEqual(invoiceDto.IssueDate, xmlInvoice.IssueDate);
-        Assert.AreEqual(invoiceDto.DueDate, xmlInvoice.DueDate);
+        Assert.AreEqual(invoiceDto.IssueDate, xmlInvoice.IssueDate.ToDateTime());
+        Assert.AreEqual(invoiceDto.DueDate, xmlInvoice.DueDate?.ToDateTime());
         Assert.AreEqual("380", xmlInvoice.InvoiceTypeCode);
         Assert.AreEqual("EUR", xmlInvoice.DocumentCurrencyCode);
         Assert.AreEqual("123", xmlInvoice.BuyerReference);
@@ -56,7 +56,7 @@ public class MapTests
         // Assert
         Assert.IsNotNull(xmlInvoice);
         Assert.AreEqual("1", xmlInvoice.Id.Content);
-        Assert.AreEqual(xmlInvoice.IssueDate, invoiceDto.IssueDate);
+        Assert.AreEqual(xmlInvoice.IssueDate.ToDateTime(), invoiceDto.IssueDate);
         Assert.IsNull(xmlInvoice.DueDate);
         Assert.AreEqual("380", xmlInvoice.InvoiceTypeCode);
         Assert.AreEqual("EUR", xmlInvoice.DocumentCurrencyCode);
@@ -82,8 +82,8 @@ public class MapTests
 
         Assert.IsNotNull(invoiceDto);
         Assert.AreEqual("1", invoiceDto.Id);
-        Assert.AreEqual(invoiceDto.IssueDate, xmlInvoice.IssueDate);
-        Assert.AreEqual(invoiceDto.DueDate, xmlInvoice.DueDate);
+        Assert.AreEqual(invoiceDto.IssueDate, xmlInvoice.IssueDate.ToDateTime());
+        Assert.AreEqual(invoiceDto.DueDate, xmlInvoice.DueDate?.ToDateTime());
         Assert.AreEqual("380", invoiceDto.InvoiceTypeCode);
         Assert.AreEqual("EUR", invoiceDto.DocumentCurrencyCode);
         Assert.AreEqual("123", invoiceDto.BuyerReference);

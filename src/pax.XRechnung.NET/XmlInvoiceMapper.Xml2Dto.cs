@@ -13,7 +13,7 @@ public static partial class XmlInvoiceMapper
             ProfileId = xmlInvoice.ProfileId,
             Id = xmlInvoice.Id.Content,
             IssueDate = xmlInvoice.IssueDate,
-            DueDate = xmlInvoice.DueDate,
+            DueDate = xmlInvoice.DueDate?.ToDateTime(),
             InvoiceTypeCode = xmlInvoice.InvoiceTypeCode,
             Note = xmlInvoice.Note,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
@@ -43,10 +43,10 @@ public static partial class XmlInvoiceMapper
             BuyerAccountingReference = xml.BuyerAccountingReference,
             Description = xml.Item.Description,
             Name = xml.Item.Name,
-            SellersIdentifier = xml.Item.SellersIdentifier?.Content,
-            BuyersIdentifier = xml.Item.BuyersIdentifier?.Content,
-            StandardIdentifier = xml.Item.StandardIdentifier?.Content,
-            ClassificationIdentifiers = [.. xml.Item.ClassificationIdentifiers.Select(s => s.Content)],
+            // SellersIdentifier = xml.Item.SellersIdentifier?.Content,
+            // BuyersIdentifier = xml.Item.BuyersIdentifier?.Content,
+            // StandardIdentifier = xml.Item.StandardIdentifier?.Content,
+            // ClassificationIdentifiers = [.. xml.Item.ClassificationIdentifiers.Select(s => s.Content)],
             // CountryOfOrigin = xml.Item.CountryOfOrigin,
             Attributes = [.. xml.Item.Attributes.Select(s => new ItemAttributeDto() {
                 Name = s.Name,
@@ -88,15 +88,14 @@ public static partial class XmlInvoiceMapper
 
     private static PaymentInstructionsDto GetPaymentInstructions(XmlPaymentMeans xml)
     {
-        var account = xml.PayeeFinancialAccount.FirstOrDefault();
         return new()
         {
             PaymentMeansTypeCode = xml.PaymentMeansTypeCode,
             PaymentMeansText = xml.PaymentMeansText,
-            IBAN = account?.Id.Content,
-            AccountHolder = account?.Name,
-            BIC = account?.FinancialInstitutionBranch?.Id.Content,
-            BankName = account?.FinancialInstitutionBranch?.Name,
+            IBAN = xml.PayeeFinancialAccount?.Id.Content,
+            AccountHolder = xml.PayeeFinancialAccount?.Name,
+            BIC = xml.PayeeFinancialAccount?.FinancialInstitutionBranch?.Id.Content,
+            BankName = xml.PayeeFinancialAccount?.FinancialInstitutionBranch?.Name,
         };
     }
 

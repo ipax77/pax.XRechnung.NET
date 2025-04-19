@@ -12,27 +12,27 @@ public class XmlPeriod
     /// StartDate
     /// </summary>
     [XmlElement("StartDate", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public string? StartDate { get; set; }
+    public XmlDate? StartDate { get; set; }
     /// <summary>
     /// StartTime
     /// </summary>
     [XmlElement("StartTime", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public string? StartTime { get; set; }
+    public XmlTime? StartTime { get; set; }
     /// <summary>
     /// EndDate
     /// </summary>
     [XmlElement("EndDate", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public string? EndDate { get; set; }
+    public XmlDate? EndDate { get; set; }
     /// <summary>
     /// EndTime
     /// </summary>
     [XmlElement("EndTime", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public string? EndTime { get; set; }
+    public XmlTime? EndTime { get; set; }
     /// <summary>
     /// DurationMeasure
     /// </summary>
     [XmlElement("DurationMeasure", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public string? DurationMeasure { get; set; }
+    public decimal? DurationMeasure { get; set; }
     /// <summary>
     /// DescriptionCode
     /// </summary>

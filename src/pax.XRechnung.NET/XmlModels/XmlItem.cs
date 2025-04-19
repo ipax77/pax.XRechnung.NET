@@ -27,26 +27,26 @@ public class XmlItem
     /// </summary>
     [XmlElement("BuyersItemIdentification", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-156")]
-    public Identifier? BuyersIdentifier { get; set; }
+    public XmlItemIdentification? BuyersIdentifier { get; set; }
     /// <summary>
     /// Verkäufer-Kennung des Postens. (Optional)
     /// </summary>
     [XmlElement("SellersItemIdentification", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-155")]
-    public Identifier? SellersIdentifier { get; set; }
+    public XmlItemIdentification? SellersIdentifier { get; set; }
     /// <summary>
     /// Standard-Kennung des Postens. (Optional)
     /// </summary>
     [XmlElement("StandardItemIdentification", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-157")]
-    public Identifier? StandardIdentifier { get; set; }
+    public XmlItemIdentification? StandardIdentifier { get; set; }
 
     /// <summary>
     /// Klassifizierungskennungen des Postens (0..*).
     /// </summary>
     [XmlElement("CatalogueItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-158")]
-    public List<Identifier> ClassificationIdentifiers { get; set; } = [];
+    public List<XmlItemIdentification> ClassificationIdentifiers { get; set; } = [];
 
     /// <summary>
     /// Ursprungsland des Postens. (Optional)
@@ -68,3 +68,24 @@ public class XmlItem
     public List<XmlItemAttributes> Attributes { get; set; } = [];
 }
 
+/// <summary>
+/// ItemIdentification
+/// </summary>
+public class XmlItemIdentification
+{
+    /// <summary>
+    /// Id
+    /// </summary>
+    [XmlElement("ID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public Identifier Id { get; set; } = new();
+    /// <summary>
+    /// Id
+    /// </summary>
+    [XmlElement("ExtendedID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public Identifier? ExtendedId { get; set; }
+    /// <summary>
+    /// Id
+    /// </summary>
+    [XmlElement("BarcodeSymbologyID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public Identifier? BarcodeSymbologyId { get; set; }
+}
