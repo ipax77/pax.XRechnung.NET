@@ -30,7 +30,7 @@ public class XmlParty
     [XmlElement("IndustryClassificationCode", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-30")]
     [CodeList("ICD")]
-    public Identifier? LegalRegistrationIdentifier { get; set; }
+    public Code? LegalRegistrationIdentifier { get; set; }
     /// <summary>
     /// Eine (i. d. R. vom Erwerber vergebene) Kennung des Verkäufers, wie z. B. die Kreditorennummer für das
     /// Mittelbewirtschaftungsverfahren oder die Lieferantennummer für das Bestellsystem.

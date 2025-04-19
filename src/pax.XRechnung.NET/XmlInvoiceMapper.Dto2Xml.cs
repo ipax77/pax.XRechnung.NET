@@ -153,7 +153,7 @@ public static partial class XmlInvoiceMapper
                 },
                 PartyLegalEntity = new()
                 {
-                    RegistrationName = new() { Content = dto.Name }
+                    RegistrationName = dto.Name
                 }
             }
         };
@@ -189,16 +189,13 @@ public static partial class XmlInvoiceMapper
                 },
                 PartyTaxScheme = string.IsNullOrEmpty(dto.TaxCompanyId) ? null : new()
                 {
-                    RegistrationName = string.IsNullOrEmpty(dto.TaxRegistrationName) ? null : new()
-                    {
-                        Content = dto.TaxRegistrationName,
-                    },
+                    RegistrationName = string.IsNullOrEmpty(dto.TaxRegistrationName) ? null : dto.TaxRegistrationName,
                     CompanyId = dto.TaxCompanyId,
                     TaxScheme = new() { Id = new() { Content = dto.TaxSchemeId } }
                 },
                 PartyLegalEntity = new()
                 {
-                    RegistrationName = new() { Content = dto.RegistrationName }
+                    RegistrationName = dto.RegistrationName
                 },
             }
         };

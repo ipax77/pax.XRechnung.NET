@@ -37,7 +37,7 @@ public sealed class InvoiceTests
                     },
                     PartyLegalEntity = new()
                     {
-                        RegistrationName = new() { Content = "Verkäufer" },
+                        RegistrationName = "Verkäufer",
                     },
                     Contact = new()
                     {
@@ -55,7 +55,7 @@ public sealed class InvoiceTests
                     PartyName = new() { Name = "Käufer" },
                     PartyLegalEntity = new()
                     {
-                        RegistrationName = new() { Content = "Käufer" }
+                        RegistrationName = "Käufer",
                     },
                     PostalAddress = new()
                     {

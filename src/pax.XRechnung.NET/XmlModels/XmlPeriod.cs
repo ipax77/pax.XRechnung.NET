@@ -29,11 +29,6 @@ public class XmlPeriod
     [XmlElement("EndTime", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     public XmlTime? EndTime { get; set; }
     /// <summary>
-    /// DurationMeasure
-    /// </summary>
-    [XmlElement("DurationMeasure", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public decimal? DurationMeasure { get; set; }
-    /// <summary>
     /// DescriptionCode
     /// </summary>
     [XmlElement("DescriptionCode", Namespace = XmlInvoiceWriter.CommonBasicComponents)]

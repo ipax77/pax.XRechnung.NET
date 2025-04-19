@@ -121,7 +121,7 @@ public static partial class XmlInvoiceMapper
     {
         return new()
         {
-            TaxRegistrationName = sellerParty.Party.PartyTaxScheme?.RegistrationName?.Content,
+            TaxRegistrationName = sellerParty.Party.PartyTaxScheme?.RegistrationName,
             ContactName = sellerParty.Party.Contact?.Name ?? "unknown",
             ContactTelephone = sellerParty.Party.Contact?.Telephone ?? "unknown",
             ContactEmail = sellerParty.Party.Contact?.Email ?? "unknown",
@@ -138,7 +138,7 @@ public static partial class XmlInvoiceMapper
             TaxCompanyId = sellerParty.Party.PartyTaxScheme?.CompanyId ?? "",
             TaxSchemeId = sellerParty.Party.PartyTaxScheme?.TaxScheme.Id.Content ?? "",
             TaxId = sellerParty.Party.Identifiers.Count > 0 ? sellerParty.Party.Identifiers.First().Id.Content : string.Empty,
-            RegistrationName = sellerParty.Party.PartyLegalEntity.RegistrationName.Content,
+            RegistrationName = sellerParty.Party.PartyLegalEntity.RegistrationName,
         };
     }
 
