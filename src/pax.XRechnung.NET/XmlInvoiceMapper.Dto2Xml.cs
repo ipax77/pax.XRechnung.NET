@@ -213,7 +213,7 @@ public static partial class XmlInvoiceMapper
         {
             Id = new Identifier() { Content = s.Id },
             DocumentDescription = s.DocumentDescription,
-            DocumentLocation = s.DocumentLocation,
+            // DocumentLocation = s.DocumentLocation,
             Attachment = string.IsNullOrEmpty(s.Content) ? null : new()
             {
                 EmbeddedDocumentBinaryObject = new()

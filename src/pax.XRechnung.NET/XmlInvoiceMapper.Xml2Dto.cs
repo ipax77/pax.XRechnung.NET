@@ -153,7 +153,7 @@ public static partial class XmlInvoiceMapper
         return [.. xmls.Select(s => new AdditionalDocumentReferenceDto() {
             Id = s.Id.Content,
             DocumentDescription = s.DocumentDescription,
-            DocumentLocation = s.DocumentLocation,
+            // DocumentLocation = s.DocumentLocation,
             MimeCode = s.Attachment?.EmbeddedDocumentBinaryObject.MimeCode ?? string.Empty,
             FileName = s.Attachment?.EmbeddedDocumentBinaryObject.FileName ?? string.Empty,
             Content = s.Attachment?.EmbeddedDocumentBinaryObject.Content,

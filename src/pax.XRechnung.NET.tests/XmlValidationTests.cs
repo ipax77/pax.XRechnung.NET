@@ -1,5 +1,7 @@
 
 using System.Reflection;
+using AutoFixture;
+using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET.tests;
 
@@ -28,5 +30,23 @@ public sealed class ValidationTests
         var result = XmlInvoiceValidator.ValidateXmlText(xmlContent);
         Assert.IsNull(result.Error, result.Error);
         Assert.IsTrue(result.IsValid);
+    }
+
+    [TestMethod]
+    public void XmlIsValid()
+    {
+        Fixture fixture = new();
+        fixture.Behaviors
+            .OfType<ThrowingRecursionBehavior>()
+            .ToList()
+            .ForEach(b => fixture.Behaviors.Remove(b));
+        fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
+        XmlInvoice invoice = fixture.Create<XmlInvoice>();
+
+        var result = XmlInvoiceValidator.Validate(invoice);
+        Assert.IsNull(result.Error, result.Error, result.Error);
+        Assert.IsTrue(result.IsValid, string.Join(Environment.NewLine, result.Validations
+            .Where(x => x.Severity == System.Xml.Schema.XmlSeverityType.Error).Select(s => s.Message)));
     }
 }
