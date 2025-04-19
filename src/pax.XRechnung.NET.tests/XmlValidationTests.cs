@@ -1,6 +1,8 @@
 
 using System.Reflection;
+using System.Text;
 using AutoFixture;
+using AutoFixture.Kernel;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET.tests;
@@ -42,6 +44,10 @@ public sealed class ValidationTests
             .ForEach(b => fixture.Behaviors.Remove(b));
         fixture.Behaviors.Add(new OmitOnRecursionBehavior());
 
+        fixture.Customize<EmbeddedDocumentBinaryObject>(c =>
+            c.With(x => x.Content, Convert.ToBase64String(Encoding.UTF8.GetBytes("Test doc content"))));
+
+
         XmlInvoice invoice = fixture.Create<XmlInvoice>();
 
         var result = XmlInvoiceValidator.Validate(invoice);
@@ -50,3 +56,4 @@ public sealed class ValidationTests
             .Where(x => x.Severity == System.Xml.Schema.XmlSeverityType.Error).Select(s => s.Message)));
     }
 }
+

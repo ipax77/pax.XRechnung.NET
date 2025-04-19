@@ -25,19 +25,19 @@ public class XmlItem
     /// <summary>
     /// Käufer-Kennung des Postens. (Optional)
     /// </summary>
-    [XmlElement("BuyersItemIdentification", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("BuyersItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-156")]
     public XmlItemIdentification? BuyersIdentifier { get; set; }
     /// <summary>
     /// Verkäufer-Kennung des Postens. (Optional)
     /// </summary>
-    [XmlElement("SellersItemIdentification", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("SellersItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-155")]
     public XmlItemIdentification? SellersIdentifier { get; set; }
     /// <summary>
     /// Standard-Kennung des Postens. (Optional)
     /// </summary>
-    [XmlElement("StandardItemIdentification", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("StandardItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-157")]
     public XmlItemIdentification? StandardIdentifier { get; set; }
 
@@ -46,7 +46,7 @@ public class XmlItem
     /// </summary>
     [XmlElement("CatalogueItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-158")]
-    public List<XmlItemIdentification> ClassificationIdentifiers { get; set; } = [];
+    public XmlItemIdentification? CatalogueItemIdentification { get; set; }
 
     /// <summary>
     /// Ursprungsland des Postens. (Optional)

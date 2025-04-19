@@ -21,7 +21,13 @@ public class XmlTime
     public string ValueString
     {
         get => Value.ToString("HH:mm:ss", CultureInfo.InvariantCulture);
-        set => Value = TimeOnly.ParseExact(value, "HH:mm:ss", CultureInfo.InvariantCulture);
+        set
+        {
+            if (TimeOnly.TryParseExact(value, "o", CultureInfo.InvariantCulture, DateTimeStyles.None, out var timeOnly))
+            {
+                Value = timeOnly;
+            }
+        }
     }
 
     /// <summary>

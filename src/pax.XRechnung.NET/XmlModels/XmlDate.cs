@@ -21,7 +21,13 @@ public class XmlDate
     public string ValueString
     {
         get => Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-        set => Value = DateTime.ParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        set
+        {
+            if (DateTime.TryParseExact(value, "o", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
+            {
+                Value = dateTime;
+            }
+        }
     }
 
     /// <summary>
