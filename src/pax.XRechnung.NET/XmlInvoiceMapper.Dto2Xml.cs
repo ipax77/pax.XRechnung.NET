@@ -34,11 +34,11 @@ public static partial class XmlInvoiceMapper
         {
             Id = new() { Content = dto.Id },
             Note = dto.Note,
-            ObjectIdentifier = string.IsNullOrEmpty(dto.ObjectIdentifier) ? null :
-             new() { Content = dto.ObjectIdentifier, SchemeIdentifier = dto.ObjectIdentifierSchema },
+            // ObjectIdentifier = string.IsNullOrEmpty(dto.ObjectIdentifier) ? null :
+            //  new() { Content = dto.ObjectIdentifier, SchemeIdentifier = dto.ObjectIdentifierSchema },
             InvoicedQuantity = new() { Value = dto.InvoicedQuantity, UnitCode = dto.InvoicedQuantityCode },
             LineExtensionAmount = new() { Value = dto.LineExtensionAmount, CurrencyID = currencyId },
-            OrderLineReference = dto.ReferencedPurchaseOrderLineReference,
+            // OrderLineReference = dto.ReferencedPurchaseOrderLineReference,
             BuyerAccountingReference = dto.BuyerAccountingReference,
             Item = new()
             {
@@ -51,7 +51,7 @@ public static partial class XmlInvoiceMapper
                 StandardIdentifier = string.IsNullOrEmpty(dto.StandardIdentifier) ? null :
                  new() { Content = dto.StandardIdentifier },
                 ClassificationIdentifiers = [.. dto.ClassificationIdentifiers.Select(s => new Identifier() { Content = s })],
-                CountryOfOrigin = dto.CountryOfOrigin,
+                // CountryOfOrigin = dto.CountryOfOrigin,
                 Attributes = [.. dto.Attributes.Select(s => new XmlItemAttributes() {
                     Name = s.Name,
                     Value = s.Value,
@@ -66,8 +66,6 @@ public static partial class XmlInvoiceMapper
             PriceDetails = new()
             {
                 PriceAmount = new() { Value = dto.PriceAmount, CurrencyID = currencyId },
-                PriceDiscount = dto.PriceDiscount == null ? null : new() { Value = dto.PriceDiscount.Value, CurrencyID = currencyId },
-                GrossPrice = dto.GrossPrice == null ? null : new() { Value = dto.GrossPrice.Value, CurrencyID = currencyId },
                 // PriceBaseQuantity = dto.PriceBaseQuantity == null ? null : new()
                 // {
                 //     Value = dto.PriceBaseQuantity.Value,

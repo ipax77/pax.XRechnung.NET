@@ -21,7 +21,7 @@ public class XmlInvoiceLine
     /// </summary>
     [XmlElement("UUID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-128")]
-    public Identifier? ObjectIdentifier { get; set; }
+    public string? ObjectIdentifier { get; set; }
 
     /// <summary>
     /// Ein Textvermerk, der unstrukturierte Informationen enthält, die für die Rechnungsposition maßgeblich sind.
