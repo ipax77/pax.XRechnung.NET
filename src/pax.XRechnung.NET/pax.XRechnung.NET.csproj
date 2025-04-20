@@ -101,4 +101,8 @@
       <PackagePath>.</PackagePath>
     </None>
   </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\pax.XRechnung.NET.Validator\pax.XRechnung.NET.Validator.csproj" />
+    </ItemGroup>
 </Project>

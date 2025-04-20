@@ -1,56 +1,24 @@
-using System.Xml;
-using System.Xml.Xsl;
+
+using System.Xml.Schema;
+using pax.XRechnung.NET.Validator;
 
 namespace pax.XRechnung.NET;
 
 public static partial class XmlInvoiceValidator
 {
-    private const string schematronRoute = "pax.XRechnung.NET.Resources.Schematrons";
-
     /// <summary>
     /// Validate xml string against Schmatrons
+    /// Requires a running Kosit validation Server. See Readme for details.
     /// </summary>
-    /// <param name="xml"></param>
-    public static ValidationResult ValidateSchematron(string xml)
+    /// <param name="xml">xml text</param>
+    /// <param name="kositUri">optional uri to the kosit validator, default is http://localhost:8080</param>
+    public static async Task<ValidationResult> ValidateSchematron(string xml, Uri? kositUri = null)
     {
         try
         {
-            XmlDocument xmlDocument = new();
-            xmlDocument.LoadXml(xml);
-
-            using XmlReader skeletonReader = XmlInvoiceWriter
-                .LoadEmbeddedResource(schematronRoute + ".iso_schematron_skeleton_for_saxon.xsl");
-
-            using XmlReader schematronReader = XmlInvoiceWriter.LoadEmbeddedResource(schematronRoute + ".PEPPOL-EN16931-UBL.sch");
-
-            XslCompiledTransform schematronToXslt = new();
-            using MemoryStream xsltStream = new();
-            using XmlWriter xsltWriter = XmlWriter.Create(xsltStream);
-
-            schematronToXslt.Load(skeletonReader);
-            schematronToXslt.Transform(schematronReader, xsltWriter);
-
-            xsltStream.Position = 0;
-
-            XslCompiledTransform validationXslt = new();
-            using XmlReader xsltReader = XmlReader.Create(xsltStream);
-            validationXslt.Load(xsltReader);
-
-            using MemoryStream resultStream = new();
-            using XmlWriter resultWriter = XmlWriter.Create(resultStream);
-            validationXslt.Transform(xmlDocument, resultWriter);
-
-            resultStream.Position = 0;
-            using StreamReader reader = new(resultStream);
-            string validationOutput = reader.ReadToEnd();
-
-            bool isValid = !validationOutput.Contains("<failed-assert", StringComparison.OrdinalIgnoreCase);
-
-            return new ValidationResult
-            {
-                IsValid = isValid,
-                Error = isValid ? null : validationOutput
-            };
+            var validationResult = await KositValidator.Validate(xml, kositUri)
+                .ConfigureAwait(false);
+            return MapToValidationResult(validationResult);
         }
         catch (Exception ex)
         {
@@ -62,4 +30,31 @@ public static partial class XmlInvoiceValidator
             throw;
         }
     }
+
+    private static ValidationResult MapToValidationResult(SchematronValidationResult kositResult)
+    {
+        var validationEvents = new List<ValidationMessage>();
+
+        foreach (var msg in kositResult.Messages)
+        {
+            var severity = msg.Severity.ToUpperInvariant() switch
+            {
+                "ERROR" => XmlSeverityType.Error,
+                "WARNING" => XmlSeverityType.Warning,
+                _ => XmlSeverityType.Warning
+            };
+
+            var message = $"{msg.Text}";
+            if (!string.IsNullOrWhiteSpace(msg.Path))
+            {
+                message += $" (Pfad: {msg.Path})";
+            }
+
+            var exception = new XmlSchemaException(message);
+            validationEvents.Add(new(exception, message, severity));
+        }
+
+        return new ValidationResult(validationEvents);
+    }
 }
+
