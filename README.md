@@ -154,7 +154,9 @@ catch (Exception ex)
 * The XmlInvoice might miss some specified properties
 
 # Java Schematron Validator
-* [xrechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md)
+Requires a running Kosit validation server [xrechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md)
+
+Server start:
 `java -jar .\validationtool-1.5.0-standalone.jar -s .\scenarios.xml  -r ${PWD} -D`
 
 # ChangeLog

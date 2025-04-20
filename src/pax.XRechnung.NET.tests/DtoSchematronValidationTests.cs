@@ -1,12 +1,40 @@
 
 using pax.XRechnung.NET.Dtos;
-using pax.XRechnung.NET.Validator;
 
 namespace pax.XRechnung.NET.tests;
 
 [TestClass]
 public class DtoSchematronValidationTests
 {
+    private static readonly string validatorUri = "http://localhost:8080";
+    private static bool kositServerIsRunning;
+
+    [ClassInitialize()]
+    public static async Task CheckKositAvailability(TestContext context)
+    {
+        kositServerIsRunning = await IsKositServerAvailable();
+    }
+
+    public static async Task<bool> IsKositServerAvailable(Uri? kostiUri = null)
+    {
+        try
+        {
+            using var client = new HttpClient
+            {
+                BaseAddress = kostiUri ?? new Uri(validatorUri),
+                Timeout = TimeSpan.FromSeconds(5)
+            };
+
+            // Try HEAD request for fast check
+            var response = await client.GetAsync("/");
+            return response.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public static InvoiceDto GetStandardInvoiceDto()
     {
         InvoiceDto invoiceDto = new()
@@ -94,32 +122,17 @@ public class DtoSchematronValidationTests
     [TestMethod]
     public void CanValidateStandardDto()
     {
+        if (!kositServerIsRunning)
+        {
+            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
+        }
         var invoiceDto = GetStandardInvoiceDto();
         var xml = XmlInvoiceWriter.Serialize(invoiceDto);
-        var validationResult = XmlInvoiceValidator.ValidateSchematron(xml);
+        var validationResult = XmlInvoiceValidator.ValidateSchematron(xml).GetAwaiter().GetResult();
 
         var message = validationResult.Error != null ? validationResult.Error
          : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
 
         Assert.IsTrue(validationResult.IsValid, message);
-    }
-
-    [TestMethod]
-    public void CanParseValidatorResponse()
-    {
-        string response = File.ReadAllText("/data/xrechnung/validatorResponse.xml");
-        var result = KositValidator.ParseValidatorResponse(response);
-        Assert.IsTrue(result);
-    }
-
-    [TestMethod]
-    public void CanKositValidateStandardDto()
-    {
-        var invoiceDto = GetStandardInvoiceDto();
-        var xml = XmlInvoiceWriter.Serialize(invoiceDto);
-        Assert.IsNotNull(xml);
-
-        var result = KositValidator.Validate(xml).GetAwaiter().GetResult();
-        Assert.IsNotNull(result);
     }
 }
