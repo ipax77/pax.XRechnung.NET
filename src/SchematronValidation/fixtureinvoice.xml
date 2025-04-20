@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ubl:Invoice xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:ubl="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+  <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+  <cbc:ID schemeID="SchemeIdentifiera6504dd5-3ffd-4e9a-b75d-424e031bfe21">Content5ae77db1-f9dc-4545-8ff9-f15512bd6e10</cbc:ID>
+  <cbc:IssueDate>2024-01-07</cbc:IssueDate>
+  <cbc:DueDate>2027-03-21</cbc:DueDate>
+  <cbc:InvoiceTypeCode>InvoiceTypeCode6403c466-4255-43b0-83ab-4f659a5d09be</cbc:InvoiceTypeCode>
+  <cbc:Note>Note856a10a5-ae8b-4117-b930-beac98a88f1d</cbc:Note>
+  <cbc:DocumentCurrencyCode>DocumentCurrencyCode9b333f6f-fcdb-49da-8625-291b52cd32cb</cbc:DocumentCurrencyCode>
+  <cbc:BuyerReference>BuyerReferenceed6d35a4-9063-4abd-8d51-7c73f87d555c</cbc:BuyerReference>
+  <cac:AdditionalDocumentReference>
+    <cbc:ID schemeID="SchemeIdentifierea574e25-f3d4-429e-8348-bf175cbdc276">Content37bd198c-18ff-4445-9222-6514e070ac6a</cbc:ID>
+    <cbc:DocumentDescription>DocumentDescriptionea46eda9-bc67-48e4-9049-f33d88286ced</cbc:DocumentDescription>
+    <cac:Attachment>
+      <cbc:EmbeddedDocumentBinaryObject mimeCode="MimeCode0778d224-e8ab-488d-958f-f92987801475" filename="FileNamee1ee80b6-77ad-4063-9465-707cf078c06b">VGVzdCBkb2MgY29udGVudA==</cbc:EmbeddedDocumentBinaryObject>
+      <cac:ExternalReference>
+        <cbc:URI>Uri52a572ca-e58f-483f-a42f-6a97b49f6c1a</cbc:URI>
+        <cbc:DocumentHash>DocumentHashec523e05-6e42-4395-93e0-d34c9151cf44</cbc:DocumentHash>
+        <cbc:HashAlgorithmMethod>HashAlgorithmMethodc21beb76-a51f-4b13-b5f2-f54765f24ac0</cbc:HashAlgorithmMethod>
+        <cbc:ExpiryDate>2026-06-02</cbc:ExpiryDate>
+        <cbc:ExpiryTime>00:00:00</cbc:ExpiryTime>
+        <cbc:MimeCode>MimeCodeba2c5f6a-1ac5-47c1-9a24-c1d60875567e</cbc:MimeCode>
+        <cbc:FormatCode>FormatCode9829387c-808d-41a0-9029-cc6e40cf394a</cbc:FormatCode>
+        <cbc:EncodingCode>EncodingCode34d75b3e-f14c-4840-809f-e83b9e5b48b2</cbc:EncodingCode>
+        <cbc:CharacterSetCode>CharacterSetCode21684ece-d90c-4ba1-a2d0-3a404e4031e8</cbc:CharacterSetCode>
+        <cbc:FileName>FileName636b868e-ae61-424e-bcde-b3262f826536</cbc:FileName>
+        <cbc:Description>33bb5d5f-92b9-4429-8c19-28becfce9ca8</cbc:Description>
+        <cbc:Description>56765ee2-5e64-486c-bf24-27cbe533deda</cbc:Description>
+        <cbc:Description>7a3a5172-a39b-4a3f-a041-aaf2b865bee0</cbc:Description>
+      </cac:ExternalReference>
+    </cac:Attachment>
+  </cac:AdditionalDocumentReference>
+  <cac:AdditionalDocumentReference>
+    <cbc:ID schemeID="SchemeIdentifierc65a1f2e-44dd-43f5-adf2-f29f9c537bb4">Content0f29e526-0d0a-43d4-b9c4-9a8b981ea504</cbc:ID>
+    <cbc:DocumentDescription>DocumentDescriptionf6a3da40-e531-4e25-8c51-531d6c4228d8</cbc:DocumentDescription>
+    <cac:Attachment>
+      <cbc:EmbeddedDocumentBinaryObject mimeCode="MimeCode6106303f-ade8-42af-b349-573df2006f24" filename="FileNamea46cc021-395a-4166-b658-798ef93a086b">VGVzdCBkb2MgY29udGVudA==</cbc:EmbeddedDocumentBinaryObject>
+      <cac:ExternalReference>
+        <cbc:URI>Urid8204f4e-3a1a-4de0-b4e8-2175e4a40c1b</cbc:URI>
+        <cbc:DocumentHash>DocumentHash4f14ba93-7b7d-4160-acb8-f60f612df9a1</cbc:DocumentHash>
+        <cbc:HashAlgorithmMethod>HashAlgorithmMethod4b3dab3b-3f1a-449c-ad7f-4704d004d57f</cbc:HashAlgorithmMethod>
+        <cbc:ExpiryDate>2025-07-06</cbc:ExpiryDate>
+        <cbc:ExpiryTime>00:00:00</cbc:ExpiryTime>
+        <cbc:MimeCode>MimeCode6f117459-b2f7-4dc9-a577-1b444e43430e</cbc:MimeCode>
+        <cbc:FormatCode>FormatCode7ebaa0bb-190c-461b-b12f-b91aebbf084e</cbc:FormatCode>
+        <cbc:EncodingCode>EncodingCode7d9305e5-d661-472b-a9cf-f1546d93d901</cbc:EncodingCode>
+        <cbc:CharacterSetCode>CharacterSetCode53d84c3b-199e-4a98-a618-a67fd4c5671f</cbc:CharacterSetCode>
+        <cbc:FileName>FileNamea34c7ed5-c3d0-49cd-bf84-31d44b295efd</cbc:FileName>
+        <cbc:Description>d239d48a-252a-4cb9-b2f2-d59d2dee3b4c</cbc:Description>
+        <cbc:Description>2d397111-e1b3-495b-aaa6-0ca18e5fff52</cbc:Description>
+        <cbc:Description>39350041-e25c-4d7c-8d64-31ad7f420f72</cbc:Description>
+      </cac:ExternalReference>
+    </cac:Attachment>
+  </cac:AdditionalDocumentReference>
+  <cac:AdditionalDocumentReference>
+    <cbc:ID schemeID="SchemeIdentifier75d1dee2-28d4-4585-ada6-8f2561d131d1">Content2017d576-90ba-408a-85eb-888952742dd6</cbc:ID>
+    <cbc:DocumentDescription>DocumentDescription434d6c9d-fca9-45ab-afcb-04ef41c0ab21</cbc:DocumentDescription>
+    <cac:Attachment>
+      <cbc:EmbeddedDocumentBinaryObject mimeCode="MimeCoded72db3bf-93c7-4b67-98bd-ceccbabfc5cd" filename="FileName5d8cff2e-37d4-44d2-881b-44d09818e453">VGVzdCBkb2MgY29udGVudA==</cbc:EmbeddedDocumentBinaryObject>
+      <cac:ExternalReference>
+        <cbc:URI>Uria117cd04-ccdc-4924-846a-f2ea5b1d86ea</cbc:URI>
+        <cbc:DocumentHash>DocumentHashba5ba30b-e829-464a-94ff-56dbad6f4b9f</cbc:DocumentHash>
+        <cbc:HashAlgorithmMethod>HashAlgorithmMethodc0382586-57c7-4314-8500-09a3ff6aff47</cbc:HashAlgorithmMethod>
+        <cbc:ExpiryDate>2026-02-09</cbc:ExpiryDate>
+        <cbc:ExpiryTime>00:00:00</cbc:ExpiryTime>
+        <cbc:MimeCode>MimeCode65a91ccb-fb63-4d8f-aa5c-e4802243041e</cbc:MimeCode>
+        <cbc:FormatCode>FormatCodea277695d-bad8-45d9-b7b1-e91e251492c9</cbc:FormatCode>
+        <cbc:EncodingCode>EncodingCodeee4b8cf9-575e-4259-8fac-d27a23f45bef</cbc:EncodingCode>
+        <cbc:CharacterSetCode>CharacterSetCode2fdfd40b-9f80-44ec-90a6-2da30d8e50b1</cbc:CharacterSetCode>
+        <cbc:FileName>FileNameaa1c2c99-55c0-4242-8399-974351eef0af</cbc:FileName>
+        <cbc:Description>fb51da65-e983-42d1-8fcc-c381d93c9cac</cbc:Description>
+        <cbc:Description>ccccf15b-2f54-49e5-a811-1d66fb34c08f</cbc:Description>
+        <cbc:Description>8950586a-711e-48ce-9b7b-4372c348b626</cbc:Description>
+      </cac:ExternalReference>
+    </cac:Attachment>
+  </cac:AdditionalDocumentReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:WebsiteURI>Website47ee3689-960c-4f8e-bb59-ed483d088a57</cbc:WebsiteURI>
+      <cbc:LogoReferenceID>LogoReferenceId84b1d85f-1708-4722-b929-8eb128654562</cbc:LogoReferenceID>
+      <cbc:EndpointID schemeID="SchemeId74ba1a3b-de7c-4e14-9ab3-03b3c2b2a859">Content8d968b23-de03-4707-b63e-ab91d570bb6d</cbc:EndpointID>
+      <cbc:IndustryClassificationCode>Content365cc86a-5e0d-47bb-a92e-8cc62dec7f90</cbc:IndustryClassificationCode>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="SchemeIdentifier3bdee386-6178-4cfc-9b7b-80a70d5f8105">Content0dcf565c-18bd-40a7-b3d9-b8590e917b0c</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="SchemeIdentifierd8479d3d-7bc7-44e9-aac5-359d802bcf38">Contentec1d06c2-8a1d-4465-a644-ad102ca4e2e0</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="SchemeIdentifiera2a86b7c-3157-4324-9189-ed88e82b4242">Content06464a8d-cdf1-4062-96ea-884b34d0a22f</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>Name56d56507-1237-4e20-a9a1-f05d218f052d</cbc:Name>
+      </cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>StreetNameb269aff0-40af-4749-ba5f-34e12eaa283f</cbc:StreetName>
+        <cbc:AdditionalStreetName>AdditionalStreetNamee0444199-2919-4016-acff-c2073756ed48</cbc:AdditionalStreetName>
+        <cbc:BlockName>BlockNamec041aeca-2696-4e6c-96a7-18d23b9c77bf</cbc:BlockName>
+        <cbc:CityName>City55916f1f-f229-4101-9684-3bb22208888f</cbc:CityName>
+        <cbc:PostalZone>PostCoded6a337f7-caac-416c-8901-67da8740305b</cbc:PostalZone>
+        <cac:Country>
+          <cbc:IdentificationCode>IdentificationCoded261c369-837d-4dfe-94d5-50430984bb03</cbc:IdentificationCode>
+          <cbc:Name>Namee2e304a1-98fe-410b-bc70-74678b30bd7f</cbc:Name>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:RegistrationName>RegistrationNameab96a043-91d7-4570-8e5e-fdc7fd578070</cbc:RegistrationName>
+        <cbc:CompanyID>CompanyId6e147e70-dc9c-4791-bdee-94ddf1082229</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="SchemeIdentifier7ed5324e-59ca-4562-852a-fb90870aa80a">Contentba43667d-0afa-425d-b7cb-faa282e87a2c</cbc:ID>
+        </cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>RegistrationNamec94c284e-0438-42f9-bcee-fba206281cbb</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+      <cac:Contact>
+        <cbc:ID schemeID="SchemeIdentifier1435e2a2-d387-496b-ae1a-a81ccafe1737">Content2f57ba32-c3c8-4742-8f9f-46b25c714664</cbc:ID>
+        <cbc:Name>Named7b46848-f750-4f5f-8ae7-ab55f9a815a6</cbc:Name>
+        <cbc:Telephone>Telephonecbb4e27c-4aa1-42cf-a672-7137c70b7474</cbc:Telephone>
+        <cbc:ElectronicMail>Emailf63fad1c-b36b-42e8-bfbe-f1084f2cb844</cbc:ElectronicMail>
+      </cac:Contact>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cbc:WebsiteURI>Website3c0de0f6-2bfa-4325-9cf5-bc780e8266a7</cbc:WebsiteURI>
+      <cbc:LogoReferenceID>LogoReferenceId60cdbf53-62c2-4683-bb0a-c5195fd45d28</cbc:LogoReferenceID>
+      <cbc:EndpointID schemeID="SchemeIda44c070c-a98d-47d1-ad1d-63af219e5c80">Content0378cc83-ded1-4807-964b-77c98970e821</cbc:EndpointID>
+      <cbc:IndustryClassificationCode>Content726deab0-74b7-41ff-998c-c7e8739777ce</cbc:IndustryClassificationCode>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="SchemeIdentifier1cbad3c1-231c-4ccd-b702-a6d4f34d8a14">Content5084fd52-057e-423d-817b-45eafaea8bed</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="SchemeIdentifier9df9169e-76b0-4a58-8c23-6cd063567ed2">Content585fdacc-8ddb-4bc2-a6e9-c9022c34216d</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="SchemeIdentifier6a2b3bf8-7186-4f9d-962e-f6ee0c9bb49f">Content61cb5101-5415-4601-ab0c-c9922b1d67dc</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>Name6e0f976d-9bd6-4e88-9cae-76410b14989e</cbc:Name>
+      </cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>StreetName6acc1fe2-92f6-4bac-a5c4-36de821085d7</cbc:StreetName>
+        <cbc:AdditionalStreetName>AdditionalStreetName9061f6b8-dd2d-415f-a5f8-9a74a817aede</cbc:AdditionalStreetName>
+        <cbc:BlockName>BlockName1b43ecb1-9e45-4121-8786-898f0b5b2068</cbc:BlockName>
+        <cbc:CityName>Cityf6623d8b-65d6-4fb9-b280-0391d6a0b2d2</cbc:CityName>
+        <cbc:PostalZone>PostCodeef551240-5cb1-4fb7-a105-e7240f87a492</cbc:PostalZone>
+        <cac:Country>
+          <cbc:IdentificationCode>IdentificationCode990373d6-f405-42f5-a3d7-d2377f41e70b</cbc:IdentificationCode>
+          <cbc:Name>Name8d223883-bf31-4d65-ba16-24527e3bce81</cbc:Name>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:RegistrationName>RegistrationNameb28ece13-ec87-4de6-b738-c2f0a3050b8a</cbc:RegistrationName>
+        <cbc:CompanyID>CompanyId03c07842-0d3c-401a-bad3-2c7b8624675d</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="SchemeIdentifier59074900-9f2d-4a6e-bcb9-40d32c7930fa">Content7e203950-11ed-41a2-a70a-a4238bc09117</cbc:ID>
+        </cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>RegistrationNameec4b59f9-dfed-40f2-b7aa-1bdff7ceba2e</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+      <cac:Contact>
+        <cbc:ID schemeID="SchemeIdentifier9200de82-63d7-40ae-ac83-88f411d86e17">Content4f08fb17-799e-4722-a6f9-3c5d6826ec59</cbc:ID>
+        <cbc:Name>Namebacdf308-0196-4aab-a4e8-a6dda609a20f</cbc:Name>
+        <cbc:Telephone>Telephone9b02dd94-60bd-477a-a338-8b7462b6fd6f</cbc:Telephone>
+        <cbc:ElectronicMail>Emaildcf9a2dd-6e93-4c2a-8887-1d799dfad6bf</cbc:ElectronicMail>
+      </cac:Contact>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentMeans>
+    <cbc:ID schemeID="SchemeIdentifier8002d048-3343-4296-9ef2-4bb63a5adeab">Content1295f0f9-fa03-41e5-a195-d9d5282e255a</cbc:ID>
+    <cbc:PaymentMeansCode>PaymentMeansTypeCode2be27621-96a4-46bd-b935-11f6909d6fee</cbc:PaymentMeansCode>
+    <cbc:InstructionNote>PaymentMeansText5ff38c76-d8e3-4f47-ba82-396dd93806cd</cbc:InstructionNote>
+    <cac:CardAccount>
+      <cbc:PrimaryAccountNumberID>Number64f68433-90e8-4274-8ab8-c5c226f34e54</cbc:PrimaryAccountNumberID>
+      <cbc:NetworkID>NetworkIdd054f1be-c1e9-4ae5-a3b0-6800db02f524</cbc:NetworkID>
+      <cbc:HolderName>Name44570425-ade0-4a88-a045-81397f2dde19</cbc:HolderName>
+    </cac:CardAccount>
+    <cac:PayeeFinancialAccount>
+      <cbc:ID schemeID="SchemeIdentifierd960ad41-3386-4b8b-9d53-a3a6aaebdea4">Contentf2dbeb36-240f-4c1d-b353-f6128a1ed8dc</cbc:ID>
+      <cbc:Name>Name0b24d0b7-a67e-4598-82b8-2f6f50598f34</cbc:Name>
+      <cbc:PaymentNote>618abae3-a1c9-40f5-8930-eb132c9a2eab</cbc:PaymentNote>
+      <cbc:PaymentNote>a67750cf-6770-40e0-b4b5-98274ae6d895</cbc:PaymentNote>
+      <cbc:PaymentNote>b6b1a5b8-0636-4e65-8ab5-5d4c3b65e8cf</cbc:PaymentNote>
+      <cac:FinancialInstitutionBranch>
+        <cbc:ID schemeID="SchemeIdentifier96246ef7-0cac-4b77-b36d-bb290266ff8e">Content39e0fdfd-df7c-4343-997d-87794da87e52</cbc:ID>
+        <cbc:Name>Name3241fe69-2bb4-4052-aaea-cb30f8af1fb9</cbc:Name>
+      </cac:FinancialInstitutionBranch>
+    </cac:PayeeFinancialAccount>
+  </cac:PaymentMeans>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="CurrencyID77161db6-ec5b-4c7f-9b54-daaa217458a7">190</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="CurrencyID35f41427-8e2e-4db4-85d0-2cb93f540ec8">88</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="CurrencyID71e42253-599f-47be-a801-bd8487b5bdc8">65</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID schemeID="SchemeIdentifiera7b46bca-8cc7-4557-8901-f9492bbc92fe">Content07522198-ba27-4bce-b563-ee256da3d60a</cbc:ID>
+        <cbc:Percent>86</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="SchemeIdentifiere2f326f0-8cb4-4fed-a31d-99764b0df298">Content734309c3-dcbe-4f2b-898f-e37dcb1da5a4</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="CurrencyIDd2b3318d-0481-4216-b64f-ff68218c74a8">226</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="CurrencyIDc0833a56-fc1f-4ee9-9fd3-ddb35bc4a467">207</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID schemeID="SchemeIdentifiera247d653-2c80-48fa-aa65-9b132397950c">Content23dd77cb-a2d0-4cdc-bc79-aaeac336abbe</cbc:ID>
+        <cbc:Percent>214</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="SchemeIdentifier3e0c79c4-36f5-425e-b9e2-e9d54a5d3b8e">Content7d1a0395-3807-4377-9b4c-1a3bf245c206</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="CurrencyIDcdf1e48b-2091-4267-b173-defc007608eb">30</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="CurrencyID5f8ea674-0b04-4d9f-bd1b-405c81d9bf57">200</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID schemeID="SchemeIdentifierb1868c71-6775-41ff-8547-0d66938042d9">Contentb911a48e-7bf1-4aa7-ae75-27f99897c35a</cbc:ID>
+        <cbc:Percent>132</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="SchemeIdentifierd2eb3055-3b95-4388-a584-9e1d4f36c278">Content4143cd22-200b-48c6-9e5e-d2b85eb0e575</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="CurrencyID4c684fcb-cb45-4910-ae96-8a33f0af2cd7">222</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="CurrencyIDcaf92f0b-f3b4-48ea-b474-821388008980">125</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="CurrencyIDe99be9b8-7f5a-4db4-a08f-bf1ef4a0e0ba">145</cbc:TaxInclusiveAmount>
+    <cbc:AllowanceTotalAmount currencyID="CurrencyID82b6ce4a-9e1e-432a-b208-c31ee48302c2">82</cbc:AllowanceTotalAmount>
+    <cbc:ChargeTotalAmount currencyID="CurrencyIDca1d2c00-a7b5-4c28-bbf8-cf084573f9a5">32</cbc:ChargeTotalAmount>
+    <cbc:PrepaidAmount currencyID="CurrencyIDd0b0c12a-6992-462d-9bea-767e9b6dcdca">166</cbc:PrepaidAmount>
+    <cbc:PayableRoundingAmount currencyID="CurrencyIDbbd31957-ae0f-41cd-b6be-fb742f314365">193</cbc:PayableRoundingAmount>
+    <cbc:PayableAmount currencyID="CurrencyID1773f097-fb9b-4b00-b60e-baa15d50554f">39</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID schemeID="SchemeIdentifier5a1b161c-e1c0-4d30-b391-ebed540f444f">Content4707393c-e176-4d45-9a42-0e69771c138b</cbc:ID>
+    <cbc:UUID>ObjectIdentifier81915668-dd54-44bd-ae73-22960e5c752c</cbc:UUID>
+    <cbc:Note>Notec5351a58-e827-408d-b2de-6a8a813f7b23</cbc:Note>
+    <cbc:InvoicedQuantity unitCode="UnitCode2f35c663-f97b-45fc-92a7-6b308e33e837">171</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="CurrencyID11155dfd-d76b-40a1-b275-fa6f8d028bae">172</cbc:LineExtensionAmount>
+    <cbc:AccountingCost>BuyerAccountingReferencea46d68ee-461c-4d03-a48f-121b135b09ce</cbc:AccountingCost>
+    <cac:InvoicePeriod>
+      <cbc:StartDate>2025-10-13</cbc:StartDate>
+      <cbc:StartTime>00:00:00</cbc:StartTime>
+      <cbc:EndDate>2025-05-24</cbc:EndDate>
+      <cbc:EndTime>00:00:00</cbc:EndTime>
+      <cbc:DescriptionCode>DescriptionCode2f09c4e3-68d1-4612-b415-e817567c1a0d</cbc:DescriptionCode>
+      <cbc:Description>Description4ebb3216-ab72-42b0-adf9-2d4fa1324941</cbc:Description>
+    </cac:InvoicePeriod>
+    <cac:OrderLineReference>
+      <cbc:LineID schemeID="SchemeIdentifiere4c631df-4083-449e-8806-a7f1a67fff70">Contenta1b0f6e4-2c08-4d62-8ee9-751bd2497172</cbc:LineID>
+      <cbc:UUID>Uuid6a0afabf-fbfc-4935-965b-97329e492e66</cbc:UUID>
+    </cac:OrderLineReference>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>true</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCodebefc674c-3dbb-46a9-b6eb-e0da7b0f7600</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReasone3f62691-d14b-4a8f-b2ea-bc790b569c08</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>52</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyIDb54f9dc1-e55e-44f6-b8cd-3b595af9df77">137</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyIDe2bc5df7-a21a-4a2f-9f89-293b8e98e10a">248</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCode6f7e24d4-bf53-40f7-946b-a97475b25b83</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReason0decbe1c-7836-4930-9748-c35aacf28d19</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>187</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyIDf6941dec-30a7-4a39-b8b8-89b72fae6618">70</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyID05d62934-a957-44d6-92fc-f572f010efd2">124</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>true</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCode1089c4fe-cbd7-4555-aa11-5bbb7a57cf14</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReason659fea5d-2b7f-4512-af8b-be8270d32e59</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>142</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyIDc008c4fb-7cc2-4507-b801-cc06215fc792">102</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyIDef633385-2b70-4eb0-9df9-32c6a81730fe">113</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="CurrencyIDb0bba6c6-48bb-43f9-bf52-2d920100dcef">136</cbc:TaxAmount>
+      <cbc:RoundingAmount currencyID="CurrencyIDdc70d3e4-7de8-4c19-97fd-52816e7f5dec">83</cbc:RoundingAmount>
+    </cac:TaxTotal>
+    <cac:Item>
+      <cbc:Description>Description78626382-8974-4451-8832-3434df19fa3f</cbc:Description>
+      <cbc:Name>Nameefdf4b98-b6e1-48fe-a9bf-8e02f2b9ca35</cbc:Name>
+      <cac:BuyersItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifier5dac1150-cac8-44ab-8752-b4cef50e6287">Content157508c1-c4c5-4baa-b62e-333316141f9d</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifier5ee78148-2091-4d42-bbae-9b4dbecb45b8">Content047ad97f-8320-4b77-8c75-ccc91715b6cc</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifiere9417466-9989-4482-89c8-c3835d31b8a3">Contentff10fbed-ce3d-499b-a4e3-0e3ad3f35dbd</cbc:BarcodeSymbologyID>
+      </cac:BuyersItemIdentification>
+      <cac:SellersItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifier542cffdf-2b70-4f2e-8f12-0832b891676b">Contentc4e167f0-c4de-4c69-8b98-0e1ce1990eaf</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifierf0647694-6d41-40f4-8bab-eee72aff7aeb">Contentef97b0e6-75a9-4ef0-9182-1be717317181</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifier2d5f7d37-c842-4639-909d-fb53b0f1c092">Content898312c8-db68-4f72-9242-c8c073825b60</cbc:BarcodeSymbologyID>
+      </cac:SellersItemIdentification>
+      <cac:StandardItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifier447c8bd0-2e54-4b4a-ab46-279d5d46b251">Content88006872-75dc-427e-a59f-31cb08b78de5</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifier7c0b7ff8-24bb-40be-962f-869db79f8c36">Content047f1f9c-065a-4cef-a3d8-40a1dc5fca27</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifier68dd49d9-58f2-4736-92b3-68fd1504680c">Contente81121f3-d686-48e6-b01e-76405ea690b1</cbc:BarcodeSymbologyID>
+      </cac:StandardItemIdentification>
+      <cac:CatalogueItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifier03fe5424-3143-4f59-b260-a33612018cb8">Content09bb10e7-4102-477d-a951-973a0eeec964</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifierc287c381-2909-4419-8335-eb69bee71899">Content8d90b1a0-bd71-439c-90e7-5664ef26004d</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifierbd0d8589-246d-4d1f-a398-184409425c70">Content7caa61d2-ceb3-4e03-b887-ab73adb3b9ae</cbc:BarcodeSymbologyID>
+      </cac:CatalogueItemIdentification>
+      <cac:OriginCountry>
+        <cbc:IdentificationCode>IdentificationCodec05e5bc0-6f2a-470b-aae5-bd8b67184490</cbc:IdentificationCode>
+        <cbc:Name>Name3bc0e4a3-3acf-46d6-9ab6-4d7517848545</cbc:Name>
+      </cac:OriginCountry>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID schemeID="SchemeIdentifierc7dba6b8-bef8-4e74-8114-592ddfa2e366">Contentea101091-26ca-44ca-9836-5924ce16655a</cbc:ID>
+        <cbc:Percent>3</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="SchemeIdentifiere50be5d3-1c50-41a9-93cd-b337d9e38926">Contentdbcb98ee-5369-4c87-b6b0-966c338634ac</cbc:ID>
+        </cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Name2d198832-5130-4949-a4ed-6cf10d73c855</cbc:Name>
+        <cbc:Value>Value0f72b7be-1ad7-4539-97a1-5793b54f3a8c</cbc:Value>
+      </cac:AdditionalItemProperty>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Namecc9b6923-38b8-4741-b68b-46326d24c4f6</cbc:Name>
+        <cbc:Value>Value43c5424c-21da-41f6-aadb-90c93966479d</cbc:Value>
+      </cac:AdditionalItemProperty>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Name892d32d1-6899-4104-afb4-4773aefe2ffb</cbc:Name>
+        <cbc:Value>Valued2ac4d9d-4ffc-4e48-b17b-54b601211c6d</cbc:Value>
+      </cac:AdditionalItemProperty>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="CurrencyID57371b23-b1fb-49f7-9171-04b6a7ef973f">151</cbc:PriceAmount>
+      <cbc:BaseQuantity unitCode="UnitCode4c0e5915-6168-44ba-b110-e60e18fa3bc2">71</cbc:BaseQuantity>
+    </cac:Price>
+  </cac:InvoiceLine>
+  <cac:InvoiceLine>
+    <cbc:ID schemeID="SchemeIdentifierff6432fa-9dd7-4067-848e-7a19e919c7cd">Content10a2c870-9f04-43ca-95d9-5d6396810799</cbc:ID>
+    <cbc:UUID>ObjectIdentifier6e63f6d0-426a-4045-8b1d-8d0c8900292f</cbc:UUID>
+    <cbc:Note>Note0706ce35-21e3-469a-b7cf-c02069bf5924</cbc:Note>
+    <cbc:InvoicedQuantity unitCode="UnitCode65576023-b6c9-4006-a5c1-2855ae1799e9">233</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="CurrencyID79c3d008-0fca-4f28-bf93-97a40327f44b">219</cbc:LineExtensionAmount>
+    <cbc:AccountingCost>BuyerAccountingReference04ab87de-0021-4ae5-9bed-a5ec2eeb4596</cbc:AccountingCost>
+    <cac:InvoicePeriod>
+      <cbc:StartDate>2023-10-02</cbc:StartDate>
+      <cbc:StartTime>00:00:00</cbc:StartTime>
+      <cbc:EndDate>2023-11-29</cbc:EndDate>
+      <cbc:EndTime>00:00:00</cbc:EndTime>
+      <cbc:DescriptionCode>DescriptionCode076031be-4c0f-4037-b626-f446737821e7</cbc:DescriptionCode>
+      <cbc:Description>Descriptiond99c3a4d-2ec7-478c-9db5-b1e724354fd6</cbc:Description>
+    </cac:InvoicePeriod>
+    <cac:OrderLineReference>
+      <cbc:LineID schemeID="SchemeIdentifiere3a71683-b0be-4528-a3fc-0e5ec61c9016">Content95cb01b0-59ec-4a6e-a70f-6e1c0c562d56</cbc:LineID>
+      <cbc:UUID>Uuideed418c1-853e-43a2-84b8-8546757667df</cbc:UUID>
+    </cac:OrderLineReference>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCoded5711990-717b-42a0-9ff7-549ba528fe29</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReason066bfcd4-f6fb-4af9-97ed-b2bea81971d2</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>116</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyID370b8f53-4bcd-4f7d-8eb6-62bf4c3d298a">196</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyIDbf8072f9-368f-4247-b370-6302f0eb9ba2">101</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>true</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCodebf842764-553f-4148-a8dc-971b3b1c28bc</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReason8c0b41ce-90fc-4f8c-8569-fcb356ac24f2</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>55</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyID62a6e024-885f-4476-af5d-5ceb6677e61b">251</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyID92520855-bf48-44f3-a591-ab5841f6f323">170</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCodeb84a5d8a-00bd-43be-abf2-66ca41183839</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReason16234169-c48c-46ca-8944-f701481e7808</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>141</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyID15adeb2b-cf60-49bc-921c-64aa396ac5df">66</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyID06a10986-708f-43a1-bdb5-a23e7fd42074">242</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="CurrencyID9b873f6c-8265-409c-9dc3-98271e2379d4">33</cbc:TaxAmount>
+      <cbc:RoundingAmount currencyID="CurrencyID6d4c841d-0bfc-4e71-9da6-c0e79251b435">50</cbc:RoundingAmount>
+    </cac:TaxTotal>
+    <cac:Item>
+      <cbc:Description>Description38633e38-928d-4b29-8b9e-98ffec53e74b</cbc:Description>
+      <cbc:Name>Name582085eb-b02e-4344-af1f-44847141ed0c</cbc:Name>
+      <cac:BuyersItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifier6225db58-ae6e-475e-8d5f-a67a41c68579">Contentf02c2d87-03fb-41ba-90bf-8a2f767302ed</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifier383eacf5-7fa0-46f0-9972-7e01e7b88de3">Contente66f73ab-8237-4b4e-b4b2-5a269932f491</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifieraec4ea9d-d042-4e1c-bb9b-9296c500a4b4">Contenta9eac3c0-e1ea-4042-a6df-8d6cf2a5cdc8</cbc:BarcodeSymbologyID>
+      </cac:BuyersItemIdentification>
+      <cac:SellersItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifierdf465573-8ad4-44d6-83a4-37420436244f">Content5b76110d-af34-4881-806d-da6cc1f5d080</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifier66ccb317-429f-4cfe-a08f-dda268dbc074">Contentbad5fe62-c234-48fd-bc61-34545a911f85</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifierc7a7aca5-30a9-4edf-a007-72876c4a7d79">Content3814b6f3-b300-4db1-8c18-4220345d7293</cbc:BarcodeSymbologyID>
+      </cac:SellersItemIdentification>
+      <cac:StandardItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifier70031bc1-bfc3-4f70-b048-6bb200b8ab94">Contenteff00649-12c9-4519-b38b-c63a95f53ce3</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifierf50d8388-8b4d-49cf-b2f3-c2e2052e7a70">Content6286b0ab-11ac-487c-bc65-25e7c54622b4</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifier8fe98ed1-9225-4539-b0e9-15bf567cea42">Contenta12e0c1c-dd33-4504-89c8-7b019eb4da78</cbc:BarcodeSymbologyID>
+      </cac:StandardItemIdentification>
+      <cac:CatalogueItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifier0296d825-b7cf-4d7b-95a7-0bd34341077b">Content1b5d9ae2-836a-4f73-a30e-3a95517293f0</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifier44eca31e-e47f-4626-bcee-5c9a464a4080">Contentb12642d5-1a22-4085-8b80-ac0dbab9d278</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifierba07de42-a59f-4388-92e8-a7d21652203a">Contentd6535cae-854e-4019-87e0-dcb5a0efe6c4</cbc:BarcodeSymbologyID>
+      </cac:CatalogueItemIdentification>
+      <cac:OriginCountry>
+        <cbc:IdentificationCode>IdentificationCode63a6a366-5985-40fc-9994-57c07a2ff474</cbc:IdentificationCode>
+        <cbc:Name>Nameeef5b2ab-f0bd-49c0-a02f-87fb88f4332f</cbc:Name>
+      </cac:OriginCountry>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID schemeID="SchemeIdentifierbded1d0b-2b22-4861-8665-a970385c5ab3">Content743a5e5a-3628-4089-bf4d-3919319e81b6</cbc:ID>
+        <cbc:Percent>199</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="SchemeIdentifier6893ed01-6fc9-4d72-a795-5061b769110e">Content9825d98f-3f4c-4ab9-96ae-28819374d42a</cbc:ID>
+        </cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Named2ccae1d-e2ac-4d05-813f-8eb711f71cb9</cbc:Name>
+        <cbc:Value>Valuef8bff85b-3a14-4406-b612-89ae58540e56</cbc:Value>
+      </cac:AdditionalItemProperty>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Name5bcbf115-4ca3-4b71-86e2-7e49aebc8506</cbc:Name>
+        <cbc:Value>Valuebdad917b-89c7-4436-b5b3-a6ac11cb0fb0</cbc:Value>
+      </cac:AdditionalItemProperty>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Name1ba83712-f0a7-4d11-93a3-30f377a91f2a</cbc:Name>
+        <cbc:Value>Value58542c23-bf2d-4467-be65-734537b7375e</cbc:Value>
+      </cac:AdditionalItemProperty>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="CurrencyID92be3190-6b56-40f5-8d11-f9cbf2318213">120</cbc:PriceAmount>
+      <cbc:BaseQuantity unitCode="UnitCodeb65f90a0-47d7-400a-b57f-85d019dbb345">62</cbc:BaseQuantity>
+    </cac:Price>
+  </cac:InvoiceLine>
+  <cac:InvoiceLine>
+    <cbc:ID schemeID="SchemeIdentifierd1fe6847-29b1-40f9-a7bc-435fbefbcb66">Content8682c191-af93-400b-8d90-d6fe1316f521</cbc:ID>
+    <cbc:UUID>ObjectIdentifier2bfa9ed2-2852-48af-9b1b-a88d1bb83078</cbc:UUID>
+    <cbc:Note>Notebd25f803-5ac4-4c6f-9699-24e3ce29eea8</cbc:Note>
+    <cbc:InvoicedQuantity unitCode="UnitCode1d27f075-de92-4c5e-8396-78149e802d4c">161</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="CurrencyIDf5632d38-b88e-4bef-83a4-99547c09a67c">130</cbc:LineExtensionAmount>
+    <cbc:AccountingCost>BuyerAccountingReference02f57cce-4121-4a3a-b6c6-c9181e02016d</cbc:AccountingCost>
+    <cac:InvoicePeriod>
+      <cbc:StartDate>2026-02-25</cbc:StartDate>
+      <cbc:StartTime>00:00:00</cbc:StartTime>
+      <cbc:EndDate>2025-01-12</cbc:EndDate>
+      <cbc:EndTime>00:00:00</cbc:EndTime>
+      <cbc:DescriptionCode>DescriptionCode789d4912-882e-4b96-8220-8c727840375a</cbc:DescriptionCode>
+      <cbc:Description>Description7626fc6b-f30e-4312-88b9-3cdb114835d0</cbc:Description>
+    </cac:InvoicePeriod>
+    <cac:OrderLineReference>
+      <cbc:LineID schemeID="SchemeIdentifier821f997a-734e-457a-ae38-4496e14303a8">Content0fe09ecc-c2f1-4f30-9b91-70ee287af942</cbc:LineID>
+      <cbc:UUID>Uuid84648ae3-e5f6-44e5-9251-980218320146</cbc:UUID>
+    </cac:OrderLineReference>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>true</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCode696b6e6b-0d39-4a54-b688-8424a18bed26</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReason8796e600-00be-4c79-8566-77ce17ae2333</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>46</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyID54d81adf-8782-47cc-b6df-8d43e3ac0c99">129</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyID9a35492f-2ba1-47b3-8084-9031bc41deb1">89</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCodec7936559-0859-4410-bc33-d0936f9b2f74</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReason8e30d34f-20f4-4722-975b-8cf49f185abe</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>253</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyID62ca3ff9-27e5-44ad-8cc3-7825c6dfca14">178</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyID673a7af6-3276-4890-a7f6-d8974bb48ea4">158</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:AllowanceCharge>
+      <cbc:ChargeIndicator>true</cbc:ChargeIndicator>
+      <cbc:AllowanceChargeReasonCode>AllowanceReasonCodecc05b5cd-706d-4289-999e-af1003aa0c37</cbc:AllowanceChargeReasonCode>
+      <cbc:AllowanceChargeReason>AllowanceReason50deaf30-ef0b-4693-971b-702600c095de</cbc:AllowanceChargeReason>
+      <cbc:MultiplierFactorNumeric>241</cbc:MultiplierFactorNumeric>
+      <cbc:Amount currencyID="CurrencyID4e89ea1a-3edb-4789-89b8-336c6b8228a0">217</cbc:Amount>
+      <cbc:BaseAmount currencyID="CurrencyID0a390682-dbf6-4f08-b4ed-13e0f65762cb">51</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="CurrencyIDcebda648-4eb0-4192-aa02-cf007b78b011">138</cbc:TaxAmount>
+      <cbc:RoundingAmount currencyID="CurrencyID0bce0a72-be99-4a5b-934f-29462b061ef4">110</cbc:RoundingAmount>
+    </cac:TaxTotal>
+    <cac:Item>
+      <cbc:Description>Descriptionce3cacf0-7de8-4236-b115-057de7080700</cbc:Description>
+      <cbc:Name>Name1fa336fb-d271-4031-a120-9a2db2028dbf</cbc:Name>
+      <cac:BuyersItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifiera80b16d0-705d-441e-8028-11833fb5812b">Contentec65a130-cb48-498d-8505-d10ccd7e495e</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifier255d3b9a-97b0-4d33-9f20-db325e246f49">Contentdb974803-f272-4958-bc6a-4dae44a36e58</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifier83081b50-fb62-482b-a12a-e59cfe1b546a">Content7680c491-a80f-41eb-97a5-76940be27355</cbc:BarcodeSymbologyID>
+      </cac:BuyersItemIdentification>
+      <cac:SellersItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifierc6be6d84-7dd9-4291-8971-85a104915133">Content8c098703-bf4e-4f8f-96b4-944806f054d0</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifierfdc208f9-1c7c-4c3a-a7e2-b6e299e9c601">Contentd62f94f8-ce36-46d9-b6a8-4efc0f18d7c7</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifier01dbe54a-a9b1-44a1-be46-5b21c39e5849">Content0b11e668-05c5-45bb-9a68-f9b12574e59a</cbc:BarcodeSymbologyID>
+      </cac:SellersItemIdentification>
+      <cac:StandardItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifier5cf10c12-db8c-4a0f-bb50-6a4e12b06f55">Content8c05b9ce-f5a3-491d-a442-0423e34d8023</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifier74639659-4c4b-44ba-9649-ea40b7f24696">Content6f53c360-d696-4235-ab47-d9e1ffa5ec3d</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifier855113ae-6e6a-453a-86bd-efa43ccf2b3f">Content7fcba30c-2d5e-44cb-b13d-75c9af462156</cbc:BarcodeSymbologyID>
+      </cac:StandardItemIdentification>
+      <cac:CatalogueItemIdentification>
+        <cbc:ID schemeID="SchemeIdentifierda17cb1a-76d3-4359-a7d8-a898860ac913">Content56190e69-df02-47c4-ac49-ba12840c6fb5</cbc:ID>
+        <cbc:ExtendedID schemeID="SchemeIdentifier5a64bf26-bc52-4a11-b0ae-9312c639a8bf">Content57ab68d0-de04-4ec2-a41b-a6aeff4a344a</cbc:ExtendedID>
+        <cbc:BarcodeSymbologyID schemeID="SchemeIdentifier9ba82fea-7eaf-4d1d-b133-baa72f603961">Content63627f00-eaa7-44f0-b0a1-1d0a113494ae</cbc:BarcodeSymbologyID>
+      </cac:CatalogueItemIdentification>
+      <cac:OriginCountry>
+        <cbc:IdentificationCode>IdentificationCode5f054e9e-7764-4fc4-9ecf-2c5062ec8c7e</cbc:IdentificationCode>
+        <cbc:Name>Nameb5711a43-92df-469c-b794-84ecddd60bb6</cbc:Name>
+      </cac:OriginCountry>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID schemeID="SchemeIdentifierd5f00702-2d66-45b3-8329-9c2aea2ef4da">Content4c68d088-7cc3-487d-8b6d-365205e55ed6</cbc:ID>
+        <cbc:Percent>188</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID schemeID="SchemeIdentifierf8d0ed57-2c32-4136-838b-0123265feb04">Content938bd2e8-e594-41fe-a3a1-480d13eb061d</cbc:ID>
+        </cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Name96b744fb-9c01-46af-bb2c-d6809de29837</cbc:Name>
+        <cbc:Value>Value038801fe-81d0-4abf-83ad-a4a5b7aab8ba</cbc:Value>
+      </cac:AdditionalItemProperty>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Name0b9f3ed6-0dab-4b7f-91b6-b2f6c7583c77</cbc:Name>
+        <cbc:Value>Valuec3b50eec-bde4-4de9-88c6-0fa9cf019579</cbc:Value>
+      </cac:AdditionalItemProperty>
+      <cac:AdditionalItemProperty>
+        <cbc:Name>Name2919bc9a-83c1-4911-9ba7-9f299dadc8d0</cbc:Name>
+        <cbc:Value>Valueb5d3eed5-acf7-480e-9b0a-79d700ed65f6</cbc:Value>
+      </cac:AdditionalItemProperty>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="CurrencyID4dd10d00-9893-44e5-bb8f-faf78e6cab3b">186</cbc:PriceAmount>
+      <cbc:BaseQuantity unitCode="UnitCode9ba4f385-38cb-49b7-a12d-c2dd71160d93">58</cbc:BaseQuantity>
+    </cac:Price>
+  </cac:InvoiceLine>
+</ubl:Invoice>

@@ -151,31 +151,10 @@ catch (Exception ex)
 ```
 
 # Known Limitations / ToDo
-* **Partial DTO Implementation**: Currently, the DTOs only support a subset of XRechnung properties. Missing properties will need manual extension.
-* **Incomplete XML Validation**: Not all XML element names or attributes are verified for strict compliance with XRechnung standards.
+* The XmlInvoice might miss some specified properties
 
-Validated Xml Classes |
--------- |
-XmlAdditionalDocumentReference   |
-XmlParty   |
-XmlContact  |
-XmlCountry  |
-XmlCardAccount  |
-XmlContact  |
-XmlCountry  |
-XmlFinancialAccount |
-XmlMonetaryTotal    |
-XmlFinancialInstitutionBranch   |
-XmlPeriod   |
-XmlInvoiceLine  |
-XmlTaxTotal |
-XmlPrice    |
-XmlPeriod   |
-XmlItem |
-XmlItemAttributes   |
-XmlMonetaryTotal    |
-XmlOrderLineReference   |
-XmlTaxCategory  |
+# Java Schematron Validator
+* [xrechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md)
 
 
 # ChangeLog
