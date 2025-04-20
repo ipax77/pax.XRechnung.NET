@@ -1,5 +1,6 @@
 
 using pax.XRechnung.NET.Dtos;
+using pax.XRechnung.NET.Validator;
 
 namespace pax.XRechnung.NET.tests;
 
@@ -101,5 +102,24 @@ public class DtoSchematronValidationTests
          : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
 
         Assert.IsTrue(validationResult.IsValid, message);
+    }
+
+    [TestMethod]
+    public void CanParseValidatorResponse()
+    {
+        string response = File.ReadAllText("/data/xrechnung/validatorResponse.xml");
+        var result = KositValidator.ParseValidatorResponse(response);
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void CanKositValidateStandardDto()
+    {
+        var invoiceDto = GetStandardInvoiceDto();
+        var xml = XmlInvoiceWriter.Serialize(invoiceDto);
+        Assert.IsNotNull(xml);
+
+        var result = KositValidator.Validate(xml).GetAwaiter().GetResult();
+        Assert.IsNotNull(result);
     }
 }
