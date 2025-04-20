@@ -154,14 +154,35 @@ catch (Exception ex)
 * The XmlInvoice might miss some specified properties
 
 # Java Schematron Validator
-Requires a running Kosit validation server [xrechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md)
+Requires a running [Kosit](https://github.com/itplr-kosit/validator) validation server. Setup: [xrechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md)
 
 Server start:
 `java -jar .\validationtool-1.5.0-standalone.jar -s .\scenarios.xml  -r ${PWD} -D`
 
+Validation:
+```csharp
+    var invoiceDto = GetStandardInvoiceDto();
+    var xml = XmlInvoiceWriter.Serialize(invoiceDto);
+    var validationResult = XmlInvoiceValidator.ValidateSchematron(xml).GetAwaiter().GetResult();
+
+    var message = validationResult.Error != null ? validationResult.Error
+        : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
+
+    Assert.IsTrue(validationResult.IsValid, message);
+```
+
 # ChangeLog
 
-<details open="open"><summary>v0.1.0</summary>
+<details open="open"><summary>v0.2.0</summary>
+
+>- **Breaking Changes**
+>- Fixed/Renamed XmlInvoice properties and dependencies. All existing properties are now xml schema conform.
+>- Added Kosit schematron validation. See [Java Schematron Validator](#java-schematron-validator)
+>- Minimal InvoiceDto
+
+</details>
+
+<details><summary>v0.1.0</summary>
 
 >- **Breaking Changes**
 >- Added FinancialInstitutionBranch to FinancialAccountType (XmlPaymentInstructions)
