@@ -20,7 +20,10 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             Id = xmlInvoice.Id.Content,
             IssueDate = GetDateTime(xmlInvoice.IssueDate),
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
+            BuyerReference = xmlInvoice.BuyerReference,
             InvoiceLines = xmlInvoice.InvoiceLines.Select(s => LineToDto(s)).ToList(),
+            SellerParty = PartyToDto(xmlInvoice.SellerParty.Party),
+            BuyerParty = PartyToDto(xmlInvoice.BuyerParty.Party),
         };
     }
     /// <summary>
@@ -36,7 +39,44 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             Id = new() { Content = dto.Id },
             IssueDate = new DateOnly(dto.IssueDate.Year, dto.IssueDate.Month, dto.IssueDate.Day),
             DocumentCurrencyCode = dto.DocumentCurrencyCode,
+            BuyerReference = dto.BuyerReference,
             InvoiceLines = dto.InvoiceLines.Select(s => LineToXml(s)).ToList(),
+            SellerParty = new() { Party = PartyToXml(dto.SellerParty) },
+            BuyerParty = new() { Party = PartyToXml(dto.BuyerParty) },
+        };
+    }
+
+    private static PartyBaseDto PartyToDto(XmlParty xmlParty)
+    {
+        return new()
+        {
+            Website = xmlParty.Website,
+            LogoReferenceId = xmlParty.LogoReferenceId,
+            Name = xmlParty.PartyName.Name,
+            StreetName = xmlParty.PostalAddress.StreetName,
+            City = xmlParty.PostalAddress.City,
+            PostCode = xmlParty.PostalAddress.PostCode,
+            CountryCode = xmlParty.PostalAddress.Country.IdentificationCode,
+            RegistrationName = xmlParty.PartyLegalEntity.RegistrationName,
+        };
+    }
+
+    private static XmlParty PartyToXml(PartyBaseDto dtoParty)
+    {
+        return new()
+        {
+            Website = dtoParty.Website,
+            LogoReferenceId = dtoParty.LogoReferenceId,
+            EndpointId = new() { Content = dtoParty.RegistrationName },
+            PartyName = new() { Name = dtoParty.Name },
+            PostalAddress = new()
+            {
+                StreetName = dtoParty.StreetName,
+                City = dtoParty.City,
+                PostCode = dtoParty.PostCode,
+                Country = new() { IdentificationCode = dtoParty.CountryCode },
+            },
+            PartyLegalEntity = new() { RegistrationName = dtoParty.RegistrationName },
         };
     }
 

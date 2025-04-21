@@ -14,6 +14,25 @@ public class BaseDtoTests
             Id = "1",
             IssueDate = DateTime.UtcNow,
             DocumentCurrencyCode = "EUR",
+            BuyerReference = "bab@zack.org",
+            SellerParty = new()
+            {
+                Name = "Seller Name",
+                StreetName = "TestStreet",
+                City = "TestCity",
+                PostCode = "123456",
+                CountryCode = "DE",
+                RegistrationName = "bab@zack.org"
+            },
+            BuyerParty = new()
+            {
+                Name = "Buyer Name",
+                StreetName = "TestStreet",
+                City = "TestCity",
+                PostCode = "123456",
+                CountryCode = "DE",
+                RegistrationName = "bab@zack.org"
+            },
             InvoiceLines = [
                 new() {
                     Id = "1",

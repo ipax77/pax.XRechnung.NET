@@ -20,6 +20,18 @@ public partial class InvoiceBaseDto
     /// </summary>
     public string DocumentCurrencyCode { get; set; } = "EUR";
     /// <summary>
+    /// Ein vom Erwerber zugewiesener und für interne Lenkungszwecke benutzter Bezeichner
+    /// </summary>
+    public string BuyerReference { get; set; } = string.Empty;
+    /// <summary>
+    /// Seller
+    /// </summary>
+    public PartyBaseDto SellerParty { get; set; } = new();
+    /// <summary>
+    /// Buyer
+    /// </summary>
+    public PartyBaseDto BuyerParty { get; set; } = new();
+    /// <summary>
     /// Invoice lines
     /// </summary>
     public List<InvoiceLineBaseDto> InvoiceLines { get; set; } = [];
@@ -74,3 +86,41 @@ public partial class InvoiceLineBaseDto
     public string Name { get; set; } = string.Empty;
 }
 
+/// <summary>
+/// Seller / Buyer Party
+/// </summary>
+public class PartyBaseDto
+{
+    /// <summary>
+    /// Website
+    /// </summary>
+    public string? Website { get; set; }
+    /// <summary>
+    /// Logo Id referencing a AdditionalDocument
+    /// </summary>
+    public string? LogoReferenceId { get; set; }
+    /// <summary>
+    /// Name
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
+    /// <summary>
+    /// StreetName
+    /// </summary>
+    public string? StreetName { get; set; }
+    /// <summary>
+    /// City
+    /// </summary>
+    public string City { get; set; } = string.Empty;
+    /// <summary>
+    /// PostCode
+    /// </summary>
+    public string PostCode { get; set; } = string.Empty;
+    /// <summary>
+    /// CountryCode
+    /// </summary>
+    public string CountryCode { get; set; } = "DE";
+    /// <summary>
+    /// Email
+    /// </summary>
+    public string RegistrationName { get; set; } = string.Empty;
+}
