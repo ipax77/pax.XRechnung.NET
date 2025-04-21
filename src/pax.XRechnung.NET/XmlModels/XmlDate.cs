@@ -12,7 +12,7 @@ public class XmlDate
     /// Value
     /// </summary>
     [XmlIgnore]
-    public DateTime Value { get; set; }
+    public DateOnly Value { get; set; }
 
     /// <summary>
     /// ValueString
@@ -23,7 +23,7 @@ public class XmlDate
         get => Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         set
         {
-            if (DateTime.TryParseExact(value, "o", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
+            if (DateOnly.TryParseExact(value, "o", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
             {
                 Value = dateTime;
             }
@@ -40,7 +40,7 @@ public class XmlDate
     /// implicit operator
     /// </summary>
     /// <param name="d"></param>
-    public static implicit operator DateTime(XmlDate d)
+    public static implicit operator DateOnly(XmlDate d)
     {
         ArgumentNullException.ThrowIfNull(d);
         return d.Value;
@@ -50,13 +50,13 @@ public class XmlDate
     /// implicit operator
     /// </summary>
     /// <param name="d"></param>
-    public static implicit operator XmlDate(DateTime d) => new() { Value = d };
+    public static implicit operator XmlDate(DateOnly d) => new() { Value = d };
 
     /// <summary>
     /// ToDateTime
     /// </summary>
     /// <returns>DateTime</returns>
-    public DateTime ToDateTime()
+    public DateOnly ToDateOnly()
     {
         return Value;
     }

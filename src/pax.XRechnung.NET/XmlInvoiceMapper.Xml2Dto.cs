@@ -12,8 +12,10 @@ public static partial class XmlInvoiceMapper
             CustomizationId = xmlInvoice.CustomizationId,
             ProfileId = xmlInvoice.ProfileId,
             Id = xmlInvoice.Id.Content,
-            IssueDate = xmlInvoice.IssueDate,
-            DueDate = xmlInvoice.DueDate?.ToDateTime(),
+            IssueDate = new DateTime(xmlInvoice.IssueDate.Value.Year, xmlInvoice.IssueDate.Value.Month,
+                xmlInvoice.IssueDate.Value.Day),
+            DueDate = xmlInvoice.DueDate == null ? null :
+                new DateTime(xmlInvoice.DueDate.Value.Year, xmlInvoice.DueDate.Value.Month, xmlInvoice.DueDate.Value.Day),
             InvoiceTypeCode = xmlInvoice.InvoiceTypeCode,
             Note = xmlInvoice.Note,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,

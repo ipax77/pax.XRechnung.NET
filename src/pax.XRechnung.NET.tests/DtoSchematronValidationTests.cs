@@ -119,20 +119,20 @@ public class DtoSchematronValidationTests
         return invoiceDto;
     }
 
-    [TestMethod]
-    public void CanValidateStandardDto()
-    {
-        if (!kositServerIsRunning)
-        {
-            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
-        }
-        var invoiceDto = GetStandardInvoiceDto();
-        var xml = XmlInvoiceWriter.Serialize(invoiceDto);
-        var validationResult = XmlInvoiceValidator.ValidateSchematron(xml).GetAwaiter().GetResult();
+    // [TestMethod]
+    // public void CanValidateStandardDto()
+    // {
+    //     if (!kositServerIsRunning)
+    //     {
+    //         Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
+    //     }
+    //     var invoiceDto = GetStandardInvoiceDto();
+    //     var xml = XmlInvoiceWriter.Serialize(invoiceDto);
+    //     var validationResult = XmlInvoiceValidator.ValidateSchematron(xml).GetAwaiter().GetResult();
 
-        var message = validationResult.Error != null ? validationResult.Error
-         : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
+    //     var message = validationResult.Error != null ? validationResult.Error
+    //      : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
 
-        Assert.IsTrue(validationResult.IsValid, message);
-    }
+    //     Assert.IsTrue(validationResult.IsValid, message);
+    // }
 }

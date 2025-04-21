@@ -3,7 +3,7 @@
 
 # Introduction
 
-`pax.XRechnung.NET` is a .NET library for validating and mapping [XRechnung](https://xeinkauf.de/xrechnung/) XML invoices.
+`pax.XRechnung.NET` is a .NET library for validating and mapping [XRechnung](https://xeinkauf.de/xrechnung/) XML invoices based on [specification 3.0.2](https://xeinkauf.de/app/uploads/2024/07/302-XRechnung-2024-06-20.pdf).
 
 ## Features
 - Validate XRechnung XML invoices

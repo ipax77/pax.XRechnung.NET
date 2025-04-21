@@ -14,8 +14,8 @@ public sealed class InvoiceTests
             InvoiceTypeCode = "380",
             BuyerReference = "991-33333TEST-33",
             DocumentCurrencyCode = "EUR",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = DateOnly.FromDateTime(DateTime.UtcNow),
+            DueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(14)),
             Note = "Zahlbar innerhalb von 14 Tagen.",
             SellerParty = new()
             {

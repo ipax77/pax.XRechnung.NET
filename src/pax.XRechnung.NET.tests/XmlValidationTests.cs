@@ -47,6 +47,9 @@ public sealed class ValidationTests
         fixture.Customize<EmbeddedDocumentBinaryObject>(c =>
             c.With(x => x.Content, Convert.ToBase64String(Encoding.UTF8.GetBytes("Test doc content"))));
 
+        fixture.Customize<DateOnly>(composer => composer.FromFactory<DateTime>(DateOnly.FromDateTime));
+        fixture.Customize<TimeOnly>(composer => composer.FromFactory<DateTime>(TimeOnly.FromDateTime));
+
         XmlInvoice invoice = fixture.Create<XmlInvoice>();
 
         var result = XmlInvoiceValidator.Validate(invoice);

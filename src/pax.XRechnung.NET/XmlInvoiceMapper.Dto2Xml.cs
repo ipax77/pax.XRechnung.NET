@@ -12,8 +12,9 @@ public static partial class XmlInvoiceMapper
             CustomizationId = invoiceDto.CustomizationId,
             ProfileId = invoiceDto.ProfileId,
             Id = new() { Content = invoiceDto.Id },
-            IssueDate = invoiceDto.IssueDate,
-            DueDate = invoiceDto.DueDate == DateTime.MinValue || invoiceDto.DueDate == null ? null : invoiceDto.DueDate,
+            IssueDate = new DateOnly(invoiceDto.IssueDate.Year, invoiceDto.IssueDate.Month, invoiceDto.IssueDate.Day),
+            DueDate = invoiceDto.DueDate == DateTime.MinValue || invoiceDto.DueDate == null ? null :
+                new DateOnly(invoiceDto.DueDate.Value.Year, invoiceDto.DueDate.Value.Month, invoiceDto.DueDate.Value.Day),
             InvoiceTypeCode = invoiceDto.InvoiceTypeCode,
             Note = string.IsNullOrWhiteSpace(invoiceDto.Note) ? null : invoiceDto.Note,
             DocumentCurrencyCode = invoiceDto.DocumentCurrencyCode,
