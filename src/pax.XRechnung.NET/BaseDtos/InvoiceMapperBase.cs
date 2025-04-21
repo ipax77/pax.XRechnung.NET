@@ -60,8 +60,8 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
                 .Select(s =>
                     LineToXml(s, dto.DocumentCurrencyCode, dto.GlobalTaxCategory, dto.GlobalTaxScheme, dto.GlobalTax))
                 .ToList(),
-            SellerParty = new() { Party = PartyToXml(dto.SellerParty) },
-            BuyerParty = new() { Party = PartyToXml(dto.BuyerParty) },
+            SellerParty = new() { Party = PartyToXml(dto.SellerParty, dto) },
+            BuyerParty = new() { Party = PartyToXml(dto.BuyerParty, null) },
             PaymentMeans = new()
             {
                 PaymentMeansTypeCode = dto.PaymentMeansTypeCode ?? "30",
@@ -116,10 +116,13 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             PostCode = xmlParty.PostalAddress.PostCode,
             CountryCode = xmlParty.PostalAddress.Country.IdentificationCode,
             RegistrationName = xmlParty.PartyLegalEntity.RegistrationName,
+            TaxId = xmlParty.PartyTaxScheme?.CompanyId ?? string.Empty,
+            Telefone = xmlParty.Contact?.Telephone ?? string.Empty,
+            Email = xmlParty.Contact?.Email ?? string.Empty,
         };
     }
 
-    private static XmlParty PartyToXml(PartyBaseDto dtoParty)
+    private static XmlParty PartyToXml(PartyBaseDto dtoParty, InvoiceBaseDto? invoiceBaseDto)
     {
         return new()
         {
@@ -135,6 +138,20 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
                 Country = new() { IdentificationCode = dtoParty.CountryCode },
             },
             PartyLegalEntity = new() { RegistrationName = dtoParty.RegistrationName },
+            PartyTaxScheme = invoiceBaseDto == null ? null : new()
+            {
+                CompanyId = dtoParty.TaxId,
+                TaxScheme = new()
+                {
+                    Id = new() { Content = invoiceBaseDto.GlobalTaxScheme }
+                }
+            },
+            Contact = new()
+            {
+                Name = dtoParty.Name,
+                Email = dtoParty.Email,
+                Telephone = dtoParty.Telefone,
+            }
         };
     }
 
@@ -147,8 +164,10 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             Quantity = (double)xmlLine.InvoicedQuantity.Value,
             QuantityCode = xmlLine.InvoicedQuantity.UnitCode,
             UnitPrice = (double)xmlLine.PriceDetails.PriceAmount.Value,
-            StartDate = GetDateTime(xmlLine.InvoicePeriod?.StartDate?.Value, xmlLine.InvoicePeriod?.StartTime?.Value),
-            EndDate = GetDateTime(xmlLine.InvoicePeriod?.EndDate?.Value, xmlLine.InvoicePeriod?.EndTime?.Value),
+            StartDate = xmlLine.InvoicePeriod == null ? null
+                : GetDateTime(xmlLine.InvoicePeriod.StartDate?.Value, xmlLine.InvoicePeriod.StartTime?.Value),
+            EndDate = xmlLine.InvoicePeriod == null ? null
+                : GetDateTime(xmlLine.InvoicePeriod.EndDate?.Value, xmlLine.InvoicePeriod.EndTime?.Value),
             Description = xmlLine.Item.Description,
             Name = xmlLine.Item.Name,
         };

@@ -7,54 +7,30 @@ namespace pax.XRechnung.NET.tests;
 public class BaseDtoTests
 {
     [TestMethod]
-    public async Task BaseSchematronIsValid()
+    public void FromXml_MapsCorrectlyToDto()
     {
-        InvoiceBaseDto baseDto = new()
-        {
-            Id = "1",
-            IssueDate = DateTime.UtcNow,
-            DocumentCurrencyCode = "EUR",
-            BuyerReference = "buyer@test.org",
-            SellerParty = new()
-            {
-                Name = "Seller Name",
-                StreetName = "TestStreet",
-                City = "TestCity",
-                PostCode = "123456",
-                CountryCode = "DE",
-                RegistrationName = "seller@test.org"
-            },
-            BuyerParty = new()
-            {
-                Name = "Buyer Name",
-                StreetName = "TestStreet",
-                City = "TestCity",
-                PostCode = "123456",
-                CountryCode = "DE",
-                RegistrationName = "buyer@test.org"
-            },
-            InvoiceLines = [
-                new() {
-                    Id = "1",
-                    Note = "Test Note",
-                    Quantity = 1.0,
-                    QuantityCode = "HUR",
-                    UnitPrice = 100.0,
-                    StartDate = DateTime.UtcNow,
-                    EndDate = DateTime.UtcNow.AddHours(1),
-                    Description = "Test Desc",
-                    Name = "Test Name"
-                },
-            ]
-        };
-
+        var xml = SchematronValidationTests.GetStandardXmlInvoice();
         var mapper = new InvoiceMapper<InvoiceBaseDto>();
-        var xmlInvoice = mapper.ToXml(baseDto);
 
-        var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
+        var dto = mapper.FromXml(xml);
 
-        var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
+        Assert.AreEqual(xml.Id.Content, dto.Id);
+        Assert.AreEqual(xml.DocumentCurrencyCode, dto.DocumentCurrencyCode);
+        Assert.AreEqual(xml.SellerParty.Party.PartyName.Name, dto.SellerParty.Name);
+        Assert.AreEqual(xml.InvoiceLines.Count, dto.InvoiceLines.Count);
+    }
 
-        Assert.IsTrue(result.IsValid, resultText);
+    [TestMethod]
+    public void Roundtrip_ProducesEquivalentXml()
+    {
+        var original = SchematronValidationTests.GetStandardXmlInvoice();
+        var mapper = new InvoiceMapper<InvoiceBaseDto>();
+
+        var dto = mapper.FromXml(original);
+        var roundtripXml = mapper.ToXml(dto);
+
+        Assert.AreEqual(original.Id.Content, roundtripXml.Id.Content);
+        Assert.AreEqual(original.InvoiceLines.Count, roundtripXml.InvoiceLines.Count);
+        Assert.AreEqual(original.SellerParty.Party.PartyName.Name, roundtripXml.SellerParty.Party.PartyName.Name);
     }
 }

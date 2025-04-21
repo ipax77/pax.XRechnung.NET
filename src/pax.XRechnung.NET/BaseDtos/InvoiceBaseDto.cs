@@ -198,7 +198,15 @@ public class PartyBaseDto
     /// </summary>
     public string CountryCode { get; set; } = "DE";
     /// <summary>
+    /// Telefone
+    /// </summary>
+    public string Telefone { get; set; } = string.Empty;
+    /// <summary>
     /// Email
+    /// </summary>
+    public string Email { get; set; } = string.Empty;
+    /// <summary>
+    /// Registration Name
     /// </summary>
     public string RegistrationName { get; set; } = string.Empty;
     /// <summary>
