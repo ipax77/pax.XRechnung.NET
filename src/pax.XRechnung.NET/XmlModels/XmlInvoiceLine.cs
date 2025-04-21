@@ -72,7 +72,7 @@ public class XmlInvoiceLine
     /// </summary>
     [XmlElement("TaxTotal", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-30")]
-    public XmlTaxTotal? TaxTotal { get; set; } = new();
+    public XmlTaxTotal? TaxTotal { get; set; }
     /// <summary>
     ///  Eine Gruppe von Informationselementen, die Informationen über die in Rechnung gestellten Waren und
     ///  Dienstleistungen enthalten.

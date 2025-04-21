@@ -14,7 +14,7 @@ public class BaseDtoTests
             Id = "1",
             IssueDate = DateTime.UtcNow,
             DocumentCurrencyCode = "EUR",
-            BuyerReference = "bab@zack.org",
+            BuyerReference = "buyer@test.org",
             SellerParty = new()
             {
                 Name = "Seller Name",
@@ -22,7 +22,7 @@ public class BaseDtoTests
                 City = "TestCity",
                 PostCode = "123456",
                 CountryCode = "DE",
-                RegistrationName = "bab@zack.org"
+                RegistrationName = "seller@test.org"
             },
             BuyerParty = new()
             {
@@ -31,15 +31,15 @@ public class BaseDtoTests
                 City = "TestCity",
                 PostCode = "123456",
                 CountryCode = "DE",
-                RegistrationName = "bab@zack.org"
+                RegistrationName = "buyer@test.org"
             },
             InvoiceLines = [
                 new() {
                     Id = "1",
                     Note = "Test Note",
-                    Quantity = 1,
+                    Quantity = 1.0,
                     QuantityCode = "HUR",
-                    Amount = 100.0,
+                    UnitPrice = 100.0,
                     StartDate = DateTime.UtcNow,
                     EndDate = DateTime.UtcNow.AddHours(1),
                     Description = "Test Desc",

@@ -12,7 +12,7 @@ public class XmlPaymentMeans
     /// Eine Kennung des Zahlungsmittels
     /// </summary>
     [XmlElement("ID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public Identifier? Id { get; set; } = new();
+    public Identifier? Id { get; set; }
     /// <summary>
     /// Expected or used payment means as a code. UNTDID 4461
     /// </summary>

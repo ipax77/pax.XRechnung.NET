@@ -1,11 +1,26 @@
 namespace pax.XRechnung.NET.BaseDtos;
 
 /// <summary>
-/// Partial Base Invoice DTO
-/// With one currency and one VAT for all amounts. Amounts are net only.
+/// Base DTO for simplified XRechnung invoices.
+/// Supports a single currency and a single VAT category/scheme for all lines.
+/// Amounts are expected to be net (exclusive of tax).
 /// </summary>
 public partial class InvoiceBaseDto
 {
+    /// <summary>
+    /// Global tax category (e.g., "S" for Standard rate).
+    /// Applied to all invoice lines.
+    /// </summary>
+    public string GlobalTaxCategory { get; set; } = "S";
+    /// <summary>
+    /// Global tax scheme (e.g., "VAT").
+    /// Applied to all invoice lines.
+    /// </summary>
+    public string GlobalTaxScheme { get; set; } = "VAT";
+    /// <summary>
+    /// Global tax used for all lines
+    /// </summary>
+    public double GlobalTax { get; set; } = 19.0;
     /// <summary>
     /// Eine eindeutige Kennung der Rechnung, die diese im System des Verkäufers identifiziert.
     /// </summary>
@@ -15,8 +30,11 @@ public partial class InvoiceBaseDto
     /// </summary>
     public DateTime IssueDate { get; set; }
     /// <summary>
-    /// Die Währung, in der alle Rechnungsbeträge angegeben werden, ausgenommen ist der Umsatzsteuer-Gesamtbetrag,
-    /// der in der Abrechnungswährung anzugeben ist
+    /// das Fälligkeitsdatum des Rechnungsbetrages
+    /// </summary>
+    public DateTime? DueDate { get; set; }
+    /// <summary>
+    /// ISO 4217 currency code (e.g., "EUR"). Used on all amounts
     /// </summary>
     public string DocumentCurrencyCode { get; set; } = "EUR";
     /// <summary>
@@ -32,9 +50,65 @@ public partial class InvoiceBaseDto
     /// </summary>
     public PartyBaseDto BuyerParty { get; set; } = new();
     /// <summary>
+    /// Bank account info for payment
+    /// </summary>
+    public PaymentMeansBaseDto PaymentMeans { get; set; } = new();
+    /// <summary>
+    /// Payment type code, e.g. "30"
+    /// </summary>
+    public string PaymentMeansTypeCode { get; set; } = "30";
+    /// <summary>
+    /// Payment terms note
+    /// </summary>
+    public string PaymentTermsNote { get; set; } = string.Empty;
+    /// <summary>
+    /// Total net amount
+    /// </summary>
+    public double LineExtensionAmount { get; set; }
+    /// <summary>
+    /// Tax exclusive amount (same as LineExtensionAmount here)
+    /// </summary>
+    public double TaxExclusiveAmount { get; set; }
+    /// <summary>
+    /// Tax inclusive amount (net + VAT)
+    /// </summary>
+    public double TaxInclusiveAmount { get; set; }
+    /// <summary>
+    /// Final payable amount
+    /// </summary>
+    public double PayableAmount { get; set; }
+    /// <summary>
+    /// Total tax amount
+    /// </summary>
+    public double TaxAmount { get; set; }
+
+    /// <summary>
+    /// Total taxable amount (should match LineExtensionAmount)
+    /// </summary>
+    public decimal TaxableAmount { get; set; }
+    /// <summary>
     /// Invoice lines
     /// </summary>
     public List<InvoiceLineBaseDto> InvoiceLines { get; set; } = [];
+}
+
+/// <summary>
+/// IBAN and BIC info
+/// </summary>
+public partial class PaymentMeansBaseDto
+{
+    /// <summary>
+    /// Iban
+    /// </summary>
+    public string Iban { get; set; } = string.Empty;
+    /// <summary>
+    /// Bic
+    /// </summary>
+    public string Bic { get; set; } = string.Empty;
+    /// <summary>
+    /// Bank Name
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
 }
 
 
@@ -61,9 +135,9 @@ public partial class InvoiceLineBaseDto
     /// </summary>
     public string QuantityCode { get; set; } = "HUR";
     /// <summary>
-    /// net amount
+    /// Net price per unit.
     /// </summary>
-    public double Amount { get; set; }
+    public double UnitPrice { get; set; }
 
     // InvoicePeriod
     /// <summary>
@@ -84,6 +158,10 @@ public partial class InvoiceLineBaseDto
     /// Name des Postens. (Erforderlich)
     /// </summary>
     public string Name { get; set; } = string.Empty;
+    /// <summary>
+    /// Total net amount for this line (Quantity × UnitPrice).
+    /// </summary>
+    public double LineTotal => Math.Round(Quantity * UnitPrice, 2);
 }
 
 /// <summary>
@@ -123,4 +201,8 @@ public class PartyBaseDto
     /// Email
     /// </summary>
     public string RegistrationName { get; set; } = string.Empty;
+    /// <summary>
+    /// VAT number or company tax ID.
+    /// </summary>
+    public string TaxId { get; set; } = string.Empty;
 }

@@ -19,11 +19,27 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
         {
             Id = xmlInvoice.Id.Content,
             IssueDate = GetDateTime(xmlInvoice.IssueDate),
+            DueDate = GetDateTime(xmlInvoice.DueDate?.Value),
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
             BuyerReference = xmlInvoice.BuyerReference,
             InvoiceLines = xmlInvoice.InvoiceLines.Select(s => LineToDto(s)).ToList(),
             SellerParty = PartyToDto(xmlInvoice.SellerParty.Party),
             BuyerParty = PartyToDto(xmlInvoice.BuyerParty.Party),
+            PaymentMeans = new()
+            {
+                Iban = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.Id.Content ?? string.Empty,
+                Bic = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.FinancialInstitutionBranch?.Id?.Content ?? string.Empty,
+                Name = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.Name ?? string.Empty,
+            },
+            PaymentMeansTypeCode = xmlInvoice.PaymentMeans.PaymentMeansTypeCode,
+            PaymentTermsNote = xmlInvoice.PaymentTerms?.Note ?? string.Empty,
+            TaxAmount = (double)(xmlInvoice.TaxTotal?.TaxAmount?.Value ?? 0),
+            TaxableAmount = xmlInvoice.TaxTotal?.TaxSubTotal.FirstOrDefault()?.TaxableAmount?.Value ?? 0,
+            LineExtensionAmount = (double)(xmlInvoice.LegalMonetaryTotal.LineExtensionAmount?.Value ?? 0),
+            TaxExclusiveAmount = (double)(xmlInvoice.LegalMonetaryTotal.TaxExclusiveAmount?.Value ?? 0),
+            TaxInclusiveAmount = (double)(xmlInvoice.LegalMonetaryTotal.TaxInclusiveAmount?.Value ?? 0),
+            PayableAmount = (double)(xmlInvoice.LegalMonetaryTotal.PayableAmount?.Value ?? 0),
+
         };
     }
     /// <summary>
@@ -40,9 +56,51 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             IssueDate = new DateOnly(dto.IssueDate.Year, dto.IssueDate.Month, dto.IssueDate.Day),
             DocumentCurrencyCode = dto.DocumentCurrencyCode,
             BuyerReference = dto.BuyerReference,
-            InvoiceLines = dto.InvoiceLines.Select(s => LineToXml(s)).ToList(),
+            InvoiceLines = dto.InvoiceLines
+                .Select(s =>
+                    LineToXml(s, dto.DocumentCurrencyCode, dto.GlobalTaxCategory, dto.GlobalTaxScheme, dto.GlobalTax))
+                .ToList(),
             SellerParty = new() { Party = PartyToXml(dto.SellerParty) },
             BuyerParty = new() { Party = PartyToXml(dto.BuyerParty) },
+            PaymentMeans = new()
+            {
+                PaymentMeansTypeCode = dto.PaymentMeansTypeCode ?? "30",
+                PayeeFinancialAccount = new()
+                {
+                    Id = new() { Content = dto.PaymentMeans.Iban },
+                    Name = dto.PaymentMeans.Name,
+                    FinancialInstitutionBranch = new()
+                    {
+                        Id = new() { Content = dto.PaymentMeans.Bic }
+                    }
+                },
+            },
+            PaymentTerms = string.IsNullOrEmpty(dto.PaymentTermsNote) ? null : new() { Note = dto.PaymentTermsNote },
+            TaxTotal = new()
+            {
+                TaxAmount = new() { Value = (decimal)dto.TaxAmount, CurrencyID = dto.DocumentCurrencyCode },
+                TaxSubTotal =
+                [
+                    new()
+                    {
+                        TaxableAmount = new() { Value = dto.TaxableAmount, CurrencyID = dto.DocumentCurrencyCode },
+                        TaxAmount = new() { Value = (decimal)dto.TaxAmount, CurrencyID = dto.DocumentCurrencyCode },
+                        TaxCategory = new()
+                        {
+                            Id = new() { Content = dto.GlobalTaxCategory },
+                            Percent = (decimal)dto.GlobalTax,
+                            TaxScheme = new() { Id = new() { Content = dto.GlobalTaxScheme } }
+                        }
+                    }
+                ]
+            },
+            LegalMonetaryTotal = new()
+            {
+                LineExtensionAmount = new() { Value = (decimal)dto.LineExtensionAmount, CurrencyID = dto.DocumentCurrencyCode },
+                TaxExclusiveAmount = new() { Value = (decimal)dto.TaxExclusiveAmount, CurrencyID = dto.DocumentCurrencyCode },
+                TaxInclusiveAmount = new() { Value = (decimal)dto.TaxInclusiveAmount, CurrencyID = dto.DocumentCurrencyCode },
+                PayableAmount = new() { Value = (decimal)dto.PayableAmount, CurrencyID = dto.DocumentCurrencyCode },
+            },
         };
     }
 
@@ -67,7 +125,7 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
         {
             Website = dtoParty.Website,
             LogoReferenceId = dtoParty.LogoReferenceId,
-            EndpointId = new() { Content = dtoParty.RegistrationName },
+            EndpointId = new() { SchemeId = "EM", Content = dtoParty.RegistrationName },
             PartyName = new() { Name = dtoParty.Name },
             PostalAddress = new()
             {
@@ -88,7 +146,7 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             Note = xmlLine.Note,
             Quantity = (double)xmlLine.InvoicedQuantity.Value,
             QuantityCode = xmlLine.InvoicedQuantity.UnitCode,
-            Amount = (double)xmlLine.LineExtensionAmount.Value,
+            UnitPrice = (double)xmlLine.PriceDetails.PriceAmount.Value,
             StartDate = GetDateTime(xmlLine.InvoicePeriod?.StartDate?.Value, xmlLine.InvoicePeriod?.StartTime?.Value),
             EndDate = GetDateTime(xmlLine.InvoicePeriod?.EndDate?.Value, xmlLine.InvoicePeriod?.EndTime?.Value),
             Description = xmlLine.Item.Description,
@@ -96,20 +154,31 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
         };
     }
 
-    private static XmlInvoiceLine LineToXml(InvoiceLineBaseDto dtoLine, string currencyId = "EUR")
+    private static XmlInvoiceLine LineToXml(InvoiceLineBaseDto dtoLine,
+                                            string currencyId,
+                                            string taxCategory,
+                                            string taxScheme,
+                                            double tax)
     {
         return new()
         {
             Id = new() { Content = dtoLine.Id },
             Note = dtoLine.Note,
             InvoicedQuantity = new() { Value = (decimal)dtoLine.Quantity, UnitCode = dtoLine.QuantityCode },
-            LineExtensionAmount = new() { Value = (decimal)dtoLine.Amount, CurrencyID = currencyId },
+            LineExtensionAmount = new() { Value = (decimal)(dtoLine.Quantity * dtoLine.UnitPrice), CurrencyID = currencyId },
+            PriceDetails = new() { PriceAmount = new() { Value = (decimal)dtoLine.UnitPrice, CurrencyID = currencyId } },
             InvoicePeriod = GetXmlPeriod(dtoLine.StartDate, dtoLine.EndDate),
             Item = new()
             {
                 Description = dtoLine.Description,
                 Name = dtoLine.Name,
-            },
+                ClassifiedTaxCategory = new()
+                {
+                    Id = new() { Content = taxCategory },
+                    Percent = (decimal)tax,
+                    TaxScheme = new() { Id = new() { Content = taxScheme } }
+                }
+            }
         };
     }
 
