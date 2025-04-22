@@ -1,6 +1,6 @@
 
 using System.Xml.Schema;
-using pax.XRechnung.NET.Validator;
+using pax.XRechnung.NET.KostiValidator;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;

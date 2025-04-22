@@ -3,8 +3,11 @@ using System.Net.Http.Headers;
 using System.Text;
 using HtmlAgilityPack;
 
-namespace pax.XRechnung.NET.Validator;
+namespace pax.XRechnung.NET.KostiValidator;
 
+/// <summary>
+/// KositValidator
+/// </summary>
 public static class KositValidator
 {
     private const string validatorUri = "http://localhost:8080";
@@ -29,8 +32,8 @@ public static class KositValidator
             using var content = new StringContent(xmlText, Encoding.UTF8, "application/xml");
             content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
 
-            var response = await client.PostAsync(null as Uri, content);
-            var result = await response.Content.ReadAsStringAsync();
+            var response = await client.PostAsync(null as Uri, content).ConfigureAwait(false);
+            var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             ArgumentNullException.ThrowIfNull(result);
             var tables = ParseValidatorResponse(result);
             return ToValidationResult(tables);
