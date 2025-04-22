@@ -97,6 +97,7 @@ dotnet add package pax.XRechnung.NET
     Assert.IsTrue(result.Validations.Count == 0, resultText);
     Assert.IsTrue(result.IsValid, resultText);
 ```
+**The InvoiceBaseDto is designed to be easily extended see [BaseDtoExtensionTests](pax.XRechnung.NET/blob/main/src/pax.XRechnung.NET.tests/BaseDtoExtensionTests.cs)**
 
 ## Java Schematron Validator
 Requires a running [Kosit](https://github.com/itplr-kosit/validator) validation server. Setup: [xrechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md)
