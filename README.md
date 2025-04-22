@@ -3,7 +3,7 @@
 
 # Introduction
 
-`pax.XRechnung.NET` is a .NET library for validating and mapping [XRechnung](https://xeinkauf.de/xrechnung/) XML invoices.
+`pax.XRechnung.NET` is a .NET library for validating and mapping [XRechnung](https://xeinkauf.de/xrechnung/) XML invoices based on [specification 3.0.2](https://xeinkauf.de/app/uploads/2024/07/302-XRechnung-2024-06-20.pdf).
 
 ## Features
 - Validate XRechnung XML invoices
@@ -22,154 +22,88 @@ dotnet add package pax.XRechnung.NET
 
 ### Handle Sample Invoice
 ```csharp
-InvoiceDto invoiceDto = new()
-{
-    Id = "1",
-    IssueDate = DateTime.UtcNow,
-    DueDate = DateTime.UtcNow.AddDays(14),
-    InvoiceTypeCode = "380",
-    Note = "Test Note",
-    DocumentCurrencyCode = "EUR",
-    BuyerReference = "123",
-    AdditionalDocumentReferences = [new()
+    public static InvoiceBaseDto GetInvoiceBaseDto()
     {
-        Id = "invoice 123",
-        DocumentDescription = "human readable pdf invoice",
-        MimeCode = "application/pdf",
-        FileName = "invoice.pdf",
-        Content = "ZWYNCjE0OTk0Nw0KJSVFT0Y=",
-    }],
-    Seller = new()
-    {
-        Website = "www.example.com",
-        Email = "seller@email.com",
-        Name = "Seller",
-        StreetName = "TestStreet",
-        City = "TestCity",
-        PostCode = "12345",
-        ContactName = "ContactName",
-        ContactTelephone = "12345",
-        ContactEmail = "contact@email.com",
-        TaxCompanyId = "DE1234567",
-        TaxSchemeId = "S",
-        TaxId = "000/0000/000",
-        RegistrationName = "Seller Name",
-    },
-    Buyer = new()
-    {
-        Email = "buyer@email.com",
-        Name = "Buyer",
-        StreetName = "TestStreet1",
-        City = "TestCity1",
-        PostCode = "54321",
-        ContactName = "ContactName1",
-        ContactTelephone = "54321",
-        ContactEmail = "contact1@email.com"
-    },
-    PaymentMeans = new()
-    {
-        PaymentMeansTypeCode = "30",
-        IBAN = "DE21081508151234123412",
-        BankName = "Test Bank"
-    },
-    TaxTotal = new()
-    {
-        TaxAmount = 4.27M,
-        TaxableAmount = 22.45M,
-        TaxCategoryId = "S",
-        Percent = 19.0M,
-        TaxScheme = "VAT"
-    },
-    LegalMonetaryTotal = new()
-    {
-        LineExtensionAmount = 22.45M,
-        TaxExclusiveAmount = 22.45M,
-        TaxInclusiveAmount = 26.72M,
-        PayableAmount = 26.72M,
-    },
-    InvoiceLines = [
-        new() {
+        return new()
+        {
+            GlobalTaxCategory = "S",
+            GlobalTaxScheme = "VAT",
+            GlobalTax = 19.0,
             Id = "1",
-            Note = "Test Note",
-            Name = "Test",
-            Description ="Test Desc",
-            TaxId = "S",
-            TaxPercent = 19.0M,
-            TaxScheme = "VAT",
-            InvoicedQuantity = 1,
-            InvoicedQuantityCode = "XPP",
-            LineExtensionAmount = 22.45M,
-            PriceAmount = 22.45M,
-        },
-    ]
-};
-try
-{
-    var validationResult = XmlInvoiceValidator.Validate(invoiceDto);
-    if (!validationResult.IsValid)
-    {
-        var error = valitationResult.Error ?? string.Join(", ", validationResult.Validations.Select(s => s.Message);
-        Console.WriteLine($"Validation errors: {error}");
+            IssueDate = DateTime.UtcNow,
+            InvoiceTypeCode = "380",
+            DocumentCurrencyCode = "EUR",
+            BuyerReference = "04011000-12345-34",
+            SellerParty = new()
+            {
+                Name = "Seller Name",
+                StreetName = "Test Street",
+                City = "Test City",
+                PostCode = "123456",
+                CountryCode = "DE",
+                Telefone = "1234/54321",
+                Email = "seller@example.com",
+                RegistrationName = "Seller Name",
+                TaxId = "DE12345678"
+            },
+            BuyerParty = new()
+            {
+                Name = "Buyer Name",
+                StreetName = "Test Street",
+                City = "Test City",
+                PostCode = "123456",
+                CountryCode = "DE",
+                Telefone = "1234/54321",
+                Email = "buyer@example.com",
+                RegistrationName = "Buyer Name",
+            },
+            PaymentMeans = new()
+            {
+                Iban = "DE12 1234 1234 1234 1234 12",
+                Bic = "BICABCDE",
+                Name = "Bank Name"
+            },
+            PaymentMeansTypeCode = "30",
+            PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
+            PayableAmount = 119.0,
+            InvoiceLines = [
+                new()
+                {
+                    Id = "1",
+                    Quantity = 1.0,
+                    QuantityCode = "HUR",
+                    UnitPrice = 100.0,
+                    Name = "Test Job"
+                }
+            ]
+        };
     }
-    else
-    {
-        var xmlText = XmlInvoiceWriter.Serialize(invoiceDto);
-        Console.WriteLine("Invoice serialized successfully.");
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"An error occurred: {ex.Message}");
-}
 ```
-
-### Handle xml file
+**Validate xml schema**
 ```csharp
-var filePath = "path/to/xml";
-try
-{
-    var serializer = new XmlSerializer(typeof(XmlInvoice));
-    using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-    var xmlInvoice = (XmlInvoice?)serializer.Deserialize(stream);
-    var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
-
-    if (!validationResult.IsValid)
-    {
-        var error = valitationResult.Error ?? string.Join(", ", validationResult.Validations.Select(s => s.Message);
-        Console.WriteLine($"Validation errors: {error}");
-    }
-    else
-    {
-        var invoiceDto = XmlInvoiceMapper.MapToInvoiceDto(xmlInvoice);
-        Console.WriteLine("Invoice mapped successfully.");
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"An error occurred: {ex.Message}");
-}
+    var invoiceBaseDto = GetInvoiceBaseDto();
+    var mapper = new InvoiceMapper<InvoiceBaseDto>();
+    var xmlInvoice = mapper.ToXml(invoiceBaseDto);
+    var result = XmlInvoiceValidator.Validate(xmlInvoice);
+    Assert.IsTrue(result.IsValid);
 ```
+**Validate schematron - requires [Kosit validator](#java-schematron-validator)**
+```csharp
+    var invoiceBaseDto = GetInvoiceBaseDto();
+    InvoiceMapper<InvoiceBaseDto> invoiceMapper = new();
+    XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
+    var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
+    var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
+    Assert.IsTrue(result.Validations.Count == 0, resultText);
+    Assert.IsTrue(result.IsValid, resultText);
+```
+**The InvoiceBaseDto is designed to be easily extended see [BaseDtoExtensionTests](pax.XRechnung.NET/blob/main/src/pax.XRechnung.NET.tests/BaseDtoExtensionTests.cs)**
 
-# Known Limitations / ToDo
-* The XmlInvoice might miss some specified properties
-
-# Java Schematron Validator
+## Java Schematron Validator
 Requires a running [Kosit](https://github.com/itplr-kosit/validator) validation server. Setup: [xrechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md)
 
 Server start:
 `java -jar .\validationtool-1.5.0-standalone.jar -s .\scenarios.xml  -r ${PWD} -D`
-
-Validation:
-```csharp
-    var invoiceDto = GetStandardInvoiceDto();
-    var xml = XmlInvoiceWriter.Serialize(invoiceDto);
-    var validationResult = XmlInvoiceValidator.ValidateSchematron(xml).GetAwaiter().GetResult();
-
-    var message = validationResult.Error != null ? validationResult.Error
-        : string.Join(Environment.NewLine, validationResult.Validations.Select(s => s.Message));
-
-    Assert.IsTrue(validationResult.IsValid, message);
-```
 
 # ChangeLog
 
@@ -178,7 +112,7 @@ Validation:
 >- **Breaking Changes**
 >- Fixed/Renamed XmlInvoice properties and dependencies. All existing properties are now xml schema conform.
 >- Added Kosit schematron validation. See [Java Schematron Validator](#java-schematron-validator)
->- Minimal InvoiceDto
+>- Replaced all DTOs with InvoiceBaseDto
 
 </details>
 

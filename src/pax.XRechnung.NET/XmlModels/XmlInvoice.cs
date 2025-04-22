@@ -103,7 +103,12 @@ public class XmlInvoice
     [SpecificationId("BG-16")]
     public XmlPaymentMeans PaymentMeans { get; set; } = new();
     /// <summary>
-    /// 
+    /// Payment terms
+    /// </summary>
+    [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    public XmlPaymentTerms? PaymentTerms { get; set; }
+    /// <summary>
+    /// Tax total
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-23")]
@@ -120,4 +125,16 @@ public class XmlInvoice
     [XmlElement("InvoiceLine", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-25")]
     public List<XmlInvoiceLine> InvoiceLines { get; set; } = [];
+}
+
+/// <summary>
+/// Payment terms
+/// </summary>
+public class XmlPaymentTerms
+{
+    /// <summary>
+    /// Note
+    /// </summary>
+    [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public string Note { get; set; } = string.Empty;
 }

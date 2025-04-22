@@ -13,7 +13,7 @@ public class XmlContact
     /// </summary>
     [XmlElement("ID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-122")]
-    public Identifier? Id { get; set; } = new();
+    public Identifier? Id { get; set; }
     /// <summary>
     /// Angaben zu Ansprechpartner oder Kontaktstelle (wie z. B. Name einer Person, Abteilungs- oder Bürobezeichnung)
     /// </summary>

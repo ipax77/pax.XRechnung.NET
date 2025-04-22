@@ -1,11 +1,37 @@
 
 using System.Xml.Schema;
 using pax.XRechnung.NET.Validator;
+using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
 
 public static partial class XmlInvoiceValidator
 {
+    /// <summary>
+    /// Validate xml string against Schmatrons
+    /// Requires a running Kosit validation Server. See Readme for details.
+    /// </summary>
+    /// <param name="invoice">XmlInvoice</param>
+    /// <param name="kositUri">optional uri to the kosit validator, default is http://localhost:8080</param>
+    public static async Task<ValidationResult> ValidateSchematron(XmlInvoice invoice, Uri? kositUri = null)
+    {
+        try
+        {
+            var xml = XmlInvoiceWriter.Serialize(invoice);
+            var validationResult = await KositValidator.Validate(xml, kositUri)
+                .ConfigureAwait(false);
+            return MapToValidationResult(validationResult);
+        }
+        catch (Exception ex)
+        {
+            return new ValidationResult
+            {
+                IsValid = false,
+                Error = ex.Message
+            };
+            throw;
+        }
+    }
     /// <summary>
     /// Validate xml string against Schmatrons
     /// Requires a running Kosit validation Server. See Readme for details.

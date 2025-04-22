@@ -6,7 +6,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
@@ -117,21 +116,6 @@ public static class XmlInvoiceWriter
     /// </summary>
     /// <param name="invoice"></param>
     /// <returns></returns>
-    public static string Serialize(InvoiceDto invoice)
-    {
-        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoice);
-        var xml = SerializeToXDocument(xmlInvoice, GetNamespaces());
-
-        RemoveNullElements(xml);
-
-        return WriteToString(xml);
-    }
-
-    /// <summary>
-    /// Serialize to xml string
-    /// </summary>
-    /// <param name="invoice"></param>
-    /// <returns></returns>
     public static string Serialize(XmlInvoice invoice)
     {
         ArgumentNullException.ThrowIfNull(invoice);
@@ -169,5 +153,4 @@ public static class XmlInvoiceWriter
         writer.Flush();
         return Encoding.UTF8.GetString(memory.ToArray());
     }
-
 }
