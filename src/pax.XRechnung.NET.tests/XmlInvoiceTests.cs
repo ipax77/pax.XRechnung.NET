@@ -158,7 +158,6 @@ public sealed class InvoiceTests
         document.Validate((sender, e) =>
         {
             validationErrorsFound = true;
-            Console.WriteLine($"{e.Severity}: {e.Message}");
         });
 
         // Assert

@@ -33,11 +33,6 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             },
             PaymentMeansTypeCode = xmlInvoice.PaymentMeans.PaymentMeansTypeCode,
             PaymentTermsNote = xmlInvoice.PaymentTerms?.Note ?? string.Empty,
-            TaxAmount = (double)(xmlInvoice.TaxTotal?.TaxAmount?.Value ?? 0),
-            TaxableAmount = xmlInvoice.TaxTotal?.TaxSubTotal.FirstOrDefault()?.TaxableAmount?.Value ?? 0,
-            LineExtensionAmount = (double)(xmlInvoice.LegalMonetaryTotal.LineExtensionAmount?.Value ?? 0),
-            TaxExclusiveAmount = (double)(xmlInvoice.LegalMonetaryTotal.TaxExclusiveAmount?.Value ?? 0),
-            TaxInclusiveAmount = (double)(xmlInvoice.LegalMonetaryTotal.TaxInclusiveAmount?.Value ?? 0),
             PayableAmount = (double)(xmlInvoice.LegalMonetaryTotal.PayableAmount?.Value ?? 0),
 
         };
@@ -50,6 +45,13 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
     public virtual XmlInvoice ToXml(T dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
+
+        decimal payableAmount = (decimal)dto.PayableAmount;
+        decimal taxRate = (decimal)dto.GlobalTax;
+
+        decimal taxExclusiveAmount = Math.Round(payableAmount / (1 + taxRate / 100), 2);
+        decimal taxAmount = Math.Round(payableAmount - taxExclusiveAmount, 2);
+
         return new()
         {
             Id = new() { Content = dto.Id },
@@ -78,13 +80,19 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             PaymentTerms = string.IsNullOrEmpty(dto.PaymentTermsNote) ? null : new() { Note = dto.PaymentTermsNote },
             TaxTotal = new()
             {
-                TaxAmount = new() { Value = (decimal)dto.TaxAmount, CurrencyID = dto.DocumentCurrencyCode },
+                TaxAmount = new()
+                {
+                    Value = taxAmount,
+                    CurrencyID = dto.DocumentCurrencyCode
+                },
                 TaxSubTotal =
                 [
                     new()
                     {
-                        TaxableAmount = new() { Value = dto.TaxableAmount, CurrencyID = dto.DocumentCurrencyCode },
-                        TaxAmount = new() { Value = (decimal)dto.TaxAmount, CurrencyID = dto.DocumentCurrencyCode },
+                        TaxableAmount = new() { Value = taxExclusiveAmount,
+                            CurrencyID = dto.DocumentCurrencyCode },
+                        TaxAmount = new() { Value = taxAmount,
+                            CurrencyID = dto.DocumentCurrencyCode },
                         TaxCategory = new()
                         {
                             Id = new() { Content = dto.GlobalTaxCategory },
@@ -96,10 +104,18 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             },
             LegalMonetaryTotal = new()
             {
-                LineExtensionAmount = new() { Value = (decimal)dto.LineExtensionAmount, CurrencyID = dto.DocumentCurrencyCode },
-                TaxExclusiveAmount = new() { Value = (decimal)dto.TaxExclusiveAmount, CurrencyID = dto.DocumentCurrencyCode },
-                TaxInclusiveAmount = new() { Value = (decimal)dto.TaxInclusiveAmount, CurrencyID = dto.DocumentCurrencyCode },
-                PayableAmount = new() { Value = (decimal)dto.PayableAmount, CurrencyID = dto.DocumentCurrencyCode },
+                LineExtensionAmount = new()
+                {
+                    Value = taxExclusiveAmount,
+                    CurrencyID = dto.DocumentCurrencyCode
+                },
+                TaxExclusiveAmount = new()
+                {
+                    Value = taxExclusiveAmount,
+                    CurrencyID = dto.DocumentCurrencyCode
+                },
+                TaxInclusiveAmount = new() { Value = payableAmount, CurrencyID = dto.DocumentCurrencyCode },
+                PayableAmount = new() { Value = payableAmount, CurrencyID = dto.DocumentCurrencyCode },
             },
         };
     }

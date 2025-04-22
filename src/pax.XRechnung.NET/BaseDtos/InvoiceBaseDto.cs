@@ -62,30 +62,9 @@ public partial class InvoiceBaseDto
     /// </summary>
     public string PaymentTermsNote { get; set; } = string.Empty;
     /// <summary>
-    /// Total net amount
-    /// </summary>
-    public double LineExtensionAmount { get; set; }
-    /// <summary>
-    /// Tax exclusive amount (same as LineExtensionAmount here)
-    /// </summary>
-    public double TaxExclusiveAmount { get; set; }
-    /// <summary>
-    /// Tax inclusive amount (net + VAT)
-    /// </summary>
-    public double TaxInclusiveAmount { get; set; }
-    /// <summary>
     /// Final payable amount
     /// </summary>
     public double PayableAmount { get; set; }
-    /// <summary>
-    /// Total tax amount
-    /// </summary>
-    public double TaxAmount { get; set; }
-
-    /// <summary>
-    /// Total taxable amount (should match LineExtensionAmount)
-    /// </summary>
-    public decimal TaxableAmount { get; set; }
     /// <summary>
     /// Invoice lines
     /// </summary>

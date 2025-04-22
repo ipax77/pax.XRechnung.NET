@@ -8,7 +8,7 @@ namespace pax.XRechnung.NET.tests;
 public class SchematronValidationTests
 {
     private static readonly string validatorUri = "http://localhost:8080";
-    private static bool kositServerIsRunning = true;
+    private static bool kositServerIsRunning = false;
 
     [ClassInitialize()]
     public static async Task CheckKositAvailability(TestContext context)
@@ -50,7 +50,7 @@ public class SchematronValidationTests
             InvoiceTypeCode = "380",
             Note = "Test Note",
             DocumentCurrencyCode = "EUR",
-            BuyerReference = "buyer@test.org",
+            BuyerReference = "04011000-12345-34",
             SellerParty = new()
             {
                 Party = new()
@@ -219,6 +219,18 @@ public class SchematronValidationTests
         var hasSumError = result.Validations.Where(x => x.Severity == System.Xml.Schema.XmlSeverityType.Error)
             .Any(a => a.Message.Contains("[BR-CO-15]-Invoice total amount with VAT (BT-112) = Invoice total amount without VAT (BT-109) + Invoice total VAT amount (BT-110)", StringComparison.OrdinalIgnoreCase));
         Assert.IsTrue(hasSumError, resultText);
+    }
+
+    [TestMethod]
+    public async Task CanValidateBaseDtoSchematronTest()
+    {
+        var invoiceBaseDto = BaseDtoTests.GetInvoiceBaseDto();
+        InvoiceMapper<InvoiceBaseDto> invoiceMapper = new();
+        XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
+        var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
+        var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
+        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsTrue(result.IsValid, resultText);
     }
 
     [TestMethod]

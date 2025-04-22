@@ -7,29 +7,29 @@ namespace pax.XRechnung.NET.Validator;
 
 public static class KositValidator
 {
-    private static readonly string validatorUri = "http://localhost:8080";
+    private const string validatorUri = "http://localhost:8080";
 
     /// <summary>
     /// Validate xml string against Schmatrons
     /// Requires a running Kosit validation Server. See Readme for details.
     /// </summary>
-    /// <param name="xml">xml text</param>
+    /// <param name="xmlText">xml text</param>
     /// <param name="kositUri">optional uri to the kosit validator, default is http://localhost:8080</param>
-    public static async Task<SchematronValidationResult> Validate(string xmlText, Uri? kostiUri = null)
+    public static async Task<SchematronValidationResult> Validate(string xmlText, Uri? kositUri = null)
     {
         try
         {
             using var client = new HttpClient();
-            client.BaseAddress = kostiUri ?? new Uri(validatorUri);
+            client.BaseAddress = kositUri ?? new Uri(validatorUri);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html"));
 
 
-            var content = new StringContent(xmlText, Encoding.UTF8, "application/xml");
+            using var content = new StringContent(xmlText, Encoding.UTF8, "application/xml");
             content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
 
-            var response = await client.PostAsync("/", content);
+            var response = await client.PostAsync(null as Uri, content);
             var result = await response.Content.ReadAsStringAsync();
             ArgumentNullException.ThrowIfNull(result);
             var tables = ParseValidatorResponse(result);
@@ -37,9 +37,14 @@ public static class KositValidator
         }
         catch (Exception ex)
         {
-            SchematronValidationResult validationResult = new() { HttpStatusCode = HttpStatusCode.InternalServerError };
-            validationResult.Error = ex.Message;
+            SchematronValidationResult validationResult = new()
+            {
+                HttpStatusCode = HttpStatusCode.InternalServerError,
+                Error = ex.Message,
+                IsValid = false
+            };
             return validationResult;
+            throw;
         }
     }
 
@@ -118,7 +123,7 @@ public static class KositValidator
             }
             else if (row.Count == 1 && currentMessage != null) // path row
             {
-                currentMessage.Path = row[0].Replace("Pfad: ", "").Trim();
+                currentMessage.Path = row[0].Replace("Pfad: ", "", StringComparison.OrdinalIgnoreCase).Trim();
                 result.Messages.Add(currentMessage);
                 currentMessage = null;
             }
@@ -172,39 +177,4 @@ public static class KositValidator
         }
         return table;
     }
-}
-
-internal record HtmlTable
-{
-    public List<string> HeaderCells { get; set; } = [];
-    public List<List<string>> TableRows { get; set; } = [];
-}
-
-/// <summary>
-/// Schematron Validation Result
-/// </summary>
-public class SchematronValidationResult
-{
-    public HttpStatusCode HttpStatusCode { get; init; }
-    public List<ValidationStep> Steps { get; init; } = [];
-    public List<ValidationMessage> Messages { get; init; } = [];
-    public string? Error { get; set; }
-    public bool IsValid { get; set; }
-}
-
-public class ValidationStep
-{
-    public string Step { get; set; } = string.Empty;
-    public int Errors { get; set; }
-    public int Warnings { get; set; }
-    public int Infos { get; set; }
-}
-
-public class ValidationMessage
-{
-    public string Position { get; set; } = string.Empty;
-    public string Code { get; set; } = string.Empty;
-    public string Severity { get; set; } = string.Empty;
-    public string Text { get; set; } = string.Empty;
-    public string Path { get; set; } = string.Empty;
 }
