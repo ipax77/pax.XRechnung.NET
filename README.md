@@ -112,11 +112,6 @@ Server start:
 >- Fixed/Renamed XmlInvoice properties and dependencies. All existing properties are now xml schema conform.
 >- Added Kosit schematron validation. See [Java Schematron Validator](#java-schematron-validator)
 >- Minimal InvoiceDto
->- TODO:
-    * Remove Dto from validation/serialization (only xml)
-    * Make InvoiceDto based on InvoiceBaseDto
-    * Update README sample usage
-    * Validation only for the test project!?
 
 </details>
 
