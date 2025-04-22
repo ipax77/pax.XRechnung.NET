@@ -6,9 +6,9 @@ namespace pax.XRechnung.NET.XmlModels;
 
 /// <summary>
 ///  Eine Gruppe von Informationselementen, die Informationen über die in Rechnung gestelltenWaren und 
-///  Dienstleistungen enthalten.
+///  Dienstleistungen enthalten. BG-31
 /// </summary>
-public class XmlItemInformation
+public class XmlItem
 {
     /// <summary>
     /// Beschreibung des Postens. (Optional)
@@ -23,40 +23,37 @@ public class XmlItemInformation
     [SpecificationId("BT-153")]
     public string Name { get; set; } = string.Empty;
     /// <summary>
-    /// Verkäufer-Kennung des Postens. (Optional)
-    /// </summary>
-    [XmlElement("SellersIdentifier", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-155")]
-    public Identifier? SellersIdentifier { get; set; }
-
-    /// <summary>
     /// Käufer-Kennung des Postens. (Optional)
     /// </summary>
-    [XmlElement("BuyersIdentifier", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("BuyersItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-156")]
-    public Identifier? BuyersIdentifier { get; set; }
-
+    public XmlItemIdentification? BuyersIdentifier { get; set; }
+    /// <summary>
+    /// Verkäufer-Kennung des Postens. (Optional)
+    /// </summary>
+    [XmlElement("SellersItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [SpecificationId("BT-155")]
+    public XmlItemIdentification? SellersIdentifier { get; set; }
     /// <summary>
     /// Standard-Kennung des Postens. (Optional)
     /// </summary>
-    [XmlElement("StandardIdentifier", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("StandardItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-157")]
-    public Identifier? StandardIdentifier { get; set; }
+    public XmlItemIdentification? StandardIdentifier { get; set; }
 
     /// <summary>
     /// Klassifizierungskennungen des Postens (0..*).
     /// </summary>
-    [XmlElement("ClassificationIdentifier", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    [XmlElement("CatalogueItemIdentification", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-158")]
-    public List<Identifier> ClassificationIdentifiers { get; set; } = [];
+    public XmlItemIdentification? CatalogueItemIdentification { get; set; }
 
     /// <summary>
     /// Ursprungsland des Postens. (Optional)
     /// </summary>
-    [XmlElement("CountryOfOrigin", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("OriginCountry", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BT-159")]
-    [CodeList("Country_Codes")]
-    public string? CountryOfOrigin { get; set; }
+    public XmlCountry? CountryOfOrigin { get; set; }
     /// <summary>
     /// Eine Gruppe von Informationselementen, die Informationen über die für die betreffende Rechnungsposition
     /// geltende Umsatzsteuer enthalten.
@@ -69,4 +66,26 @@ public class XmlItemInformation
     [XmlElement("AdditionalItemProperty", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-32")]
     public List<XmlItemAttributes> Attributes { get; set; } = [];
+}
+
+/// <summary>
+/// ItemIdentification
+/// </summary>
+public class XmlItemIdentification
+{
+    /// <summary>
+    /// Id
+    /// </summary>
+    [XmlElement("ID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public Identifier Id { get; set; } = new();
+    /// <summary>
+    /// Id
+    /// </summary>
+    [XmlElement("ExtendedID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public Identifier? ExtendedId { get; set; }
+    /// <summary>
+    /// Id
+    /// </summary>
+    [XmlElement("BarcodeSymbologyID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public Identifier? BarcodeSymbologyId { get; set; }
 }

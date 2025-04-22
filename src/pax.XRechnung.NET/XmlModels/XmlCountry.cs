@@ -16,8 +16,8 @@ public class XmlCountry
     [CodeList("Country_Codes")]
     public string IdentificationCode { get; set; } = "DE";
     /// <summary>
-    /// SubDivision
+    /// Name
     /// </summary>
-    [XmlElement("SubDivision", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public string? SubDivision { get; set; }
+    [XmlElement("Name", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public string? Name { get; set; }
 }

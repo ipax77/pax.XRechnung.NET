@@ -31,13 +31,13 @@ public class XmlInvoice
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-2")]
-    public DateTime IssueDate { get; set; }
+    public XmlDate IssueDate { get; set; } = new();
     /// <summary>
     /// Das Fälligkeitsdatum des Rechnungsbetrages
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-9")]
-    public DateTime? DueDate { get; set; }
+    public XmlDate? DueDate { get; set; }
     /// <summary>
     /// Ein Code, der den Funktionstyp der Rechnung angibt.
     ///   Anmerkung: Der Rechnungstyp muss gemäß UNTDID 1001, spezifiziert werden.
@@ -101,9 +101,14 @@ public class XmlInvoice
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-16")]
-    public XmlPaymentInstructions PaymentMeans { get; set; } = new();
+    public XmlPaymentMeans PaymentMeans { get; set; } = new();
     /// <summary>
-    /// 
+    /// Payment terms
+    /// </summary>
+    [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
+    public XmlPaymentTerms? PaymentTerms { get; set; }
+    /// <summary>
+    /// Tax total
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-23")]
@@ -113,11 +118,23 @@ public class XmlInvoice
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-22")]
-    public XmlDocumentTotals LegalMonetaryTotal { get; set; } = new();
+    public XmlMonetaryTotal LegalMonetaryTotal { get; set; } = new();
     /// <summary>
     ///  Eine Gruppe von Informationselementen, die Informationen über einzelne Rechnungspositionen enthalten.
     /// </summary>
     [XmlElement("InvoiceLine", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     [SpecificationId("BG-25")]
     public List<XmlInvoiceLine> InvoiceLines { get; set; } = [];
+}
+
+/// <summary>
+/// Payment terms
+/// </summary>
+public class XmlPaymentTerms
+{
+    /// <summary>
+    /// Note
+    /// </summary>
+    [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public string Note { get; set; } = string.Empty;
 }

@@ -4,9 +4,9 @@ using pax.XRechnung.NET.Attributes;
 namespace pax.XRechnung.NET.XmlModels;
 
 /// <summary>
-/// Represents a credit transfer payment method.
+/// CREDIT TRANSFER BG-17
 /// </summary>
-public class XmlCreditTransfer
+public class XmlFinancialAccount
 {
     /// <summary>
     ///  Die Kennung des Konto führenden Zahlungsdienstleisters. Diese Kennung ergibt sich bei Zahlungen im SEPA 

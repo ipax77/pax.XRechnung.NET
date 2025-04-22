@@ -6,20 +6,25 @@ namespace pax.XRechnung.NET.XmlModels;
 /// <summary>
 /// Represents payment card information.
 /// </summary>
-public class XmlPaymentCardInformation
+public class XmlCardAccount
 {
     /// <summary>
     /// Die Nummer der Kreditkarte, die für die Zahlung genutzt wurde.
     ///   Anmerkung: In Übereinstimmung mit den für Kreditkarten geltenden Sicherheitsstandards darf eine Rechnung
     ///              nicht die vollständige Kartennummer enthalten.
     /// </summary>
-    [XmlElement("Number", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("PrimaryAccountNumberID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-87")]
     public string Number { get; set; } = string.Empty;
     /// <summary>
+    /// Netzwerk-Id
+    /// </summary>
+    [XmlElement("NetworkID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public string NetworkId { get; set; } = string.Empty;
+    /// <summary>
     ///  Name des Karteninhabers
     /// </summary>
-    [XmlElement("Name", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [XmlElement("HolderName", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-88")]
     public string? Name { get; set; }
 }

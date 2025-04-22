@@ -9,12 +9,12 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ipax77/pax.XRechnung.NET</RepositoryUrl>
     <PackageTags>dotnet;XRechnung;import;export;validate</PackageTags>
-    <AssemblyVersion>0.1.0</AssemblyVersion>
+    <AssemblyVersion>0.2.0</AssemblyVersion>
     <Owners>Philipp Hetzner</Owners>
     <Authors>Philipp Hetzner</Authors>
-    <Version>0.1.0</Version>
-	  <FileVersion>0.1.0.0</FileVersion>
-    <PackageVersion>0.1.0</PackageVersion>
+    <Version>0.2.0</Version>
+	  <FileVersion>0.2.0.0</FileVersion>
+    <PackageVersion>0.2.0</PackageVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>    
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -91,6 +91,8 @@
     <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-UnqualifiedDataTypes-2.1.xsd" />
     <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/common/UBL-ExtensionContentDataType-2.1.xsd" />
     <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/maindoc/UBL-Invoice-2.1.xsd" />
+    <EmbeddedResource Include="Resources/Schematrons/iso_schematron_skeleton_for_saxon.xsl" />
+    <EmbeddedResource Include="Resources/Schematrons/PEPPOL-EN16931-UBL.sch" />
   </ItemGroup>
 
     <ItemGroup>
@@ -99,4 +101,8 @@
       <PackagePath>.</PackagePath>
     </None>
   </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\pax.XRechnung.NET.Validator\pax.XRechnung.NET.Validator.csproj" />
+    </ItemGroup>
 </Project>

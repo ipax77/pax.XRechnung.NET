@@ -6,7 +6,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
@@ -75,7 +74,7 @@ public static class XmlInvoiceWriter
         xmlSchemaSet.Add(targetNameSpace, reader);
     }
 
-    private static XmlReader LoadEmbeddedResource(string ressourceName)
+    internal static XmlReader LoadEmbeddedResource(string ressourceName)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var stream = assembly.GetManifestResourceStream(ressourceName);
@@ -117,31 +116,12 @@ public static class XmlInvoiceWriter
     /// </summary>
     /// <param name="invoice"></param>
     /// <returns></returns>
-    public static string Serialize(InvoiceDto invoice)
-    {
-        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoice);
-        var xml = SerializeToXDocument(xmlInvoice, GetNamespaces());
-
-        RemoveNullElements(xml);
-        FormatDateTimeElements(xml);
-
-        return WriteToString(xml);
-    }
-
-    /// <summary>
-    /// Serialize to xml string
-    /// </summary>
-    /// <param name="invoice"></param>
-    /// <returns></returns>
     public static string Serialize(XmlInvoice invoice)
     {
         ArgumentNullException.ThrowIfNull(invoice);
-        invoice.IssueDate = XmlInvoiceMapper.GetXmlDate(invoice.IssueDate);
-        invoice.DueDate = XmlInvoiceMapper.GetXmlDate(invoice.DueDate);
         var xml = SerializeToXDocument(invoice, GetNamespaces());
 
         RemoveNullElements(xml);
-        FormatDateTimeElements(xml);
 
         return WriteToString(xml);
     }
@@ -152,23 +132,6 @@ public static class XmlInvoiceWriter
         xml.Descendants()
            .Where(e => (string?)e.Attribute(xsiNamespace + "nil") == "true")
            .Remove();
-    }
-
-    private static void FormatDateTimeElements(XDocument xml)
-    {
-        string[] dateTimeFormats = [
-            // 2025-02-02T00:00:00Z
-            "yyyy-MM-ddTHH:mm:ssZ"
-        ];
-
-        foreach (var element in xml.Descendants())
-        {
-            if (DateTime.TryParseExact(element.Value, dateTimeFormats,
-                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dateTime))
-            {
-                element.Value = dateTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-            }
-        }
     }
 
     private static XDocument SerializeToXDocument(XmlInvoice invoice, XmlSerializerNamespaces namespaces)
@@ -190,5 +153,4 @@ public static class XmlInvoiceWriter
         writer.Flush();
         return Encoding.UTF8.GetString(memory.ToArray());
     }
-
 }

@@ -14,8 +14,8 @@ public sealed class InvoiceTests
             InvoiceTypeCode = "380",
             BuyerReference = "991-33333TEST-33",
             DocumentCurrencyCode = "EUR",
-            IssueDate = DateTime.UtcNow,
-            DueDate = DateTime.UtcNow.AddDays(14),
+            IssueDate = DateOnly.FromDateTime(DateTime.UtcNow),
+            DueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(14)),
             Note = "Zahlbar innerhalb von 14 Tagen.",
             SellerParty = new()
             {
@@ -37,7 +37,7 @@ public sealed class InvoiceTests
                     },
                     PartyLegalEntity = new()
                     {
-                        RegistrationName = new() { Content = "Verkäufer" },
+                        RegistrationName = "Verkäufer",
                     },
                     Contact = new()
                     {
@@ -55,7 +55,7 @@ public sealed class InvoiceTests
                     PartyName = new() { Name = "Käufer" },
                     PartyLegalEntity = new()
                     {
-                        RegistrationName = new() { Content = "Käufer" }
+                        RegistrationName = "Käufer",
                     },
                     PostalAddress = new()
                     {
@@ -68,12 +68,12 @@ public sealed class InvoiceTests
             PaymentMeans = new()
             {
                 PaymentMeansTypeCode = "58",
-                PayeeFinancialAccount = [
-                    new() {
+                PayeeFinancialAccount =
+                    new()
+                    {
                         Id = new() { Content = "DE21081508151234123412" },
                         Name = "Test"
                     }
-                ]
             },
             LegalMonetaryTotal = new()
             {
@@ -158,7 +158,6 @@ public sealed class InvoiceTests
         document.Validate((sender, e) =>
         {
             validationErrorsFound = true;
-            Console.WriteLine($"{e.Severity}: {e.Message}");
         });
 
         // Assert

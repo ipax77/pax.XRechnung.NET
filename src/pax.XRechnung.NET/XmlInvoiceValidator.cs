@@ -1,6 +1,5 @@
 using System.Xml;
 using System.Xml.Schema;
-using pax.XRechnung.NET.Dtos;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
@@ -8,21 +7,8 @@ namespace pax.XRechnung.NET;
 /// <summary>
 /// XmlInvoiceValidator
 /// </summary>
-public static class XmlInvoiceValidator
+public static partial class XmlInvoiceValidator
 {
-    /// <summary>
-    /// Validate InvoiceDto
-    /// </summary>
-    /// <param name="invoiceDto"></param>
-    /// <returns></returns>
-    public static ValidationResult Validate(InvoiceDto invoiceDto)
-    {
-        ArgumentNullException.ThrowIfNull(invoiceDto);
-        var xmlInvoice = XmlInvoiceMapper.MapToXmlInvoice(invoiceDto);
-        var xml = XmlInvoiceWriter.Serialize(xmlInvoice);
-        return ValidateXmlText(xml);
-    }
-
     /// <summary>
     /// Validate XmlInvoice
     /// </summary>

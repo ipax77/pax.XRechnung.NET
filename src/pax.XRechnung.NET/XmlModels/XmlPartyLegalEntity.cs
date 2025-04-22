@@ -13,5 +13,5 @@ public class XmlPartyLegalEntity
     /// </summary>
     [XmlElement("RegistrationName", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-30")]
-    public Identifier RegistrationName { get; set; } = new();
+    public string RegistrationName { get; set; } = string.Empty;
 }

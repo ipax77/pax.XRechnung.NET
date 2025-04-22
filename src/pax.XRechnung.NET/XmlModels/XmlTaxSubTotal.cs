@@ -38,22 +38,4 @@ public class XmlTaxSubTotal
     /// </summary>
     [XmlElement("TaxCategory", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     public XmlTaxCategory TaxCategory { get; set; } = new();
-    /// <summary>
-    ///  In Textform angegebener Grund für die Ausnahme des Betrages von der Umsatzsteuerpflicht.
-    ///  Sofern die Umsatzsteuerkategorie AE für die Rechnung gilt, ist hier der Text
-    /// „Umkehrung der Steuerschuldnerschaft“ oder der entsprechende Normtext in der für die Rechnung gewählten
-    /// Sprache anzugeben.
-    /// </summary>
-    [XmlElement("ExemptionReason", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-120")]
-    public string? VatExemptionReasonText { get; set; }
-
-    /// <summary>
-    ///  Ein Code für den Grund für die Ausnahme des Betrages von der Umsatzsteuerpflicht. Die Codeliste VATEX 
-    ///  „VATexemption reason code list“ wird von der Connecting Europe Facility gepflegt und herausgegeben.
-    /// </summary>
-    [XmlElement("ExemptionReasonCode", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-121")]
-    [CodeList("VATEX")]
-    public string? VatExemptionReasonCode { get; set; }
 }

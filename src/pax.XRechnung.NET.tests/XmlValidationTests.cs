@@ -1,5 +1,9 @@
 
 using System.Reflection;
+using System.Text;
+using AutoFixture;
+using AutoFixture.Kernel;
+using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET.tests;
 
@@ -29,4 +33,29 @@ public sealed class ValidationTests
         Assert.IsNull(result.Error, result.Error);
         Assert.IsTrue(result.IsValid);
     }
+
+    [TestMethod]
+    public void XmlIsValid()
+    {
+        Fixture fixture = new();
+        fixture.Behaviors
+            .OfType<ThrowingRecursionBehavior>()
+            .ToList()
+            .ForEach(b => fixture.Behaviors.Remove(b));
+        fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
+        fixture.Customize<EmbeddedDocumentBinaryObject>(c =>
+            c.With(x => x.Content, Convert.ToBase64String(Encoding.UTF8.GetBytes("Test doc content"))));
+
+        fixture.Customize<DateOnly>(composer => composer.FromFactory<DateTime>(DateOnly.FromDateTime));
+        fixture.Customize<TimeOnly>(composer => composer.FromFactory<DateTime>(TimeOnly.FromDateTime));
+
+        XmlInvoice invoice = fixture.Create<XmlInvoice>();
+
+        var result = XmlInvoiceValidator.Validate(invoice);
+        Assert.IsNull(result.Error, result.Error, result.Error);
+        Assert.IsTrue(result.IsValid, string.Join(Environment.NewLine, result.Validations
+            .Where(x => x.Severity == System.Xml.Schema.XmlSeverityType.Error).Select(s => s.Message)));
+    }
 }
+

@@ -23,12 +23,6 @@ public class XmlAdditionalDocumentReference
     [SpecificationId("BT-123")]
     public string? DocumentDescription { get; set; }
     /// <summary>
-    /// Die Internetadresse bzw. URL (Uniform Resource Locator), unter der das externe Dokument verfügbar ist
-    /// </summary>
-    [XmlElement(Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-124")]
-    public string? DocumentLocation { get; set; }
-    /// <summary>
     ///  Ein als Binärobjekt eingebettetes Anhangsdokument
     /// </summary>
     [XmlElement(Namespace = XmlInvoiceWriter.CommonAggregateComponents)]

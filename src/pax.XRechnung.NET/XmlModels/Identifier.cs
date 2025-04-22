@@ -20,13 +20,13 @@ public class Identifier
     /// The identifier of the scheme (optional).
     /// Example: "GLN"
     /// </summary>
-    [XmlAttribute("schemeIdentifier")]
+    [XmlAttribute("schemeID")]
     public string? SchemeIdentifier { get; set; }
 
-    /// <summary>
-    /// The version of the scheme (optional).
-    /// Example: "1.0"
-    /// </summary>
-    [XmlAttribute("schemeVersionIdentifier")]
-    public string? SchemeVersionIdentifier { get; set; }
+    // /// <summary>
+    // /// The version of the scheme (optional).
+    // /// Example: "1.0"
+    // /// </summary>
+    // [XmlAttribute("schemeVersionID")]
+    // public string? SchemeVersionIdentifier { get; set; }
 }
