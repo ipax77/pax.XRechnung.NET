@@ -15,8 +15,17 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
     public virtual T FromXml(XmlInvoice xmlInvoice)
     {
         ArgumentNullException.ThrowIfNull(xmlInvoice);
+
+        var xmlTaxCategory = xmlInvoice.TaxTotal.TaxSubTotal.FirstOrDefault()?.TaxCategory;
+        var tax = xmlTaxCategory?.Percent ?? 19.0m;
+        var taxScheme = xmlTaxCategory?.TaxScheme.Id.Content ?? "VAT";
+        var taxCategory = xmlTaxCategory?.Id.Content ?? "S";
+
         return new()
         {
+            GlobalTaxCategory = taxCategory,
+            GlobalTaxScheme = taxScheme,
+            GlobalTax = (double)tax,
             Id = xmlInvoice.Id.Content,
             IssueDate = GetDateTime(xmlInvoice.IssueDate),
             DueDate = GetDateTime(xmlInvoice.DueDate?.Value),
