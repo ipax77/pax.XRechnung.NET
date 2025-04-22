@@ -234,6 +234,25 @@ public class SchematronValidationTests
     }
 
     [TestMethod]
+    public async Task CanValidateBaseDtoSchematronWithRoundingTest()
+    {
+        var invoiceBaseDto = BaseDtoTests.GetInvoiceBaseDto();
+
+        var quantity = 1.17777;
+        var unitPrice = 117.17;
+        invoiceBaseDto.InvoiceLines[0].Quantity = quantity;
+        invoiceBaseDto.InvoiceLines[0].UnitPrice = unitPrice;
+        invoiceBaseDto.PayableAmount = quantity * unitPrice;
+
+        InvoiceMapper<InvoiceBaseDto> invoiceMapper = new();
+        XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
+        var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
+        var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
+        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsTrue(result.IsValid, resultText);
+    }
+
+    [TestMethod]
     public async Task CanProduceValidInvoiceDto()
     {
         if (!kositServerIsRunning)

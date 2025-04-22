@@ -15,6 +15,7 @@ public class BaseDtoTests
             GlobalTax = 19.0,
             Id = "1",
             IssueDate = DateTime.UtcNow,
+            InvoiceTypeCode = "380",
             DocumentCurrencyCode = "EUR",
             BuyerReference = "04011000-12345-34",
             SellerParty = new()

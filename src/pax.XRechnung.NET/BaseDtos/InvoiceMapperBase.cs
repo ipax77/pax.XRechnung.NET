@@ -20,6 +20,7 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             Id = xmlInvoice.Id.Content,
             IssueDate = GetDateTime(xmlInvoice.IssueDate),
             DueDate = GetDateTime(xmlInvoice.DueDate?.Value),
+            InvoiceTypeCode = xmlInvoice.InvoiceTypeCode,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
             BuyerReference = xmlInvoice.BuyerReference,
             InvoiceLines = xmlInvoice.InvoiceLines.Select(s => LineToDto(s)).ToList(),
@@ -46,16 +47,18 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
     {
         ArgumentNullException.ThrowIfNull(dto);
 
-        decimal payableAmount = (decimal)dto.PayableAmount;
-        decimal taxRate = (decimal)dto.GlobalTax;
+        decimal taxRate = RoundAmount(dto.GlobalTax / 100.0);
+        decimal taxExclusiveAmount = RoundAmount(dto.InvoiceLines
+            .Sum(s => RoundAmount(RoundAmount(s.Quantity) * RoundAmount(s.UnitPrice))));
 
-        decimal taxExclusiveAmount = Math.Round(payableAmount / (1 + taxRate / 100), 2);
-        decimal taxAmount = Math.Round(payableAmount - taxExclusiveAmount, 2);
+        decimal payableAmount = RoundAmount(taxExclusiveAmount + taxExclusiveAmount * taxRate);
+        decimal taxAmount = RoundAmount(payableAmount - taxExclusiveAmount);
 
         return new()
         {
             Id = new() { Content = dto.Id },
             IssueDate = new DateOnly(dto.IssueDate.Year, dto.IssueDate.Month, dto.IssueDate.Day),
+            InvoiceTypeCode = dto.InvoiceTypeCode,
             DocumentCurrencyCode = dto.DocumentCurrencyCode,
             BuyerReference = dto.BuyerReference,
             InvoiceLines = dto.InvoiceLines
@@ -96,7 +99,7 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
                         TaxCategory = new()
                         {
                             Id = new() { Content = dto.GlobalTaxCategory },
-                            Percent = (decimal)dto.GlobalTax,
+                            Percent = RoundAmount(dto.GlobalTax),
                             TaxScheme = new() { Id = new() { Content = dto.GlobalTaxScheme } }
                         }
                     }
@@ -195,13 +198,15 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
                                             string taxScheme,
                                             double tax)
     {
+        var lineTotal = RoundAmount(RoundAmount(dtoLine.Quantity) * RoundAmount(dtoLine.UnitPrice));
+
         return new()
         {
             Id = new() { Content = dtoLine.Id },
             Note = dtoLine.Note,
-            InvoicedQuantity = new() { Value = (decimal)dtoLine.Quantity, UnitCode = dtoLine.QuantityCode },
-            LineExtensionAmount = new() { Value = (decimal)(dtoLine.Quantity * dtoLine.UnitPrice), CurrencyID = currencyId },
-            PriceDetails = new() { PriceAmount = new() { Value = (decimal)dtoLine.UnitPrice, CurrencyID = currencyId } },
+            InvoicedQuantity = new() { Value = RoundAmount(dtoLine.Quantity), UnitCode = dtoLine.QuantityCode },
+            LineExtensionAmount = new() { Value = lineTotal, CurrencyID = currencyId },
+            PriceDetails = new() { PriceAmount = new() { Value = RoundAmount(dtoLine.UnitPrice), CurrencyID = currencyId } },
             InvoicePeriod = GetXmlPeriod(dtoLine.StartDate, dtoLine.EndDate),
             Item = new()
             {
@@ -210,7 +215,7 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
                 ClassifiedTaxCategory = new()
                 {
                     Id = new() { Content = taxCategory },
-                    Percent = (decimal)tax,
+                    Percent = RoundAmount(tax),
                     TaxScheme = new() { Id = new() { Content = taxScheme } }
                 }
             }
@@ -245,4 +250,7 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
         return new DateTime(dateOnly.Value.Year, dateOnly.Value.Month, dateOnly.Value.Day,
          timeOnly.Value.Hour, timeOnly.Value.Minute, timeOnly.Value.Second);
     }
+
+    private static decimal RoundAmount(double value) => Math.Round((decimal)value, 2, MidpointRounding.AwayFromZero);
+    private static decimal RoundAmount(decimal value) => Math.Round(value, 2, MidpointRounding.AwayFromZero);
 }

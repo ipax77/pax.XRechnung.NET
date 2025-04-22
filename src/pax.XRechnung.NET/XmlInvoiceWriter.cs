@@ -153,5 +153,4 @@ public static class XmlInvoiceWriter
         writer.Flush();
         return Encoding.UTF8.GetString(memory.ToArray());
     }
-
 }

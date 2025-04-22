@@ -34,6 +34,20 @@ public partial class InvoiceBaseDto
     /// </summary>
     public DateTime? DueDate { get; set; }
     /// <summary>
+    /// Ein Code, der den Funktionstyp der Rechnung angibt.
+    ///   Anmerkung: Der Rechnungstyp muss gemäß UNTDID 1001, spezifiziert werden.
+    ///   Folgende Codes aus der Codeliste sollen verwendet werden:
+    ///     • 326 (Partial invoice)
+    ///     • 380 (Commercial invoice)
+    ///     • 384 (Corrected invoice)
+    ///     • 389 (Self-billed invoice)
+    ///     • 381 (Credit note)
+    ///     • 875 (Partial construction invoice)
+    ///     • 876 (Partial final construction invoice)
+    ///     • 877 (Final construction invoice)
+    /// </summary>
+    public string InvoiceTypeCode { get; set; } = "380";
+    /// <summary>
     /// ISO 4217 currency code (e.g., "EUR"). Used on all amounts
     /// </summary>
     public string DocumentCurrencyCode { get; set; } = "EUR";
