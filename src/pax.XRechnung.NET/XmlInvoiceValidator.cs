@@ -14,7 +14,7 @@ public static partial class XmlInvoiceValidator
     /// </summary>
     /// <param name="xmlInvoice"></param>
     /// <returns></returns>
-    public static ValidationResult Validate(XmlInvoice xmlInvoice)
+    public static InvoiceValidationResult Validate(XmlInvoice xmlInvoice)
     {
         ArgumentNullException.ThrowIfNull(xmlInvoice);
         var xml = XmlInvoiceWriter.Serialize(xmlInvoice);
@@ -26,7 +26,7 @@ public static partial class XmlInvoiceValidator
     /// </summary>
     /// <param name="xmlFilePath">xml file path</param>
     /// <returns></returns>
-    public static ValidationResult Validate(string xmlFilePath)
+    public static InvoiceValidationResult Validate(string xmlFilePath)
     {
         try
         {
@@ -51,32 +51,32 @@ public static partial class XmlInvoiceValidator
             using var reader = XmlReader.Create(xmlFilePath, settings);
             while (reader.Read()) { }
 
-            return new ValidationResult(validationEventArgs);
+            return new InvoiceValidationResult(validationEventArgs);
         }
         catch (ArgumentNullException e)
         {
-            return new ValidationResult()
+            return new InvoiceValidationResult()
             {
                 Error = $"Argument error: {e.Message}"
             };
         }
         catch (FileNotFoundException e)
         {
-            return new ValidationResult()
+            return new InvoiceValidationResult()
             {
                 Error = $"File error: {e.Message}"
             };
         }
         catch (XmlException e)
         {
-            return new ValidationResult()
+            return new InvoiceValidationResult()
             {
                 Error = $"XML error: {e.Message}"
             };
         }
         catch (Exception e)
         {
-            return new ValidationResult()
+            return new InvoiceValidationResult()
             {
                 Error = $"Unexpected error: {e.Message}"
             };
@@ -88,7 +88,7 @@ public static partial class XmlInvoiceValidator
     /// Validate xml Invoice
     /// </summary>
     /// <param name="xmlText">xml string</param>
-    public static ValidationResult ValidateXmlText(string xmlText)
+    public static InvoiceValidationResult ValidateXmlText(string xmlText)
     {
         try
         {
@@ -107,11 +107,11 @@ public static partial class XmlInvoiceValidator
                 validationEventArgs.Add(e);
             });
 
-            return new ValidationResult(validationEventArgs);
+            return new InvoiceValidationResult(validationEventArgs);
         }
         catch (Exception e)
         {
-            var validationResult = new ValidationResult()
+            var validationResult = new InvoiceValidationResult()
             {
                 Error = e.Message
             };

@@ -11,7 +11,7 @@ namespace pax.XRechnung.NET;
 public static partial class CodeListRepository
 {
     private static readonly Dictionary<string, CodeList?> CodeListCache = [];
-    private static string CodeListRessourceBasePath = "pax.XRechnung.NET.Resources.CodeListFiles.";
+    private const string CodeListRessourceBasePath = "pax.XRechnung.NET.Resources.CodeListFiles.";
 
     /// <summary>
     /// 

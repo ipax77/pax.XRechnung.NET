@@ -6,18 +6,18 @@ namespace pax.XRechnung.NET;
 /// <summary>
 /// ValidationResult
 /// </summary>
-public sealed class ValidationResult
+public sealed class InvoiceValidationResult
 {
     /// <summary>
     /// JsonConstructor
     /// </summary>
     [JsonConstructor]
-    public ValidationResult() { }
+    public InvoiceValidationResult() { }
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="validationEventArgs"></param>
-    public ValidationResult(ICollection<ValidationEventArgs> validationEventArgs)
+    public InvoiceValidationResult(ICollection<ValidationEventArgs> validationEventArgs)
     {
         Validations = validationEventArgs.Select(s => new ValidationMessage(s))
             .ToList();
@@ -30,7 +30,7 @@ public sealed class ValidationResult
     /// Constructor
     /// </summary>
     /// <param name="validationMessages"></param>
-    public ValidationResult(ICollection<ValidationMessage> validationMessages)
+    public InvoiceValidationResult(ICollection<ValidationMessage> validationMessages)
     {
         Validations = validationMessages;
         if (!Validations.Where(x => x.Severity == XmlSeverityType.Error).Any())

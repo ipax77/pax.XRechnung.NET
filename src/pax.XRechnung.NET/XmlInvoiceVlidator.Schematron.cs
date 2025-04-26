@@ -13,7 +13,7 @@ public static partial class XmlInvoiceValidator
     /// </summary>
     /// <param name="invoice">XmlInvoice</param>
     /// <param name="kositUri">optional uri to the kosit validator, default is http://localhost:8080</param>
-    public static async Task<ValidationResult> ValidateSchematron(XmlInvoice invoice, Uri? kositUri = null)
+    public static async Task<InvoiceValidationResult> ValidateSchematron(XmlInvoice invoice, Uri? kositUri = null)
     {
         try
         {
@@ -24,7 +24,7 @@ public static partial class XmlInvoiceValidator
         }
         catch (Exception ex)
         {
-            return new ValidationResult
+            return new InvoiceValidationResult
             {
                 IsValid = false,
                 Error = ex.Message
@@ -38,7 +38,7 @@ public static partial class XmlInvoiceValidator
     /// </summary>
     /// <param name="xml">xml text</param>
     /// <param name="kositUri">optional uri to the kosit validator, default is http://localhost:8080</param>
-    public static async Task<ValidationResult> ValidateSchematron(string xml, Uri? kositUri = null)
+    public static async Task<InvoiceValidationResult> ValidateSchematron(string xml, Uri? kositUri = null)
     {
         try
         {
@@ -48,7 +48,7 @@ public static partial class XmlInvoiceValidator
         }
         catch (Exception ex)
         {
-            return new ValidationResult
+            return new InvoiceValidationResult
             {
                 IsValid = false,
                 Error = ex.Message
@@ -57,7 +57,7 @@ public static partial class XmlInvoiceValidator
         }
     }
 
-    private static ValidationResult MapToValidationResult(SchematronValidationResult kositResult)
+    private static InvoiceValidationResult MapToValidationResult(SchematronValidationResult kositResult)
     {
         var validationEvents = new List<ValidationMessage>();
 
@@ -80,7 +80,7 @@ public static partial class XmlInvoiceValidator
             validationEvents.Add(new(exception, message, severity));
         }
 
-        return new ValidationResult(validationEvents);
+        return new InvoiceValidationResult(validationEvents);
     }
 }
 
