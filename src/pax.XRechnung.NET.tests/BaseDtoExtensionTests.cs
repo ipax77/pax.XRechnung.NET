@@ -19,7 +19,7 @@ public class BaseDtoExtensionTests
             InvoiceTypeCode = "380",
             DocumentCurrencyCode = "EUR",
             BuyerReference = "04011000-12345-34",
-            SellerParty = new()
+            SellerParty = new PartyBaseDto()
             {
                 Name = "Seller Name",
                 StreetName = "Test Street",
@@ -31,7 +31,7 @@ public class BaseDtoExtensionTests
                 RegistrationName = "Seller Name",
                 TaxId = "DE12345678"
             },
-            BuyerParty = new()
+            BuyerParty = new PartyBaseDto()
             {
                 Name = "Buyer Name",
                 StreetName = "Test Street",
@@ -42,7 +42,7 @@ public class BaseDtoExtensionTests
                 Email = "buyer@example.com",
                 RegistrationName = "Buyer Name",
             },
-            PaymentMeans = new()
+            PaymentMeans = new PaymentMeansBaseDto()
             {
                 Iban = "DE12 1234 1234 1234 1234 12",
                 Bic = "BICABCDE",
@@ -52,7 +52,7 @@ public class BaseDtoExtensionTests
             PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
             PayableAmount = 119.0,
             InvoiceLines = [
-                new()
+                new InvoiceLineBaseDto()
                 {
                     Id = "1",
                     Quantity = 1.0,
@@ -110,11 +110,13 @@ public class BaseDtoExtensionTests
 
 public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto>
 {
-    private readonly InvoiceMapperBase<InvoiceBaseDto> baseMapper = new InvoiceMapper<InvoiceBaseDto>();
+    private readonly InvoiceMapper baseMapper = new();
+
+
     public override InvoiceExtendedDto FromXml(XmlInvoice xmlInvoice)
     {
         var dto = baseMapper.FromXml(xmlInvoice) as InvoiceExtendedDto
-            ?? throw new InvalidCastException("Mapping failed: baseMapper did not return InvoiceExtendedDto.");
+            ?? throw new InvalidCastException("base.FromXml did not return InvoiceExtendedDto.");
 
         dto.AdditionalDocumentReferences = xmlInvoice.AdditionalDocumentReferences
             .Select(x => new AdditionalDocumentReferenceDto
@@ -124,8 +126,7 @@ public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto>
                 MimeCode = x.Attachment?.EmbeddedDocumentBinaryObject.MimeCode ?? string.Empty,
                 FileName = x.Attachment?.EmbeddedDocumentBinaryObject.FileName ?? string.Empty,
                 Content = x.Attachment?.EmbeddedDocumentBinaryObject.Content ?? string.Empty,
-            })
-            .ToList() ?? [];
+            }).ToList();
 
         return dto;
     }
@@ -155,6 +156,7 @@ public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto>
         return xml;
     }
 }
+
 
 
 public class InvoiceExtendedDto : InvoiceBaseDto

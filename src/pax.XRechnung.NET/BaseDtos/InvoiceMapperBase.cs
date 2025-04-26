@@ -5,8 +5,25 @@ namespace pax.XRechnung.NET.BaseDtos;
 /// <summary>
 /// InvoiceMapper abstraction
 /// </summary>
-public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : InvoiceBaseDto, new()
+public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : IInvoiceBaseDto, new()
 {
+    /// <summary>
+    /// DefaultPaymentMeansTypeCode
+    /// </summary>
+    protected const string DefaultPaymentMeansTypeCode = "30";
+    /// <summary>
+    /// DefaultTax
+    /// </summary>
+    protected const decimal DefaultTax = 19.0m;
+    /// <summary>
+    /// DefaultTaxScheme
+    /// </summary>
+    protected const string DefaultTaxScheme = "VAT";
+    /// <summary>
+    /// DefaultTaxCategory
+    /// </summary>
+    protected const string DefaultTaxCategory = "S";
+
     /// <summary>
     /// Map xmlInvoice to T
     /// </summary>
@@ -17,9 +34,9 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
         ArgumentNullException.ThrowIfNull(xmlInvoice);
 
         var xmlTaxCategory = xmlInvoice.TaxTotal.TaxSubTotal.FirstOrDefault()?.TaxCategory;
-        var tax = xmlTaxCategory?.Percent ?? 19.0m;
-        var taxScheme = xmlTaxCategory?.TaxScheme.Id.Content ?? "VAT";
-        var taxCategory = xmlTaxCategory?.Id.Content ?? "S";
+        var tax = xmlTaxCategory?.Percent ?? DefaultTax;
+        var taxScheme = xmlTaxCategory?.TaxScheme.Id.Content ?? DefaultTaxScheme;
+        var taxCategory = xmlTaxCategory?.Id.Content ?? DefaultTaxCategory;
 
         return new()
         {
@@ -33,9 +50,9 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
             BuyerReference = xmlInvoice.BuyerReference,
             InvoiceLines = xmlInvoice.InvoiceLines.Select(s => LineToDto(s)).ToList(),
-            SellerParty = PartyToDto(xmlInvoice.SellerParty.Party),
-            BuyerParty = PartyToDto(xmlInvoice.BuyerParty.Party),
-            PaymentMeans = new()
+            SellerParty = SellerPartyToDto(xmlInvoice.SellerParty.Party),
+            BuyerParty = BuyerPartyToDto(xmlInvoice.BuyerParty.Party),
+            PaymentMeans = new PaymentMeansBaseDto()
             {
                 Iban = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.Id.Content ?? string.Empty,
                 Bic = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.FinancialInstitutionBranch?.Id?.Content ?? string.Empty,
@@ -74,11 +91,11 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
                 .Select(s =>
                     LineToXml(s, dto.DocumentCurrencyCode, dto.GlobalTaxCategory, dto.GlobalTaxScheme, dto.GlobalTax))
                 .ToList(),
-            SellerParty = new() { Party = PartyToXml(dto.SellerParty, dto) },
-            BuyerParty = new() { Party = PartyToXml(dto.BuyerParty, null) },
+            SellerParty = new() { Party = SellerPartyToXml(dto.SellerParty, dto) },
+            BuyerParty = new() { Party = BuyerPartyToXml(dto.BuyerParty) },
             PaymentMeans = new()
             {
-                PaymentMeansTypeCode = dto.PaymentMeansTypeCode ?? "30",
+                PaymentMeansTypeCode = dto.PaymentMeansTypeCode ?? DefaultPaymentMeansTypeCode,
                 PayeeFinancialAccount = new()
                 {
                     Id = new() { Content = dto.PaymentMeans.Iban },
@@ -132,9 +149,15 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
         };
     }
 
-    private static PartyBaseDto PartyToDto(XmlParty xmlParty)
+    /// <summary>
+    /// Map SellerParty to Dto
+    /// </summary>
+    /// <param name="xmlParty"></param>
+    /// <returns></returns>
+    protected virtual IPartyBaseDto SellerPartyToDto(XmlParty xmlParty)
     {
-        return new()
+        ArgumentNullException.ThrowIfNull(xmlParty);
+        return new PartyBaseDto()
         {
             Website = xmlParty.Website,
             LogoReferenceId = xmlParty.LogoReferenceId,
@@ -150,25 +173,57 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
         };
     }
 
-    private static XmlParty PartyToXml(PartyBaseDto dtoParty, InvoiceBaseDto? invoiceBaseDto)
+    /// <summary>
+    /// Map SellerParty to Dto
+    /// </summary>
+    /// <param name="xmlParty"></param>
+    /// <returns></returns>
+    protected virtual IPartyBaseDto BuyerPartyToDto(XmlParty xmlParty)
     {
+        ArgumentNullException.ThrowIfNull(xmlParty);
+        return new PartyBaseDto()
+        {
+            Website = xmlParty.Website,
+            LogoReferenceId = xmlParty.LogoReferenceId,
+            Name = xmlParty.PartyName.Name,
+            StreetName = xmlParty.PostalAddress.StreetName,
+            City = xmlParty.PostalAddress.City,
+            PostCode = xmlParty.PostalAddress.PostCode,
+            CountryCode = xmlParty.PostalAddress.Country.IdentificationCode,
+            RegistrationName = xmlParty.PartyLegalEntity.RegistrationName,
+            TaxId = xmlParty.PartyTaxScheme?.CompanyId ?? string.Empty,
+            Telefone = xmlParty.Contact?.Telephone ?? string.Empty,
+            Email = xmlParty.Contact?.Email ?? string.Empty,
+        };
+    }
+
+    /// <summary>
+    /// Map SellerPartyToXml
+    /// </summary>
+    /// <param name="partyBaseDto"></param>
+    /// <param name="invoiceBaseDto"></param>
+    /// <returns></returns>
+    protected virtual XmlParty SellerPartyToXml(IPartyBaseDto partyBaseDto, IInvoiceBaseDto invoiceBaseDto)
+    {
+        ArgumentNullException.ThrowIfNull(partyBaseDto);
+        ArgumentNullException.ThrowIfNull(invoiceBaseDto);
         return new()
         {
-            Website = dtoParty.Website,
-            LogoReferenceId = dtoParty.LogoReferenceId,
-            EndpointId = new() { SchemeId = "EM", Content = dtoParty.RegistrationName },
-            PartyName = new() { Name = dtoParty.Name },
+            Website = partyBaseDto.Website,
+            LogoReferenceId = partyBaseDto.LogoReferenceId,
+            EndpointId = new() { SchemeId = "EM", Content = partyBaseDto.RegistrationName },
+            PartyName = new() { Name = partyBaseDto.Name },
             PostalAddress = new()
             {
-                StreetName = dtoParty.StreetName,
-                City = dtoParty.City,
-                PostCode = dtoParty.PostCode,
-                Country = new() { IdentificationCode = dtoParty.CountryCode },
+                StreetName = partyBaseDto.StreetName,
+                City = partyBaseDto.City,
+                PostCode = partyBaseDto.PostCode,
+                Country = new() { IdentificationCode = partyBaseDto.CountryCode },
             },
-            PartyLegalEntity = new() { RegistrationName = dtoParty.RegistrationName },
-            PartyTaxScheme = invoiceBaseDto == null ? null : new()
+            PartyLegalEntity = new() { RegistrationName = partyBaseDto.RegistrationName },
+            PartyTaxScheme = new()
             {
-                CompanyId = dtoParty.TaxId,
+                CompanyId = partyBaseDto.TaxId,
                 TaxScheme = new()
                 {
                     Id = new() { Content = invoiceBaseDto.GlobalTaxScheme }
@@ -176,16 +231,53 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             },
             Contact = new()
             {
-                Name = dtoParty.Name,
-                Email = dtoParty.Email,
-                Telephone = dtoParty.Telefone,
+                Name = partyBaseDto.Name,
+                Email = partyBaseDto.Email,
+                Telephone = partyBaseDto.Telefone,
             }
         };
     }
 
-    private static InvoiceLineBaseDto LineToDto(XmlInvoiceLine xmlLine)
+    /// <summary>
+    /// Map BuyerPartyToXml
+    /// </summary>
+    /// <param name="partyBaseDto"></param>
+    /// <returns></returns>
+    protected virtual XmlParty BuyerPartyToXml(IPartyBaseDto partyBaseDto)
     {
+        ArgumentNullException.ThrowIfNull(partyBaseDto);
         return new()
+        {
+            Website = partyBaseDto.Website,
+            LogoReferenceId = partyBaseDto.LogoReferenceId,
+            EndpointId = new() { SchemeId = "EM", Content = partyBaseDto.RegistrationName },
+            PartyName = new() { Name = partyBaseDto.Name },
+            PostalAddress = new()
+            {
+                StreetName = partyBaseDto.StreetName,
+                City = partyBaseDto.City,
+                PostCode = partyBaseDto.PostCode,
+                Country = new() { IdentificationCode = partyBaseDto.CountryCode },
+            },
+            PartyLegalEntity = new() { RegistrationName = partyBaseDto.RegistrationName },
+            Contact = new()
+            {
+                Name = partyBaseDto.Name,
+                Email = partyBaseDto.Email,
+                Telephone = partyBaseDto.Telefone,
+            }
+        };
+    }
+
+    /// <summary>
+    /// Map LineToDto
+    /// </summary>
+    /// <param name="xmlLine"></param>
+    /// <returns></returns>
+    protected virtual IInvoiceLineBaseDto LineToDto(XmlInvoiceLine xmlLine)
+    {
+        ArgumentNullException.ThrowIfNull(xmlLine);
+        return new InvoiceLineBaseDto()
         {
             Id = xmlLine.Id.Content,
             Note = xmlLine.Note,
@@ -201,12 +293,22 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
         };
     }
 
-    private static XmlInvoiceLine LineToXml(InvoiceLineBaseDto dtoLine,
+    /// <summary>
+    /// Map LineToXml
+    /// </summary>
+    /// <param name="dtoLine"></param>
+    /// <param name="currencyId"></param>
+    /// <param name="taxCategory"></param>
+    /// <param name="taxScheme"></param>
+    /// <param name="tax"></param>
+    /// <returns></returns>
+    protected virtual XmlInvoiceLine LineToXml(IInvoiceLineBaseDto dtoLine,
                                             string currencyId,
                                             string taxCategory,
                                             string taxScheme,
                                             double tax)
     {
+        ArgumentNullException.ThrowIfNull(dtoLine);
         var lineTotal = RoundAmount(RoundAmount(dtoLine.Quantity) * RoundAmount(dtoLine.UnitPrice));
 
         return new()

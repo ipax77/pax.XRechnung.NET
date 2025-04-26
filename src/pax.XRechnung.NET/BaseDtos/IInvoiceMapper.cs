@@ -6,7 +6,7 @@ namespace pax.XRechnung.NET.BaseDtos;
 /// InvoiceMapper Interface
 /// </summary>
 /// <typeparam name="T">InvoiceBaseDto</typeparam>
-public interface IInvoiceMapper<T> where T : InvoiceBaseDto
+public interface IInvoiceMapper<T> where T : IInvoiceBaseDto
 {
     /// <summary>
     /// Map xmlInvoice to T
@@ -21,3 +21,4 @@ public interface IInvoiceMapper<T> where T : InvoiceBaseDto
     /// <returns></returns>
     XmlInvoice ToXml(T dto);
 }
+

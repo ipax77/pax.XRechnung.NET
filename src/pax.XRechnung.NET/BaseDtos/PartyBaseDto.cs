@@ -1,9 +1,29 @@
 namespace pax.XRechnung.NET.BaseDtos;
 
 /// <summary>
+/// IPartyBaseDto used for mapping
+/// </summary>
+public interface IPartyBaseDto
+{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    string? Website { get; set; }
+    string? LogoReferenceId { get; set; }
+    string Name { get; set; }
+    string? StreetName { get; set; }
+    string City { get; set; }
+    string PostCode { get; set; }
+    string CountryCode { get; set; }
+    string Telefone { get; set; }
+    string Email { get; set; }
+    string RegistrationName { get; set; }
+    string TaxId { get; set; }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+}
+
+/// <summary>
 /// Seller / Buyer Party
 /// </summary>
-public class PartyBaseDto
+public class PartyBaseDto : IPartyBaseDto
 {
     /// <summary>
     /// Website

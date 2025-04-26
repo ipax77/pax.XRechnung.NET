@@ -18,7 +18,7 @@ public class BaseDtoTests
             InvoiceTypeCode = "380",
             DocumentCurrencyCode = "EUR",
             BuyerReference = "04011000-12345-34",
-            SellerParty = new()
+            SellerParty = new PartyBaseDto()
             {
                 Name = "Seller Name",
                 StreetName = "Test Street",
@@ -30,7 +30,7 @@ public class BaseDtoTests
                 RegistrationName = "Seller Name",
                 TaxId = "DE12345678"
             },
-            BuyerParty = new()
+            BuyerParty = new PartyBaseDto()
             {
                 Name = "Buyer Name",
                 StreetName = "Test Street",
@@ -41,7 +41,7 @@ public class BaseDtoTests
                 Email = "buyer@example.com",
                 RegistrationName = "Buyer Name",
             },
-            PaymentMeans = new()
+            PaymentMeans = new PaymentMeansBaseDto()
             {
                 Iban = "DE12 1234 1234 1234 1234 12",
                 Bic = "BICABCDE",
@@ -51,7 +51,7 @@ public class BaseDtoTests
             PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
             PayableAmount = 119.0,
             InvoiceLines = [
-                new()
+                new InvoiceLineBaseDto()
                 {
                     Id = "1",
                     Quantity = 1.0,
@@ -67,7 +67,7 @@ public class BaseDtoTests
     public void InvoiceBaseDtoSchemaIsValidTest()
     {
         var invoiceBaseDto = GetInvoiceBaseDto();
-        var mapper = new InvoiceMapper<InvoiceBaseDto>();
+        var mapper = new InvoiceMapper();
         var xmlInvoice = mapper.ToXml(invoiceBaseDto);
         var result = XmlInvoiceValidator.Validate(xmlInvoice);
         Assert.IsTrue(result.IsValid);
@@ -77,7 +77,7 @@ public class BaseDtoTests
     public void FromXml_MapsCorrectlyToDto()
     {
         var xml = SchematronValidationTests.GetStandardXmlInvoice();
-        var mapper = new InvoiceMapper<InvoiceBaseDto>();
+        var mapper = new InvoiceMapper();
 
         var dto = mapper.FromXml(xml);
 
@@ -91,7 +91,7 @@ public class BaseDtoTests
     public void Roundtrip_ProducesEquivalentXml()
     {
         var original = SchematronValidationTests.GetStandardXmlInvoice();
-        var mapper = new InvoiceMapper<InvoiceBaseDto>();
+        var mapper = new InvoiceMapper();
 
         var dto = mapper.FromXml(original);
         var roundtripXml = mapper.ToXml(dto);
