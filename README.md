@@ -107,7 +107,15 @@ Server start:
 
 # ChangeLog
 
-<details open="open"><summary>v0.2.0</summary>
+<details open="open"><summary>v0.3.0</summary>
+
+>- **Breaking Changes**
+>- DTO rework to be more flexible
+>- InvoiceAnnotationDto now available
+
+</details>
+
+<details><summary>v0.2.0</summary>
 
 >- **Breaking Changes**
 >- Fixed/Renamed XmlInvoice properties and dependencies. All existing properties are now xml schema conform.

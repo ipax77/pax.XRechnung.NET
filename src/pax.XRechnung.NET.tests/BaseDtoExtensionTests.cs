@@ -102,7 +102,8 @@ public class BaseDtoExtensionTests
     }
 }
 
-public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto, DocumentReferenceBaseDto, PartyBaseDto, PartyBaseDto, PaymentMeansBaseDto, InvoiceLineExtendedDto>
+public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto, DocumentReferenceBaseDto, PartyBaseDto,
+ PartyBaseDto, PaymentMeansBaseDto, InvoiceLineExtendedDto>
 {
     public InvoiceExtendedMapper()
     : base(
@@ -114,30 +115,11 @@ public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto, Docum
     )
     {
     }
-
-    public override InvoiceExtendedDto FromXml(XmlInvoice xmlInvoice)
-    {
-        var dto = base.FromXml(xmlInvoice);
-        dto.InvoiceLines = xmlInvoice.InvoiceLines.Select(s => InvoiceLineMapper
-            .FromXml(s) as InvoiceLineExtendedDto
-                ?? throw new InvalidCastException("Could not cast to InvoiceLineExtendedDto"))
-            .ToList();
-        return dto;
-    }
-
-    public override XmlInvoice ToXml(InvoiceExtendedDto dto)
-    {
-        var xml = base.ToXml(dto);
-        xml.InvoiceLines = dto.InvoiceLines.Select(s => InvoiceLineMapper
-            .ToXml(s, dto.DocumentCurrencyCode, dto.GlobalTaxCategory, dto.GlobalTaxScheme, dto.GlobalTax))
-            .ToList();
-        return xml;
-    }
 }
 
 public class InvoiceLineExtendedMapper : InvoiceLineMapperBase<InvoiceLineExtendedDto>
 {
-    public override IInvoiceLineBaseDto FromXml(XmlInvoiceLine xmlLine)
+    public override InvoiceLineExtendedDto FromXml(XmlInvoiceLine xmlLine)
     {
         var dto = base.FromXml(xmlLine) as InvoiceLineExtendedDto;
         ArgumentNullException.ThrowIfNull(dto, "unable to cast line to InvoiceLineExtendedDto");
@@ -171,9 +153,40 @@ public class InvoiceLineExtendedMapper : InvoiceLineMapperBase<InvoiceLineExtend
 }
 
 
-public class InvoiceExtendedDto : InvoiceBaseDto
+public class InvoiceExtendedDto : IInvoiceBaseDto
 {
-    public new List<InvoiceLineExtendedDto> InvoiceLines { get; set; } = [];
+    public string GlobalTaxCategory { get; set; } = "S";
+    public string GlobalTaxScheme { get; set; } = "VAT";
+    public double GlobalTax { get; set; } = 19.0;
+    public string Id { get; set; } = string.Empty;
+    public DateTime IssueDate { get; set; }
+    public DateTime? DueDate { get; set; }
+    public string InvoiceTypeCode { get; set; } = "380";
+    public string? Note { get; set; }
+    public string DocumentCurrencyCode { get; set; } = "EUR";
+    public string BuyerReference { get; set; } = string.Empty;
+    public List<DocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; } = [];
+    public PartyBaseDto SellerParty { get; set; } = new PartyBaseDto();
+    public PartyBaseDto BuyerParty { get; set; } = new PartyBaseDto();
+    public PaymentMeansBaseDto PaymentMeans { get; set; } = new PaymentMeansBaseDto();
+    public string PaymentMeansTypeCode { get; set; } = "30";
+    public string PaymentTermsNote { get; set; } = string.Empty;
+    public double PayableAmount { get; set; }
+    public List<InvoiceLineExtendedDto> InvoiceLines { get; set; } = [];
+
+    IPartyBaseDto IInvoiceBaseDto.SellerParty { get => SellerParty; set => SellerParty = (PartyBaseDto)value; }
+    IPartyBaseDto IInvoiceBaseDto.BuyerParty { get => BuyerParty; set => BuyerParty = (PartyBaseDto)value; }
+    IPaymentMeansBaseDto IInvoiceBaseDto.PaymentMeans { get => PaymentMeans; set => PaymentMeans = (PaymentMeansBaseDto)value; }
+    List<IInvoiceLineBaseDto> IInvoiceBaseDto.InvoiceLines
+    {
+        get => InvoiceLines.Cast<IInvoiceLineBaseDto>().ToList();
+        set => InvoiceLines = value.Cast<InvoiceLineExtendedDto>().ToList();
+    }
+    List<IDocumentReferenceBaseDto> IInvoiceBaseDto.AdditionalDocumentReferences
+    {
+        get => AdditionalDocumentReferences.Cast<IDocumentReferenceBaseDto>().ToList();
+        set => AdditionalDocumentReferences = value.Cast<DocumentReferenceBaseDto>().ToList();
+    }
 }
 
 public class InvoiceLineExtendedDto : IInvoiceLineBaseDto

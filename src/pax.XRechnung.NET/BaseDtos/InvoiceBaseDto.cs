@@ -90,19 +90,19 @@ public partial class InvoiceBaseDto : IInvoiceBaseDto
     /// <summary>
     /// Additional documents attached to the invoice (e.g., contract, timesheet)
     /// </summary>
-    public List<IDocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; } = [];
+    public List<DocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; } = [];
     /// <summary>
     /// Seller
     /// </summary>
-    public IPartyBaseDto SellerParty { get; set; } = new PartyBaseDto();
+    public PartyBaseDto SellerParty { get; set; } = new PartyBaseDto();
     /// <summary>
     /// Buyer
     /// </summary>
-    public IPartyBaseDto BuyerParty { get; set; } = new PartyBaseDto();
+    public PartyBaseDto BuyerParty { get; set; } = new PartyBaseDto();
     /// <summary>
     /// Bank account info for payment
     /// </summary>
-    public IPaymentMeansBaseDto PaymentMeans { get; set; } = new PaymentMeansBaseDto();
+    public PaymentMeansBaseDto PaymentMeans { get; set; } = new PaymentMeansBaseDto();
     /// <summary>
     /// Payment type code, e.g. "30"
     /// </summary>
@@ -118,5 +118,19 @@ public partial class InvoiceBaseDto : IInvoiceBaseDto
     /// <summary>
     /// Invoice lines
     /// </summary>
-    public List<IInvoiceLineBaseDto> InvoiceLines { get; set; } = [];
+    public List<InvoiceLineBaseDto> InvoiceLines { get; set; } = [];
+
+    IPartyBaseDto IInvoiceBaseDto.SellerParty { get => SellerParty; set => SellerParty = (PartyBaseDto)value; }
+    IPartyBaseDto IInvoiceBaseDto.BuyerParty { get => BuyerParty; set => BuyerParty = (PartyBaseDto)value; }
+    IPaymentMeansBaseDto IInvoiceBaseDto.PaymentMeans { get => PaymentMeans; set => PaymentMeans = (PaymentMeansBaseDto)value; }
+    List<IInvoiceLineBaseDto> IInvoiceBaseDto.InvoiceLines
+    {
+        get => InvoiceLines.Cast<IInvoiceLineBaseDto>().ToList();
+        set => InvoiceLines = value.Cast<InvoiceLineBaseDto>().ToList();
+    }
+    List<IDocumentReferenceBaseDto> IInvoiceBaseDto.AdditionalDocumentReferences
+    {
+        get => AdditionalDocumentReferences.Cast<IDocumentReferenceBaseDto>().ToList();
+        set => AdditionalDocumentReferences = value.Cast<DocumentReferenceBaseDto>().ToList();
+    }
 }
