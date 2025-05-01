@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using pax.XRechnung.NET.BaseDtos;
 
 namespace pax.XRechnung.NET.AnnotatedDtos;
-
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public class BuyerAnnotationDto : IPartyBaseDto
 {
     public string? Website { get; set; }
