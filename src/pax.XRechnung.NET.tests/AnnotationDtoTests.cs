@@ -1,6 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
-using pax.XRechnung.NET.AnnotatatedDtos;
+using pax.XRechnung.NET.AnnotatedDtos;
 using pax.XRechnung.NET.BaseDtos;
 
 namespace pax.XRechnung.NET.tests;
@@ -8,7 +8,7 @@ namespace pax.XRechnung.NET.tests;
 [TestClass]
 public class AnnotationDtoTests
 {
-    public static InvoiceAnnDto GetInvoiceAnnDto()
+    public static InvoiceAnnotationDto GetInvoiceAnnDto()
     {
         return new()
         {
@@ -69,7 +69,7 @@ public class AnnotationDtoTests
     public void InvoiceBaseDtoSchemaIsValidTest()
     {
         var invoiceAnnDto = GetInvoiceAnnDto();
-        var mapper = new InvoiceAnnMapper();
+        var mapper = new InvoiceAnnotationMapper();
         var xmlInvoice = mapper.ToXml(invoiceAnnDto);
         var result = XmlInvoiceValidator.Validate(xmlInvoice);
         Assert.IsTrue(result.IsValid);
@@ -79,7 +79,7 @@ public class AnnotationDtoTests
     public void FromXml_MapsCorrectlyToDto()
     {
         var xml = SchematronValidationTests.GetStandardXmlInvoice();
-        var mapper = new InvoiceAnnMapper();
+        var mapper = new InvoiceAnnotationMapper();
 
         var dto = mapper.FromXml(xml);
 
@@ -93,7 +93,7 @@ public class AnnotationDtoTests
     public void Roundtrip_ProducesEquivalentXml()
     {
         var original = SchematronValidationTests.GetStandardXmlInvoice();
-        var mapper = new InvoiceAnnMapper();
+        var mapper = new InvoiceAnnotationMapper();
 
         var dto = mapper.FromXml(original);
         var roundtripXml = mapper.ToXml(dto);

@@ -1,4 +1,4 @@
-namespace pax.XRechnung.NET.AnnotatatedDtos;
+namespace pax.XRechnung.NET.AnnotatedDtos;
 
 /// <summary>
 /// CodeListType

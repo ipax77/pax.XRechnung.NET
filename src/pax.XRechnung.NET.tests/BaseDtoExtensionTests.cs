@@ -52,7 +52,7 @@ public class BaseDtoExtensionTests
             PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
             PayableAmount = 119.0,
             InvoiceLines = [
-                new InvoiceLineBaseDto()
+                new InvoiceLineExtendedDto()
                 {
                     Id = "1",
                     Quantity = 1.0,
@@ -68,110 +68,130 @@ public class BaseDtoExtensionTests
     public void InvoiceBaseDtoMapTest()
     {
         var invoiceExtendedDto = GetInvoiceBaseDto();
-        invoiceExtendedDto.AdditionalDocumentReferences = [
-            new()
-            {
-                Id = "1",
-                DocumentDescription = "pdf",
-                MimeCode = "application/pdf",
-                FileName = "invoice.pdf",
-                Content = "R0lGODlhAQABAAAAACw=",
-            }
-        ];
+        var lineDto = invoiceExtendedDto.InvoiceLines.FirstOrDefault() as InvoiceLineExtendedDto;
+        Assert.IsNotNull(lineDto);
+        lineDto.Attributes.Add(new() { Name = "TestName", Value = "TestValue" });
         var mapper = new InvoiceExtendedMapper();
         var xmlInvoice = mapper.ToXml(invoiceExtendedDto);
-        var doc = xmlInvoice.AdditionalDocumentReferences.FirstOrDefault();
-        Assert.IsNotNull(doc);
-        Assert.IsNotNull(doc.Attachment);
-        Assert.AreEqual(doc.Attachment.EmbeddedDocumentBinaryObject.Content,
-            invoiceExtendedDto.AdditionalDocumentReferences[0].Content);
+        var xmlLine = xmlInvoice.InvoiceLines.FirstOrDefault();
+        Assert.IsNotNull(xmlLine);
+        var attribute = xmlLine.Item.Attributes.FirstOrDefault();
+        Assert.IsNotNull(attribute);
+        Assert.AreEqual("TestName", attribute.Name);
+        Assert.AreEqual("TestValue", attribute.Value);
     }
 
     [TestMethod]
-    public void InvoiceBaseDtoSchemaIsValidTest()
+    public void InvoiceExtendedDto_RoundtripMapping_WorksCorrectly()
     {
-        var invoiceExtendedDto = GetInvoiceBaseDto();
-        invoiceExtendedDto.AdditionalDocumentReferences = [
-            new()
-            {
-                Id = "1",
-                DocumentDescription = "pdf",
-                MimeCode = "application/pdf",
-                FileName = "invoice.pdf",
-                Content = "R0lGODlhAQABAAAAACw=",
-            }
-        ];
+        var originalDto = GetInvoiceBaseDto();
+        var originalLine = originalDto.InvoiceLines.FirstOrDefault();
+        Assert.IsNotNull(originalLine);
+        originalLine.Attributes.Add(new ItemAttributeDto { Name = "TestName", Value = "TestValue" });
+
         var mapper = new InvoiceExtendedMapper();
-        var xmlInvoice = mapper.ToXml(invoiceExtendedDto);
-        var result = XmlInvoiceValidator.Validate(xmlInvoice);
-        Assert.IsTrue(result.IsValid);
+
+        var xmlInvoice = mapper.ToXml(originalDto);
+        var roundtrippedDto = mapper.FromXml(xmlInvoice);
+        var roundtrippedLine = roundtrippedDto.InvoiceLines.FirstOrDefault();
+
+        Assert.IsNotNull(roundtrippedLine);
+        var attribute = roundtrippedLine.Attributes.FirstOrDefault(a => a.Name == "TestName");
+        Assert.IsNotNull(attribute);
+        Assert.AreEqual("TestValue", attribute.Value);
     }
 }
 
-public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto>
+public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto, DocumentReferenceBaseDto, PartyBaseDto, PartyBaseDto, InvoiceLineExtendedDto>
 {
-    private readonly InvoiceMapper baseMapper = new();
-
+    public InvoiceExtendedMapper()
+    : base(
+        new DocumentReferenceMapper(),
+        new InvoiceSellerPartyMapper(),
+        new InvoiceBuyerPartyMapper(),
+        new InvoiceLineExtendedMapper()
+    )
+    {
+    }
 
     public override InvoiceExtendedDto FromXml(XmlInvoice xmlInvoice)
     {
-        var dto = baseMapper.FromXml(xmlInvoice) as InvoiceExtendedDto
-            ?? throw new InvalidCastException("base.FromXml did not return InvoiceExtendedDto.");
-
-        dto.AdditionalDocumentReferences = xmlInvoice.AdditionalDocumentReferences
-            .Select(x => new AdditionalDocumentReferenceDto
-            {
-                Id = x.Id.Content,
-                DocumentDescription = x.DocumentDescription ?? string.Empty,
-                MimeCode = x.Attachment?.EmbeddedDocumentBinaryObject.MimeCode ?? string.Empty,
-                FileName = x.Attachment?.EmbeddedDocumentBinaryObject.FileName ?? string.Empty,
-                Content = x.Attachment?.EmbeddedDocumentBinaryObject.Content ?? string.Empty,
-            }).ToList();
-
+        var dto = base.FromXml(xmlInvoice);
+        dto.InvoiceLines = xmlInvoice.InvoiceLines.Select(s => InvoiceLineMapper
+            .FromXml(s) as InvoiceLineExtendedDto
+                ?? throw new InvalidCastException("Could not cast to InvoiceLineExtendedDto"))
+            .ToList();
         return dto;
     }
 
     public override XmlInvoice ToXml(InvoiceExtendedDto dto)
     {
-        var xml = baseMapper.ToXml(dto);
-
-        if (dto.AdditionalDocumentReferences.Count != 0)
-        {
-            xml.AdditionalDocumentReferences = dto.AdditionalDocumentReferences.Select(x => new XmlAdditionalDocumentReference
-            {
-                Id = new() { Content = x.Id },
-                DocumentDescription = x.DocumentDescription,
-                Attachment = new()
-                {
-                    EmbeddedDocumentBinaryObject = new()
-                    {
-                        MimeCode = x.MimeCode,
-                        FileName = x.FileName,
-                        Content = x.Content
-                    }
-                }
-            }).ToList();
-        }
-
+        var xml = base.ToXml(dto);
+        xml.InvoiceLines = dto.InvoiceLines.Select(s => InvoiceLineMapper
+            .ToXml(s, dto.DocumentCurrencyCode, dto.GlobalTaxCategory, dto.GlobalTaxScheme, dto.GlobalTax))
+            .ToList();
         return xml;
     }
 }
 
+public class InvoiceLineExtendedMapper : InvoiceLineMapperBase<InvoiceLineExtendedDto>
+{
+    public override IInvoiceLineBaseDto FromXml(XmlInvoiceLine xmlLine)
+    {
+        var dto = base.FromXml(xmlLine) as InvoiceLineExtendedDto;
+        ArgumentNullException.ThrowIfNull(dto, "unable to cast line to InvoiceLineExtendedDto");
+
+        dto.Attributes = xmlLine.Item.Attributes.Select(s => new ItemAttributeDto()
+        {
+            Name = s.Name,
+            Value = s.Value
+        }).ToList();
+
+        return dto;
+    }
+
+    public override XmlInvoiceLine ToXml(IInvoiceLineBaseDto dtoLine,
+                                         string currencyId,
+                                         string taxCategory,
+                                         string taxScheme,
+                                         double tax)
+    {
+        var xmlLine = base.ToXml(dtoLine, currencyId, taxCategory, taxScheme, tax);
+        if (dtoLine is InvoiceLineExtendedDto extDtoLine)
+        {
+            xmlLine.Item.Attributes = extDtoLine.Attributes.Select(s => new XmlItemAttributes()
+            {
+                Name = s.Name,
+                Value = s.Value
+            }).ToList();
+        }
+        return xmlLine;
+    }
+}
 
 
 public class InvoiceExtendedDto : InvoiceBaseDto
 {
-    /// <summary>
-    /// Additional documents attached to the invoice (e.g., contract, timesheet)
-    /// </summary>
-    public List<AdditionalDocumentReferenceDto> AdditionalDocumentReferences { get; set; } = [];
+    public new List<InvoiceLineExtendedDto> InvoiceLines { get; set; } = [];
 }
 
-public class AdditionalDocumentReferenceDto
+public class InvoiceLineExtendedDto : IInvoiceLineBaseDto
 {
     public string Id { get; set; } = string.Empty;
-    public string DocumentDescription { get; set; } = string.Empty;
-    public string MimeCode { get; set; } = string.Empty;
-    public string FileName { get; set; } = string.Empty;
-    public string Content { get; set; } = string.Empty;
+    public string? Note { get; set; }
+    public double Quantity { get; set; }
+    public string QuantityCode { get; set; } = "HUR";
+    public double UnitPrice { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+    public string? Description { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public List<ItemAttributeDto> Attributes { get; set; } = [];
+    public double LineTotal => Math.Round(UnitPrice * Quantity, 2);
+}
+
+public class ItemAttributeDto
+{
+    public string Name { get; set; } = string.Empty;
+    public string Value { get; set; } = string.Empty;
 }

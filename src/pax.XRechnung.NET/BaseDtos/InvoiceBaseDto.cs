@@ -13,9 +13,10 @@ public interface IInvoiceBaseDto
     DateTime IssueDate { get; set; }
     DateTime? DueDate { get; set; }
     string InvoiceTypeCode { get; set; }
-    public string? Note { get; set; }
+    string? Note { get; set; }
     string DocumentCurrencyCode { get; set; }
     string BuyerReference { get; set; }
+    List<IDocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; }
     IPartyBaseDto SellerParty { get; set; }
     IPartyBaseDto BuyerParty { get; set; }
     IPaymentMeansBaseDto PaymentMeans { get; set; }
@@ -86,6 +87,10 @@ public partial class InvoiceBaseDto : IInvoiceBaseDto
     /// Ein vom Erwerber zugewiesener und für interne Lenkungszwecke benutzter Bezeichner
     /// </summary>
     public string BuyerReference { get; set; } = string.Empty;
+    /// <summary>
+    /// Additional documents attached to the invoice (e.g., contract, timesheet)
+    /// </summary>
+    public List<IDocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; } = [];
     /// <summary>
     /// Seller
     /// </summary>

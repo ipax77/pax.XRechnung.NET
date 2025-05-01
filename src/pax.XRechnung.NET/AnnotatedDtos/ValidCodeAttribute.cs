@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace pax.XRechnung.NET.AnnotatatedDtos;
+namespace pax.XRechnung.NET.AnnotatedDtos;
 
 /// <summary>
 /// Code List Validation Attribute

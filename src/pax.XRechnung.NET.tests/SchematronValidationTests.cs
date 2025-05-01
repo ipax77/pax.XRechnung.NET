@@ -281,16 +281,7 @@ public class SchematronValidationTests
             Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
         }
         var invoiceExtendedDto = BaseDtoExtensionTests.GetInvoiceBaseDto();
-        invoiceExtendedDto.AdditionalDocumentReferences = [
-            new()
-            {
-                Id = "1",
-                DocumentDescription = "pdf",
-                MimeCode = "application/pdf",
-                FileName = "invoice.pdf",
-                Content = "R0lGODlhAQABAAAAACw=",
-            }
-        ];
+
         var mapper = new InvoiceExtendedMapper();
         var xmlInvoice = mapper.ToXml(invoiceExtendedDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
