@@ -10,22 +10,11 @@ namespace pax.XRechnung.NET.AnnotatedDtos;
 /// </summary>
 public class InvoiceAnnotationDto : IInvoiceBaseDto
 {
-    /// <summary>
-    /// Global tax category (e.g., "S" for Standard rate).
-    /// Applied to all invoice lines.
-    /// </summary>
     [Required]
     [ValidCode(CodeListType.UNTDID_5305_3)]
     public string GlobalTaxCategory { get; set; } = "S";
-    /// <summary>
-    /// Global tax scheme (e.g., "VAT").
-    /// Applied to all invoice lines.
-    /// </summary>
     [Required]
     public string GlobalTaxScheme { get; set; } = "VAT";
-    /// <summary>
-    /// Global tax used for all lines
-    /// </summary>
     [Required]
     public double GlobalTax { get; set; } = 19.0;
     [Required]
@@ -41,16 +30,30 @@ public class InvoiceAnnotationDto : IInvoiceBaseDto
     public string DocumentCurrencyCode { get; set; } = "EUR";
     [Required]
     public string BuyerReference { get; set; } = string.Empty;
-    public List<IDocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; } = [];
-    public IPartyBaseDto SellerParty { get; set; } = new SellerAnnotationDto();
-    public IPartyBaseDto BuyerParty { get; set; } = new BuyerAnnotationDto();
-    public IPaymentMeansBaseDto PaymentMeans { get; set; } = new PaymentAnnotationDto();
+    public List<DocumentReferenceAnnotationDto> AdditionalDocumentReferences { get; set; } = [];
+    public SellerAnnotationDto SellerParty { get; set; } = new SellerAnnotationDto();
+    public BuyerAnnotationDto BuyerParty { get; set; } = new BuyerAnnotationDto();
+    public PaymentAnnotationDto PaymentMeans { get; set; } = new PaymentAnnotationDto();
     [Required]
     [ValidCode(CodeListType.UNTDID_4461_3)]
     public string PaymentMeansTypeCode { get; set; } = "30";
     public string PaymentTermsNote { get; set; } = string.Empty;
     public double PayableAmount { get; set; }
-    public List<IInvoiceLineBaseDto> InvoiceLines { get; set; } = [];
+    public List<InvoiceLineAnnotationDto> InvoiceLines { get; set; } = [];
+
+    IPartyBaseDto IInvoiceBaseDto.SellerParty { get => SellerParty; set => SellerParty = (SellerAnnotationDto)value; }
+    IPartyBaseDto IInvoiceBaseDto.BuyerParty { get => BuyerParty; set => BuyerParty = (BuyerAnnotationDto)value; }
+    IPaymentMeansBaseDto IInvoiceBaseDto.PaymentMeans { get => PaymentMeans; set => PaymentMeans = (PaymentAnnotationDto)value; }
+    List<IInvoiceLineBaseDto> IInvoiceBaseDto.InvoiceLines
+    {
+        get => InvoiceLines.Cast<IInvoiceLineBaseDto>().ToList();
+        set => InvoiceLines = value.Cast<InvoiceLineAnnotationDto>().ToList();
+    }
+    List<IDocumentReferenceBaseDto> IInvoiceBaseDto.AdditionalDocumentReferences
+    {
+        get => AdditionalDocumentReferences.Cast<IDocumentReferenceBaseDto>().ToList();
+        set => AdditionalDocumentReferences = value.Cast<DocumentReferenceAnnotationDto>().ToList();
+    }
 }
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

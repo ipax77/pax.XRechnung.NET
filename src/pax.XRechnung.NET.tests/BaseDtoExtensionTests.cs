@@ -102,13 +102,14 @@ public class BaseDtoExtensionTests
     }
 }
 
-public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto, DocumentReferenceBaseDto, PartyBaseDto, PartyBaseDto, InvoiceLineExtendedDto>
+public class InvoiceExtendedMapper : InvoiceMapperBase<InvoiceExtendedDto, DocumentReferenceBaseDto, PartyBaseDto, PartyBaseDto, PaymentMeansBaseDto, InvoiceLineExtendedDto>
 {
     public InvoiceExtendedMapper()
     : base(
         new DocumentReferenceMapper(),
         new InvoiceSellerPartyMapper(),
         new InvoiceBuyerPartyMapper(),
+        new PaymentMeansMapper(),
         new InvoiceLineExtendedMapper()
     )
     {

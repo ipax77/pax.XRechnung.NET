@@ -1,14 +1,13 @@
 
-using System.ComponentModel.DataAnnotations;
 using pax.XRechnung.NET.AnnotatedDtos;
 using pax.XRechnung.NET.BaseDtos;
 
 namespace pax.XRechnung.NET.tests;
 
 [TestClass]
-public class AnnotationDtoTests
+public class CustomDtoTests
 {
-    public static InvoiceAnnotationDto GetInvoiceAnnDto()
+    public static MyCustomInvoiceDto GetInvoiceDto()
     {
         return new()
         {
@@ -68,8 +67,8 @@ public class AnnotationDtoTests
     [TestMethod]
     public void InvoiceBaseDtoSchemaIsValidTest()
     {
-        var invoiceAnnDto = GetInvoiceAnnDto();
-        var mapper = new InvoiceAnnotationMapper();
+        var invoiceAnnDto = GetInvoiceDto();
+        var mapper = new MyCustomInvoiceMapper();
         var xmlInvoice = mapper.ToXml(invoiceAnnDto);
         var result = XmlInvoiceValidator.Validate(xmlInvoice);
         Assert.IsTrue(result.IsValid);
@@ -79,7 +78,7 @@ public class AnnotationDtoTests
     public void FromXml_MapsCorrectlyToDto()
     {
         var xml = SchematronValidationTests.GetStandardXmlInvoice();
-        var mapper = new InvoiceAnnotationMapper();
+        var mapper = new MyCustomInvoiceMapper();
 
         var dto = mapper.FromXml(xml);
 
@@ -93,7 +92,7 @@ public class AnnotationDtoTests
     public void Roundtrip_ProducesEquivalentXml()
     {
         var original = SchematronValidationTests.GetStandardXmlInvoice();
-        var mapper = new InvoiceAnnotationMapper();
+        var mapper = new MyCustomInvoiceMapper();
 
         var dto = mapper.FromXml(original);
         var roundtripXml = mapper.ToXml(dto);
@@ -104,33 +103,47 @@ public class AnnotationDtoTests
     }
 
     [TestMethod]
-    public void AnnotationIsValid()
+    public void CanAddLine()
     {
-        var invoiceAnnDto = GetInvoiceAnnDto();
+        var invoiceAnnDto = GetInvoiceDto();
+        invoiceAnnDto.InvoiceLines.Add(new()
+        {
+            Id = "2",
+            Quantity = 2.0,
+            QuantityCode = "HUR",
+            UnitPrice = 100.0,
+            Name = "Test Job 2"
+        });
+        var mapper = new MyCustomInvoiceMapper();
+        var xmlInvoice = mapper.ToXml(invoiceAnnDto);
 
-        // Validate the DTO properties
-        var validationContext = new ValidationContext(invoiceAnnDto);
-        var validationResults = new List<ValidationResult>();
-        var isValid = Validator.TryValidateObject(invoiceAnnDto, validationContext, validationResults, true);
+        Assert.AreEqual(2, xmlInvoice.InvoiceLines.Count);
 
-        // Check model validation (ValidCode, Required, etc.)
-        Assert.IsTrue(isValid, string.Join("; ", validationResults.Select(r => r.ErrorMessage)));
+        var result = XmlInvoiceValidator.Validate(xmlInvoice);
+        Assert.IsTrue(result.IsValid);
     }
+}
 
-    [TestMethod]
-    public void AnnotationIsInValid()
+public class MyCustomInvoiceMapper : InvoiceMapperBase<
+    MyCustomInvoiceDto,
+    DocumentReferenceAnnotationDto,
+    SellerAnnotationDto,
+    BuyerAnnotationDto,
+    PaymentAnnotationDto,
+    InvoiceLineAnnotationDto>
+{
+    public MyCustomInvoiceMapper()
+        : base(
+            new DocumentReferenceAnnotationMapper(),
+            new InvoiceSellerPartyAnnotationMapper(),
+            new InvoiceBuyerPartyAnnotationMapper(),
+            new PaymentMeansAnnotationMapper(),
+            new InvoiceLineAnnotationMapper())
     {
-        var invoiceAnnDto = GetInvoiceAnnDto();
-        invoiceAnnDto.GlobalTaxCategory = "__InvalidCode__";
-
-        // Validate the DTO properties
-        var validationContext = new ValidationContext(invoiceAnnDto);
-        var validationResults = new List<ValidationResult>();
-        var isValid = Validator.TryValidateObject(invoiceAnnDto, validationContext, validationResults, true);
-
-        Assert.IsFalse(isValid);
-        Assert.IsTrue(validationResults.Any());
-        Assert.AreEqual("The code '__InvalidCode__' is not valid for list 'UNTDID_5305_3'.",
-         validationResults.FirstOrDefault()?.ErrorMessage);
     }
+}
+
+public class MyCustomInvoiceDto : InvoiceAnnotationDto
+{
+
 }

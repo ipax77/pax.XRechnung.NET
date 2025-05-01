@@ -24,6 +24,13 @@ public class InvoiceBuyerPartyAnnotationMapper : InvoiceBuyerPartyMapperBase<Buy
 }
 
 /// <summary>
+/// PaymentMeansAnnotationMapper
+/// </summary>
+public class PaymentMeansAnnotationMapper : PaymentMeansMapperBase<PaymentAnnotationDto>
+{
+}
+
+/// <summary>
 /// InvoiceLineMapper
 /// </summary>
 public class InvoiceLineAnnotationMapper : InvoiceLineMapperBase<InvoiceLineAnnotationDto>
@@ -33,7 +40,8 @@ public class InvoiceLineAnnotationMapper : InvoiceLineMapperBase<InvoiceLineAnno
 /// <summary>
 /// Invoice Mapper for annotated DTOs
 /// </summary>
-public class InvoiceAnnotationMapper : InvoiceMapperBase<InvoiceAnnotationDto, DocumentReferenceAnnotationDto, SellerAnnotationDto, BuyerAnnotationDto, InvoiceLineAnnotationDto>
+public class InvoiceAnnotationMapper : InvoiceMapperBase<InvoiceAnnotationDto, DocumentReferenceAnnotationDto,
+    SellerAnnotationDto, BuyerAnnotationDto, PaymentAnnotationDto, InvoiceLineAnnotationDto>
 {
     /// <summary>
     /// InvoiceMapper
@@ -43,6 +51,7 @@ public class InvoiceAnnotationMapper : InvoiceMapperBase<InvoiceAnnotationDto, D
         new DocumentReferenceAnnotationMapper(),
         new InvoiceSellerPartyAnnotationMapper(),
         new InvoiceBuyerPartyAnnotationMapper(),
+        new PaymentMeansAnnotationMapper(),
         new InvoiceLineAnnotationMapper()
     )
     {

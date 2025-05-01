@@ -22,62 +22,62 @@ dotnet add package pax.XRechnung.NET
 
 ### Handle Sample Invoice
 ```csharp
-    public static InvoiceBaseDto GetInvoiceBaseDto()
+public static InvoiceBaseDto GetInvoiceBaseDto()
+{
+    return new()
     {
-        return new()
+        GlobalTaxCategory = "S",
+        GlobalTaxScheme = "VAT",
+        GlobalTax = 19.0,
+        Id = "1",
+        IssueDate = DateTime.UtcNow,
+        InvoiceTypeCode = "380",
+        DocumentCurrencyCode = "EUR",
+        BuyerReference = "04011000-12345-34",
+        SellerParty = new PartyBaseDto()
         {
-            GlobalTaxCategory = "S",
-            GlobalTaxScheme = "VAT",
-            GlobalTax = 19.0,
-            Id = "1",
-            IssueDate = DateTime.UtcNow,
-            InvoiceTypeCode = "380",
-            DocumentCurrencyCode = "EUR",
-            BuyerReference = "04011000-12345-34",
-            SellerParty = new()
+            Name = "Seller Name",
+            StreetName = "Test Street",
+            City = "Test City",
+            PostCode = "123456",
+            CountryCode = "DE",
+            Telefone = "1234/54321",
+            Email = "seller@example.com",
+            RegistrationName = "Seller Name",
+            TaxId = "DE12345678"
+        },
+        BuyerParty = new PartyBaseDto()
+        {
+            Name = "Buyer Name",
+            StreetName = "Test Street",
+            City = "Test City",
+            PostCode = "123456",
+            CountryCode = "DE",
+            Telefone = "1234/54321",
+            Email = "buyer@example.com",
+            RegistrationName = "Buyer Name",
+        },
+        PaymentMeans = new PaymentMeansBaseDto()
+        {
+            Iban = "DE12 1234 1234 1234 1234 12",
+            Bic = "BICABCDE",
+            Name = "Bank Name"
+        },
+        PaymentMeansTypeCode = "30",
+        PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
+        PayableAmount = 119.0,
+        InvoiceLines = [
+            new InvoiceLineBaseDto()
             {
-                Name = "Seller Name",
-                StreetName = "Test Street",
-                City = "Test City",
-                PostCode = "123456",
-                CountryCode = "DE",
-                Telefone = "1234/54321",
-                Email = "seller@example.com",
-                RegistrationName = "Seller Name",
-                TaxId = "DE12345678"
-            },
-            BuyerParty = new()
-            {
-                Name = "Buyer Name",
-                StreetName = "Test Street",
-                City = "Test City",
-                PostCode = "123456",
-                CountryCode = "DE",
-                Telefone = "1234/54321",
-                Email = "buyer@example.com",
-                RegistrationName = "Buyer Name",
-            },
-            PaymentMeans = new()
-            {
-                Iban = "DE12 1234 1234 1234 1234 12",
-                Bic = "BICABCDE",
-                Name = "Bank Name"
-            },
-            PaymentMeansTypeCode = "30",
-            PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
-            PayableAmount = 119.0,
-            InvoiceLines = [
-                new()
-                {
-                    Id = "1",
-                    Quantity = 1.0,
-                    QuantityCode = "HUR",
-                    UnitPrice = 100.0,
-                    Name = "Test Job"
-                }
-            ]
-        };
-    }
+                Id = "1",
+                Quantity = 1.0,
+                QuantityCode = "HUR",
+                UnitPrice = 100.0,
+                Name = "Test Job"
+            }
+        ]
+    };
+}
 ```
 **Validate xml schema**
 ```csharp

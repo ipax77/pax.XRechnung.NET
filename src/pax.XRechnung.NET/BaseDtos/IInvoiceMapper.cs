@@ -5,11 +5,12 @@ namespace pax.XRechnung.NET.BaseDtos;
 /// <summary>
 /// InvoiceMapper Interface
 /// </summary>
-public interface IInvoiceMapper<TInvoiceDto, TDocumentReferenceDto, TSellerPartyDto, TBuyerPartyDto, TLineDto>
+public interface IInvoiceMapper<TInvoiceDto, TDocumentReferenceDto, TSellerPartyDto, TBuyerPartyDto, TPayment, TLineDto>
     where TInvoiceDto : IInvoiceBaseDto, new()
     where TDocumentReferenceDto : IDocumentReferenceBaseDto, new()
     where TSellerPartyDto : IPartyBaseDto, new()
     where TBuyerPartyDto : IPartyBaseDto, new()
+    where TPayment : IPaymentMeansBaseDto, new()
     where TLineDto : IInvoiceLineBaseDto, new()
 {
     /// <summary>

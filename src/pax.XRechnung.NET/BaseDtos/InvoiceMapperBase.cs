@@ -5,12 +5,13 @@ namespace pax.XRechnung.NET.BaseDtos;
 /// <summary>
 /// InvoiceMapper abstraction
 /// </summary>
-public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSellerPartyDto, TBuyerPartyDto, TLineDto> :
-    IInvoiceMapper<TInvoiceDto, TDocumentReferenceDto, TSellerPartyDto, TBuyerPartyDto, TLineDto>
+public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSellerPartyDto, TBuyerPartyDto, TPayment, TLineDto> :
+    IInvoiceMapper<TInvoiceDto, TDocumentReferenceDto, TSellerPartyDto, TBuyerPartyDto, TPayment, TLineDto>
     where TInvoiceDto : IInvoiceBaseDto, new()
     where TDocumentReferenceDto : IDocumentReferenceBaseDto, new()
     where TSellerPartyDto : IPartyBaseDto, new()
     where TBuyerPartyDto : IPartyBaseDto, new()
+    where TPayment : IPaymentMeansBaseDto, new()
     where TLineDto : IInvoiceLineBaseDto, new()
 {
 #pragma warning disable CA1051 // Do not declare visible instance fields
@@ -27,6 +28,10 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
     /// </summary>
     protected readonly InvoiceBuyerPartyMapperBase<TBuyerPartyDto> BuyerPartyMapper;
     /// <summary>
+    /// PaymentMeansMapper
+    /// </summary>
+    protected readonly PaymentMeansMapperBase<TPayment> PaymentMeansMapper;
+    /// <summary>
     /// InvoiceLineMapper
     /// </summary>
     protected readonly InvoiceLineMapperBase<TLineDto> InvoiceLineMapper;
@@ -39,16 +44,19 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
     /// <param name="documentReferenceMapperBase"></param>
     /// <param name="sellerPartyMapper"></param>
     /// <param name="buyerPartyMapper"></param>
+    /// <param name="paymentMeansMapper"></param>
     /// <param name="invoiceLineMapper"></param>
     protected InvoiceMapperBase(
         DocumentReferenceMapperBase<TDocumentReferenceDto> documentReferenceMapperBase,
         InvoiceSellerPartyMapperBase<TSellerPartyDto> sellerPartyMapper,
         InvoiceBuyerPartyMapperBase<TBuyerPartyDto> buyerPartyMapper,
+        PaymentMeansMapperBase<TPayment> paymentMeansMapper,
         InvoiceLineMapperBase<TLineDto> invoiceLineMapper)
     {
         DocumentReferenceMapper = documentReferenceMapperBase;
         SellerPartyMapper = sellerPartyMapper;
         BuyerPartyMapper = buyerPartyMapper;
+        PaymentMeansMapper = paymentMeansMapper;
         InvoiceLineMapper = invoiceLineMapper;
     }
 
@@ -98,12 +106,7 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
                 .Select(s => AdditionalDocumentToDto(s)).ToList(),
             SellerParty = SellerPartyToDto(xmlInvoice.SellerParty.Party),
             BuyerParty = BuyerPartyToDto(xmlInvoice.BuyerParty.Party),
-            PaymentMeans = new PaymentMeansBaseDto()
-            {
-                Iban = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.Id.Content ?? string.Empty,
-                Bic = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.FinancialInstitutionBranch?.Id?.Content ?? string.Empty,
-                Name = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.Name ?? string.Empty,
-            },
+            PaymentMeans = PaymentMeansMapper.FromXml(xmlInvoice.PaymentMeans),
             PaymentMeansTypeCode = xmlInvoice.PaymentMeans.PaymentMeansTypeCode,
             PaymentTermsNote = xmlInvoice.PaymentTerms?.Note ?? string.Empty,
             PayableAmount = (double)(xmlInvoice.LegalMonetaryTotal.PayableAmount?.Value ?? 0),
@@ -141,19 +144,8 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
 
             SellerParty = new() { Party = SellerPartyToXml(dto.SellerParty, dto) },
             BuyerParty = new() { Party = BuyerPartyToXml(dto.BuyerParty) },
-            PaymentMeans = new()
-            {
-                PaymentMeansTypeCode = dto.PaymentMeansTypeCode ?? DefaultPaymentMeansTypeCode,
-                PayeeFinancialAccount = new()
-                {
-                    Id = new() { Content = dto.PaymentMeans.Iban },
-                    Name = dto.PaymentMeans.Name,
-                    FinancialInstitutionBranch = new()
-                    {
-                        Id = new() { Content = dto.PaymentMeans.Bic }
-                    }
-                },
-            },
+            PaymentMeans = PaymentMeansMapper.ToXml(dto.PaymentMeans, string.IsNullOrEmpty(dto.PaymentMeansTypeCode)
+                 ? DefaultPaymentMeansTypeCode : dto.PaymentMeansTypeCode),
             PaymentTerms = string.IsNullOrEmpty(dto.PaymentTermsNote) ? null : new() { Note = dto.PaymentTermsNote },
             TaxTotal = new()
             {
