@@ -224,6 +224,10 @@ public class SchematronValidationTests
     [TestMethod]
     public async Task CanValidateBaseDtoSchematronTest()
     {
+        if (!kositServerIsRunning)
+        {
+            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
+        }
         var invoiceBaseDto = BaseDtoTests.GetInvoiceBaseDto();
         InvoiceMapper invoiceMapper = new();
         XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
@@ -236,6 +240,10 @@ public class SchematronValidationTests
     [TestMethod]
     public async Task CanValidateBaseDtoSchematronWithRoundingTest()
     {
+        if (!kositServerIsRunning)
+        {
+            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
+        }
         var invoiceBaseDto = BaseDtoTests.GetInvoiceBaseDto();
 
         var quantity = 1.17777;

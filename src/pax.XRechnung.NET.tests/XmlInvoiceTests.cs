@@ -148,10 +148,7 @@ public sealed class InvoiceTests
         XmlDocument document = new();
         document.Schemas = XmlInvoiceWriter.GetSchemaSet();
 
-        // remove xml declaration
-        var lines = xmlText.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-        var adjustedText = String.Join(Environment.NewLine, lines[1..]);
-        document.LoadXml(adjustedText);
+        document.LoadXml(xmlText);
 
         // Act
         bool validationErrorsFound = false;
