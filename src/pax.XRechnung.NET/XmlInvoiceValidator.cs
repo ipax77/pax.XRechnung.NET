@@ -120,7 +120,7 @@ public static partial class XmlInvoiceValidator
         }
     }
 
-    private static string GetRawXmlText(string xmlText)
+    internal static string GetRawXmlText(string xmlText)
     {
         // remove BOM if exists
         xmlText = xmlText.TrimStart('\uFEFF');

@@ -108,7 +108,10 @@ public static class InvoiceKositValidator
                 break;
             }
         }
-        ArgumentNullException.ThrowIfNull(reportLine);
+        if (reportLine is null)
+        {
+            return [];
+        }
         reportLine += "</body>";
         HtmlDocument document = new();
         document.LoadHtml(reportLine);
@@ -116,7 +119,10 @@ public static class InvoiceKositValidator
         var tables = document.DocumentNode.SelectNodes("//table")?
             .Where(x => x != null);
 
-        ArgumentNullException.ThrowIfNull(tables);
+        if (tables is null)
+        {
+            return [];
+        }
 
         List<HtmlTable> htmlTables = [];
         foreach (var table in tables)
