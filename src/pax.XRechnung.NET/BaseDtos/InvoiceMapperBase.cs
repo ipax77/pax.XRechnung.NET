@@ -5,21 +5,100 @@ namespace pax.XRechnung.NET.BaseDtos;
 /// <summary>
 /// InvoiceMapper abstraction
 /// </summary>
-public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : InvoiceBaseDto, new()
+public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSellerPartyDto, TBuyerPartyDto, TPayment, TLineDto> :
+    IInvoiceMapper<TInvoiceDto, TDocumentReferenceDto, TSellerPartyDto, TBuyerPartyDto, TPayment, TLineDto>
+    where TInvoiceDto : IInvoiceBaseDto, new()
+    where TDocumentReferenceDto : IDocumentReferenceBaseDto, new()
+    where TSellerPartyDto : IPartyBaseDto, new()
+    where TBuyerPartyDto : IPartyBaseDto, new()
+    where TPayment : IPaymentMeansBaseDto, new()
+    where TLineDto : IInvoiceLineBaseDto, new()
 {
+#pragma warning disable CA1051 // Do not declare visible instance fields
+    /// <summary>
+    /// DocumentReferenceMapper
+    /// </summary>
+    protected readonly DocumentReferenceMapperBase<TDocumentReferenceDto> DocumentReferenceMapper;
+    /// <summary>
+    /// SellerPartyMapper
+    /// </summary>
+    protected readonly InvoiceSellerPartyMapperBase<TSellerPartyDto> SellerPartyMapper;
+    /// <summary>
+    /// BuyerPartyMapper
+    /// </summary>
+    protected readonly InvoiceBuyerPartyMapperBase<TBuyerPartyDto> BuyerPartyMapper;
+    /// <summary>
+    /// PaymentMeansMapper
+    /// </summary>
+    protected readonly PaymentMeansMapperBase<TPayment> PaymentMeansMapper;
+    /// <summary>
+    /// InvoiceLineMapper
+    /// </summary>
+    protected readonly InvoiceLineMapperBase<TLineDto> InvoiceLineMapper;
+#pragma warning restore CA1051 // Do not declare visible instance fields
+
+
+    /// <summary>
+    /// InvoiceMapperBase
+    /// </summary>
+    /// <param name="documentReferenceMapperBase"></param>
+    /// <param name="sellerPartyMapper"></param>
+    /// <param name="buyerPartyMapper"></param>
+    /// <param name="paymentMeansMapper"></param>
+    /// <param name="invoiceLineMapper"></param>
+    protected InvoiceMapperBase(
+        DocumentReferenceMapperBase<TDocumentReferenceDto> documentReferenceMapperBase,
+        InvoiceSellerPartyMapperBase<TSellerPartyDto> sellerPartyMapper,
+        InvoiceBuyerPartyMapperBase<TBuyerPartyDto> buyerPartyMapper,
+        PaymentMeansMapperBase<TPayment> paymentMeansMapper,
+        InvoiceLineMapperBase<TLineDto> invoiceLineMapper)
+    {
+        DocumentReferenceMapper = documentReferenceMapperBase;
+        SellerPartyMapper = sellerPartyMapper;
+        BuyerPartyMapper = buyerPartyMapper;
+        PaymentMeansMapper = paymentMeansMapper;
+        InvoiceLineMapper = invoiceLineMapper;
+    }
+
+    /// <summary>
+    /// DefaultPaymentMeansTypeCode
+    /// </summary>
+    protected const string DefaultPaymentMeansTypeCode = "30";
+    /// <summary>
+    /// DefaultTax
+    /// </summary>
+    protected const decimal DefaultTax = 19.0m;
+    /// <summary>
+    /// DefaultTaxScheme
+    /// </summary>
+    protected const string DefaultTaxScheme = "VAT";
+    /// <summary>
+    /// DefaultTaxCategory
+    /// </summary>
+    protected const string DefaultTaxCategory = "S";
+    /// <summary>
+    /// smallBusiness Tax Category § 19UStG
+    /// </summary>
+    protected const string DefaultSmallBusinessTaxCategory = "E";
+    /// <summary>
+    /// smallBusinessText § 19UStG
+    /// </summary>
+    protected const string smallBusinessText = "Kein Ausweis von Umsatzsteuer, da Kleinunternehmer gemäß § 19UStG";
+
     /// <summary>
     /// Map xmlInvoice to T
     /// </summary>
     /// <param name="xmlInvoice"></param>
     /// <returns></returns>
-    public virtual T FromXml(XmlInvoice xmlInvoice)
+    public virtual TInvoiceDto FromXml(XmlInvoice xmlInvoice)
     {
         ArgumentNullException.ThrowIfNull(xmlInvoice);
 
         var xmlTaxCategory = xmlInvoice.TaxTotal.TaxSubTotal.FirstOrDefault()?.TaxCategory;
-        var tax = xmlTaxCategory?.Percent ?? 19.0m;
-        var taxScheme = xmlTaxCategory?.TaxScheme.Id.Content ?? "VAT";
-        var taxCategory = xmlTaxCategory?.Id.Content ?? "S";
+        var tax = xmlTaxCategory?.Percent ?? DefaultTax;
+        var taxScheme = xmlTaxCategory?.TaxScheme.Id.Content ?? DefaultTaxScheme;
+        var taxCategory = xmlTaxCategory?.Id.Content ??
+            (tax == 0 ? DefaultSmallBusinessTaxCategory : DefaultTaxCategory);
 
         return new()
         {
@@ -27,23 +106,20 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
             GlobalTaxScheme = taxScheme,
             GlobalTax = (double)tax,
             Id = xmlInvoice.Id.Content,
-            IssueDate = GetDateTime(xmlInvoice.IssueDate),
-            DueDate = GetDateTime(xmlInvoice.DueDate?.Value),
+            IssueDate = InvoiceMapperUtils.GetDateTime(xmlInvoice.IssueDate),
+            DueDate = xmlInvoice.DueDate == null ? null : InvoiceMapperUtils.GetDateTime(xmlInvoice.DueDate.Value),
             InvoiceTypeCode = xmlInvoice.InvoiceTypeCode,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
             BuyerReference = xmlInvoice.BuyerReference,
-            InvoiceLines = xmlInvoice.InvoiceLines.Select(s => LineToDto(s)).ToList(),
-            SellerParty = PartyToDto(xmlInvoice.SellerParty.Party),
-            BuyerParty = PartyToDto(xmlInvoice.BuyerParty.Party),
-            PaymentMeans = new()
-            {
-                Iban = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.Id.Content ?? string.Empty,
-                Bic = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.FinancialInstitutionBranch?.Id?.Content ?? string.Empty,
-                Name = xmlInvoice.PaymentMeans.PayeeFinancialAccount?.Name ?? string.Empty,
-            },
+            AdditionalDocumentReferences = xmlInvoice.AdditionalDocumentReferences
+                .Select(s => AdditionalDocumentToDto(s)).ToList(),
+            SellerParty = SellerPartyToDto(xmlInvoice.SellerParty.Party),
+            BuyerParty = BuyerPartyToDto(xmlInvoice.BuyerParty.Party),
+            PaymentMeans = PaymentMeansMapper.FromXml(xmlInvoice.PaymentMeans),
             PaymentMeansTypeCode = xmlInvoice.PaymentMeans.PaymentMeansTypeCode,
             PaymentTermsNote = xmlInvoice.PaymentTerms?.Note ?? string.Empty,
             PayableAmount = (double)(xmlInvoice.LegalMonetaryTotal.PayableAmount?.Value ?? 0),
+            InvoiceLines = xmlInvoice.InvoiceLines.Select(s => LineToDto(s)).ToList(),
 
         };
     }
@@ -52,43 +128,41 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    public virtual XmlInvoice ToXml(T dto)
+    public virtual XmlInvoice ToXml(TInvoiceDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
 
-        decimal taxRate = RoundAmount(dto.GlobalTax / 100.0);
-        decimal taxExclusiveAmount = RoundAmount(dto.InvoiceLines
-            .Sum(s => RoundAmount(RoundAmount(s.Quantity) * RoundAmount(s.UnitPrice))));
+        decimal taxRate = InvoiceMapperUtils.RoundAmount(dto.GlobalTax / 100.0);
+        decimal taxExclusiveAmount = InvoiceMapperUtils.RoundAmount(dto.InvoiceLines
+            .Sum(s => InvoiceMapperUtils
+                .RoundAmount(InvoiceMapperUtils.RoundAmount(s.Quantity)
+                    * InvoiceMapperUtils.RoundAmount(s.UnitPrice))));
 
-        decimal payableAmount = RoundAmount(taxExclusiveAmount + taxExclusiveAmount * taxRate);
-        decimal taxAmount = RoundAmount(payableAmount - taxExclusiveAmount);
+        decimal payableAmount = InvoiceMapperUtils.RoundAmount(taxExclusiveAmount + taxExclusiveAmount * taxRate);
+        bool isSmallBusiness = taxRate == 0; // keine Umsatzsteuer nach § 19 UStG
+        decimal taxAmount = isSmallBusiness ? 0 : InvoiceMapperUtils.RoundAmount(payableAmount - taxExclusiveAmount);
 
-        return new()
+        if (isSmallBusiness)
+        {
+            dto.GlobalTaxCategory = DefaultSmallBusinessTaxCategory;
+        }
+
+        var xml = new XmlInvoice()
         {
             Id = new() { Content = dto.Id },
             IssueDate = new DateOnly(dto.IssueDate.Year, dto.IssueDate.Month, dto.IssueDate.Day),
+            DueDate = dto.DueDate == null || dto.DueDate == DateTime.MinValue ? null :
+                new DateOnly(dto.DueDate.Value.Year, dto.DueDate.Value.Month, dto.DueDate.Value.Day),
             InvoiceTypeCode = dto.InvoiceTypeCode,
             DocumentCurrencyCode = dto.DocumentCurrencyCode,
             BuyerReference = dto.BuyerReference,
-            InvoiceLines = dto.InvoiceLines
-                .Select(s =>
-                    LineToXml(s, dto.DocumentCurrencyCode, dto.GlobalTaxCategory, dto.GlobalTaxScheme, dto.GlobalTax))
+            AdditionalDocumentReferences = dto.AdditionalDocumentReferences.Select(s => AdditionalDocumentToXml(s))
                 .ToList(),
-            SellerParty = new() { Party = PartyToXml(dto.SellerParty, dto) },
-            BuyerParty = new() { Party = PartyToXml(dto.BuyerParty, null) },
-            PaymentMeans = new()
-            {
-                PaymentMeansTypeCode = dto.PaymentMeansTypeCode ?? "30",
-                PayeeFinancialAccount = new()
-                {
-                    Id = new() { Content = dto.PaymentMeans.Iban },
-                    Name = dto.PaymentMeans.Name,
-                    FinancialInstitutionBranch = new()
-                    {
-                        Id = new() { Content = dto.PaymentMeans.Bic }
-                    }
-                },
-            },
+
+            SellerParty = new() { Party = SellerPartyToXml(dto.SellerParty, dto) },
+            BuyerParty = new() { Party = BuyerPartyToXml(dto.BuyerParty) },
+            PaymentMeans = PaymentMeansMapper.ToXml(dto.PaymentMeans, string.IsNullOrEmpty(dto.PaymentMeansTypeCode)
+                 ? DefaultPaymentMeansTypeCode : dto.PaymentMeansTypeCode),
             PaymentTerms = string.IsNullOrEmpty(dto.PaymentTermsNote) ? null : new() { Note = dto.PaymentTermsNote },
             TaxTotal = new()
             {
@@ -108,7 +182,7 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
                         TaxCategory = new()
                         {
                             Id = new() { Content = dto.GlobalTaxCategory },
-                            Percent = RoundAmount(dto.GlobalTax),
+                            Percent = InvoiceMapperUtils.RoundAmount(dto.GlobalTax),
                             TaxScheme = new() { Id = new() { Content = dto.GlobalTaxScheme } }
                         }
                     }
@@ -129,137 +203,94 @@ public abstract class InvoiceMapperBase<T> : IInvoiceMapper<T> where T : Invoice
                 TaxInclusiveAmount = new() { Value = payableAmount, CurrencyID = dto.DocumentCurrencyCode },
                 PayableAmount = new() { Value = payableAmount, CurrencyID = dto.DocumentCurrencyCode },
             },
+            InvoiceLines = dto.InvoiceLines
+                .Select(s =>
+                    LineToXml(s, dto.DocumentCurrencyCode, dto.GlobalTaxCategory, dto.GlobalTaxScheme, dto.GlobalTax))
+                .ToList(),
         };
-    }
 
-    private static PartyBaseDto PartyToDto(XmlParty xmlParty)
-    {
-        return new()
+        if (isSmallBusiness)
         {
-            Website = xmlParty.Website,
-            LogoReferenceId = xmlParty.LogoReferenceId,
-            Name = xmlParty.PartyName.Name,
-            StreetName = xmlParty.PostalAddress.StreetName,
-            City = xmlParty.PostalAddress.City,
-            PostCode = xmlParty.PostalAddress.PostCode,
-            CountryCode = xmlParty.PostalAddress.Country.IdentificationCode,
-            RegistrationName = xmlParty.PartyLegalEntity.RegistrationName,
-            TaxId = xmlParty.PartyTaxScheme?.CompanyId ?? string.Empty,
-            Telefone = xmlParty.Contact?.Telephone ?? string.Empty,
-            Email = xmlParty.Contact?.Email ?? string.Empty,
-        };
-    }
-
-    private static XmlParty PartyToXml(PartyBaseDto dtoParty, InvoiceBaseDto? invoiceBaseDto)
-    {
-        return new()
-        {
-            Website = dtoParty.Website,
-            LogoReferenceId = dtoParty.LogoReferenceId,
-            EndpointId = new() { SchemeId = "EM", Content = dtoParty.RegistrationName },
-            PartyName = new() { Name = dtoParty.Name },
-            PostalAddress = new()
+            if (xml.SellerParty.Party.PartyTaxScheme is null)
             {
-                StreetName = dtoParty.StreetName,
-                City = dtoParty.City,
-                PostCode = dtoParty.PostCode,
-                Country = new() { IdentificationCode = dtoParty.CountryCode },
-            },
-            PartyLegalEntity = new() { RegistrationName = dtoParty.RegistrationName },
-            PartyTaxScheme = invoiceBaseDto == null ? null : new()
-            {
-                CompanyId = dtoParty.TaxId,
-                TaxScheme = new()
-                {
-                    Id = new() { Content = invoiceBaseDto.GlobalTaxScheme }
-                }
-            },
-            Contact = new()
-            {
-                Name = dtoParty.Name,
-                Email = dtoParty.Email,
-                Telephone = dtoParty.Telefone,
+                xml.SellerParty.Party.PartyTaxScheme = new();
             }
-        };
+            xml.SellerParty.Party.PartyLegalEntity.CompanyLegalForm = smallBusinessText;
+            xml.TaxTotal.TaxSubTotal[0].TaxCategory.ExemptionReason = smallBusinessText;
+            xml.TaxTotal.TaxSubTotal[0].TaxCategory.Id.Content = "E";
+
+        }
+
+        return xml;
     }
 
-    private static InvoiceLineBaseDto LineToDto(XmlInvoiceLine xmlLine)
-    {
-        return new()
-        {
-            Id = xmlLine.Id.Content,
-            Note = xmlLine.Note,
-            Quantity = (double)xmlLine.InvoicedQuantity.Value,
-            QuantityCode = xmlLine.InvoicedQuantity.UnitCode,
-            UnitPrice = (double)xmlLine.PriceDetails.PriceAmount.Value,
-            StartDate = xmlLine.InvoicePeriod == null ? null
-                : GetDateTime(xmlLine.InvoicePeriod.StartDate?.Value, xmlLine.InvoicePeriod.StartTime?.Value),
-            EndDate = xmlLine.InvoicePeriod == null ? null
-                : GetDateTime(xmlLine.InvoicePeriod.EndDate?.Value, xmlLine.InvoicePeriod.EndTime?.Value),
-            Description = xmlLine.Item.Description,
-            Name = xmlLine.Item.Name,
-        };
-    }
+    /// <summary>
+    /// Map SellerParty to Dto
+    /// </summary>
+    /// <param name="xmlParty"></param>
+    /// <returns></returns>
+    protected virtual IPartyBaseDto SellerPartyToDto(XmlParty xmlParty) => SellerPartyMapper.FromXml(xmlParty);
 
-    private static XmlInvoiceLine LineToXml(InvoiceLineBaseDto dtoLine,
+    /// <summary>
+    /// Map SellerParty to Dto
+    /// </summary>
+    /// <param name="xmlParty"></param>
+    /// <returns></returns>
+    protected virtual IPartyBaseDto BuyerPartyToDto(XmlParty xmlParty) => BuyerPartyMapper.FromXml(xmlParty);
+
+    /// <summary>
+    /// Map SellerPartyToXml
+    /// </summary>
+    /// <param name="partyBaseDto"></param>
+    /// <param name="invoiceBaseDto"></param>
+    /// <returns></returns>
+    protected virtual XmlParty SellerPartyToXml(IPartyBaseDto partyBaseDto, IInvoiceBaseDto invoiceBaseDto)
+        => SellerPartyMapper.ToXml(partyBaseDto, invoiceBaseDto);
+
+    /// <summary>
+    /// Map BuyerPartyToXml
+    /// </summary>
+    /// <param name="partyBaseDto"></param>
+    /// <returns></returns>
+    protected virtual XmlParty BuyerPartyToXml(IPartyBaseDto partyBaseDto) => BuyerPartyMapper.ToXml(partyBaseDto);
+
+    /// <summary>
+    /// Map LineToDto
+    /// </summary>
+    /// <param name="xmlLine"></param>
+    /// <returns></returns>
+    protected virtual IInvoiceLineBaseDto LineToDto(XmlInvoiceLine xmlLine) => InvoiceLineMapper.FromXml(xmlLine);
+
+    /// <summary>
+    /// Map LineToXml
+    /// </summary>
+    /// <param name="dtoLine"></param>
+    /// <param name="currencyId"></param>
+    /// <param name="taxCategory"></param>
+    /// <param name="taxScheme"></param>
+    /// <param name="tax"></param>
+    /// <returns></returns>
+    protected virtual XmlInvoiceLine LineToXml(IInvoiceLineBaseDto dtoLine,
                                             string currencyId,
                                             string taxCategory,
                                             string taxScheme,
                                             double tax)
-    {
-        var lineTotal = RoundAmount(RoundAmount(dtoLine.Quantity) * RoundAmount(dtoLine.UnitPrice));
+        => InvoiceLineMapper.ToXml(dtoLine, currencyId, taxCategory, taxScheme, tax);
 
-        return new()
-        {
-            Id = new() { Content = dtoLine.Id },
-            Note = dtoLine.Note,
-            InvoicedQuantity = new() { Value = RoundAmount(dtoLine.Quantity), UnitCode = dtoLine.QuantityCode },
-            LineExtensionAmount = new() { Value = lineTotal, CurrencyID = currencyId },
-            PriceDetails = new() { PriceAmount = new() { Value = RoundAmount(dtoLine.UnitPrice), CurrencyID = currencyId } },
-            InvoicePeriod = GetXmlPeriod(dtoLine.StartDate, dtoLine.EndDate),
-            Item = new()
-            {
-                Description = dtoLine.Description,
-                Name = dtoLine.Name,
-                ClassifiedTaxCategory = new()
-                {
-                    Id = new() { Content = taxCategory },
-                    Percent = RoundAmount(tax),
-                    TaxScheme = new() { Id = new() { Content = taxScheme } }
-                }
-            }
-        };
-    }
+    /// <summary>
+    /// Map AdditionalDocumentReference to DTO
+    /// </summary>
+    /// <param name="xmlDoc"></param>
+    /// <returns></returns>
+    protected virtual IDocumentReferenceBaseDto AdditionalDocumentToDto(XmlAdditionalDocumentReference xmlDoc)
+        => DocumentReferenceMapper.FromXml(xmlDoc);
 
-    private static XmlPeriod? GetXmlPeriod(DateTime? startDate, DateTime? endDate)
-    {
-        if (startDate is null || endDate is null)
-        {
-            return null;
-        }
-        return new()
-        {
-            StartDate = new DateOnly(startDate.Value.Year, startDate.Value.Month, startDate.Value.Day),
-            StartTime = new TimeOnly(startDate.Value.Hour, startDate.Value.Minute, startDate.Value.Second),
-            EndDate = new DateOnly(endDate.Value.Year, endDate.Value.Month, endDate.Value.Day),
-            EndTime = new TimeOnly(endDate.Value.Hour, endDate.Value.Minute, endDate.Value.Second),
-        };
-    }
+    /// <summary>
+    /// Map AdditionalDocumentReference to Xml
+    /// </summary>
+    /// <param name="docDto"></param>
+    /// <returns></returns>
+    protected virtual XmlAdditionalDocumentReference AdditionalDocumentToXml(IDocumentReferenceBaseDto docDto)
+        => DocumentReferenceMapper.ToXml(docDto);
 
-    private static DateTime GetDateTime(DateOnly? dateOnly, TimeOnly? timeOnly = null)
-    {
-        if (dateOnly is null)
-        {
-            return DateTime.MinValue;
-        }
-        if (timeOnly is null)
-        {
-            return new DateTime(dateOnly.Value.Year, dateOnly.Value.Month, dateOnly.Value.Day);
-        }
-        return new DateTime(dateOnly.Value.Year, dateOnly.Value.Month, dateOnly.Value.Day,
-         timeOnly.Value.Hour, timeOnly.Value.Minute, timeOnly.Value.Second);
-    }
-
-    private static decimal RoundAmount(double value) => Math.Round((decimal)value, 2, MidpointRounding.AwayFromZero);
-    private static decimal RoundAmount(decimal value) => Math.Round(value, 2, MidpointRounding.AwayFromZero);
 }

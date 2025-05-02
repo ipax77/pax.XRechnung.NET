@@ -3,12 +3,13 @@
 
 # Introduction
 
-`pax.XRechnung.NET` is a .NET library for validating and mapping [XRechnung](https://xeinkauf.de/xrechnung/) XML invoices based on [specification 3.0.2](https://xeinkauf.de/app/uploads/2024/07/302-XRechnung-2024-06-20.pdf).
+**pax.XRechnung.NET** is a .NET library that helps validate, map, and generate [XRechnung](https://xeinkauf.de/xrechnung/) XML invoices, following [specification 3.0.2](https://xeinkauf.de/app/uploads/2024/07/302-XRechnung-2024-06-20.pdf).
 
 ## Features
-- Validate XRechnung XML invoices
-- Map XML invoices to DTOs for easier manipulation
-- Generate compliant XML invoices from structured DTOs
+- ✅ **Validation**: Ensure XML invoices conform to XRechnung 3.0.2 schema and Schematron rules.
+- 🔁 **Mapping**: Convert XML invoices into strongly typed DTOs.
+- 🧾 **Generation**: Create compliant XML invoices from C# objects.
+
 
 ## Getting started
 
@@ -20,78 +21,91 @@ dotnet add package pax.XRechnung.NET
 
 ## Usage
 
+**Validate XML schema**
+```csharp
+    var xmlText = "<Invoice>...</invoice>";
+    var serializer = new XmlSerializer(typeof(XmlInvoice));
+    using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xmlText));
+    stream.Position = 0;
+    var xmlInvoice = (XmlInvoice?)serializer.Deserialize(stream);
+    Assert.IsNotNull(xmlInvoice);
+    var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
+    Assert.IsTrue(validationresult.IsValid);
+```
+
 ### Handle Sample Invoice
 ```csharp
-    public static InvoiceBaseDto GetInvoiceBaseDto()
+public static InvoiceBaseDto GetInvoiceBaseDto()
+{
+    return new()
     {
-        return new()
+        GlobalTaxCategory = "S",
+        GlobalTaxScheme = "VAT",
+        GlobalTax = 19.0,
+        Id = "1",
+        IssueDate = DateTime.UtcNow,
+        InvoiceTypeCode = "380",
+        DocumentCurrencyCode = "EUR",
+        BuyerReference = "04011000-12345-34",
+        SellerParty = new PartyBaseDto()
         {
-            GlobalTaxCategory = "S",
-            GlobalTaxScheme = "VAT",
-            GlobalTax = 19.0,
-            Id = "1",
-            IssueDate = DateTime.UtcNow,
-            InvoiceTypeCode = "380",
-            DocumentCurrencyCode = "EUR",
-            BuyerReference = "04011000-12345-34",
-            SellerParty = new()
+            Name = "Seller Name",
+            StreetName = "Test Street",
+            City = "Test City",
+            PostCode = "123456",
+            CountryCode = "DE",
+            Telefone = "1234/54321",
+            Email = "seller@example.com",
+            RegistrationName = "Seller Name",
+            TaxId = "DE12345678"
+        },
+        BuyerParty = new PartyBaseDto()
+        {
+            Name = "Buyer Name",
+            StreetName = "Test Street",
+            City = "Test City",
+            PostCode = "123456",
+            CountryCode = "DE",
+            Telefone = "1234/54321",
+            Email = "buyer@example.com",
+            RegistrationName = "Buyer Name",
+        },
+        PaymentMeans = new PaymentMeansBaseDto()
+        {
+            Iban = "DE12 1234 1234 1234 1234 12",
+            Bic = "BICABCDE",
+            Name = "Bank Name"
+        },
+        PaymentMeansTypeCode = "30",
+        PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
+        PayableAmount = 119.0,
+        InvoiceLines = [
+            new InvoiceLineBaseDto()
             {
-                Name = "Seller Name",
-                StreetName = "Test Street",
-                City = "Test City",
-                PostCode = "123456",
-                CountryCode = "DE",
-                Telefone = "1234/54321",
-                Email = "seller@example.com",
-                RegistrationName = "Seller Name",
-                TaxId = "DE12345678"
-            },
-            BuyerParty = new()
-            {
-                Name = "Buyer Name",
-                StreetName = "Test Street",
-                City = "Test City",
-                PostCode = "123456",
-                CountryCode = "DE",
-                Telefone = "1234/54321",
-                Email = "buyer@example.com",
-                RegistrationName = "Buyer Name",
-            },
-            PaymentMeans = new()
-            {
-                Iban = "DE12 1234 1234 1234 1234 12",
-                Bic = "BICABCDE",
-                Name = "Bank Name"
-            },
-            PaymentMeansTypeCode = "30",
-            PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
-            PayableAmount = 119.0,
-            InvoiceLines = [
-                new()
-                {
-                    Id = "1",
-                    Quantity = 1.0,
-                    QuantityCode = "HUR",
-                    UnitPrice = 100.0,
-                    Name = "Test Job"
-                }
-            ]
-        };
-    }
+                Id = "1",
+                Quantity = 1.0,
+                QuantityCode = "HUR",
+                UnitPrice = 100.0,
+                Name = "Test Job"
+            }
+        ]
+    };
+}
 ```
-**Validate xml schema**
+
+**Serialize DTO to XML**
 ```csharp
     var invoiceBaseDto = GetInvoiceBaseDto();
-    var mapper = new InvoiceMapper<InvoiceBaseDto>();
+    var mapper = new InvoiceMapper();
     var xmlInvoice = mapper.ToXml(invoiceBaseDto);
-    var result = XmlInvoiceValidator.Validate(xmlInvoice);
-    Assert.IsTrue(result.IsValid);
+    var xmlText = XmlInvoiceWriter.Serialize(xmlInvoice);
 ```
+
 **Validate schematron - requires [Kosit validator](#java-schematron-validator)**
 ```csharp
     var invoiceBaseDto = GetInvoiceBaseDto();
-    InvoiceMapper<InvoiceBaseDto> invoiceMapper = new();
-    XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
+    var mapper = new InvoiceMapper();
+    XmlInvoice xmlInvoice = mapper.ToXml(invoiceBaseDto);
     var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
     var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
     Assert.IsTrue(result.Validations.Count == 0, resultText);
@@ -107,7 +121,15 @@ Server start:
 
 # ChangeLog
 
-<details open="open"><summary>v0.2.0</summary>
+<details open="open"><summary>v0.3.0</summary>
+
+>- **Breaking Changes**
+>- DTO rework to be more flexible and robust.
+>- InvoiceAnnotationDto now available with Required fields and CodeList validation
+
+</details>
+
+<details><summary>v0.2.0</summary>
 
 >- **Breaking Changes**
 >- Fixed/Renamed XmlInvoice properties and dependencies. All existing properties are now xml schema conform.

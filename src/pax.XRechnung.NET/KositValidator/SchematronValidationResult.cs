@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace pax.XRechnung.NET.KostiValidator;
+namespace pax.XRechnung.NET.KositValidator;
 
 /// <summary>
 /// Schematron Validation Result
@@ -11,6 +11,14 @@ public class SchematronValidationResult
     /// HttpStatusCode
     /// </summary>
     public HttpStatusCode HttpStatusCode { get; init; }
+    /// <summary>
+    /// Konformitätsprüfung
+    /// </summary>
+    public string? Conformity { get; set; }
+    /// <summary>
+    /// Evaluation
+    /// </summary>
+    public string? Evaluation { get; set; }
     /// <summary>
     /// Validation Steps
     /// </summary>

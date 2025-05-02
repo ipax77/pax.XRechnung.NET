@@ -24,7 +24,7 @@ public class XmlPartyTaxScheme
     [XmlElement("CompanyID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     public string CompanyId { get; set; } = string.Empty;
     /// <summary>
-    /// 
+    /// TaxScheme
     /// </summary>
     [XmlElement("TaxScheme", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
     public XmlTaxScheme TaxScheme { get; set; } = new();

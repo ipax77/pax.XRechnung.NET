@@ -9,12 +9,12 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ipax77/pax.XRechnung.NET</RepositoryUrl>
     <PackageTags>dotnet;XRechnung;import;export;validate</PackageTags>
-    <AssemblyVersion>0.2.1</AssemblyVersion>
+    <AssemblyVersion>0.3.0</AssemblyVersion>
     <Owners>Philipp Hetzner</Owners>
     <Authors>Philipp Hetzner</Authors>
-    <Version>0.2.1</Version>
-	  <FileVersion>0.2.1.0</FileVersion>
-    <PackageVersion>0.2.1</PackageVersion>
+    <Version>0.3.0</Version>
+	  <FileVersion>0.3.0.0</FileVersion>
+    <PackageVersion>0.3.0</PackageVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>    
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>

@@ -224,8 +224,12 @@ public class SchematronValidationTests
     [TestMethod]
     public async Task CanValidateBaseDtoSchematronTest()
     {
+        if (!kositServerIsRunning)
+        {
+            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
+        }
         var invoiceBaseDto = BaseDtoTests.GetInvoiceBaseDto();
-        InvoiceMapper<InvoiceBaseDto> invoiceMapper = new();
+        InvoiceMapper invoiceMapper = new();
         XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
@@ -236,6 +240,10 @@ public class SchematronValidationTests
     [TestMethod]
     public async Task CanValidateBaseDtoSchematronWithRoundingTest()
     {
+        if (!kositServerIsRunning)
+        {
+            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
+        }
         var invoiceBaseDto = BaseDtoTests.GetInvoiceBaseDto();
 
         var quantity = 1.17777;
@@ -244,7 +252,7 @@ public class SchematronValidationTests
         invoiceBaseDto.InvoiceLines[0].UnitPrice = unitPrice;
         invoiceBaseDto.PayableAmount = quantity * unitPrice;
 
-        InvoiceMapper<InvoiceBaseDto> invoiceMapper = new();
+        InvoiceMapper invoiceMapper = new();
         XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
@@ -260,7 +268,7 @@ public class SchematronValidationTests
             Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
         }
         XmlInvoice xmlInvoice = GetStandardXmlInvoice();
-        InvoiceMapper<InvoiceBaseDto> invoiceMapper = new();
+        InvoiceMapper invoiceMapper = new();
         InvoiceBaseDto invoiceDto = invoiceMapper.FromXml(xmlInvoice);
         XmlInvoice mappedXmlInvoice = invoiceMapper.ToXml(invoiceDto);
 
@@ -281,18 +289,30 @@ public class SchematronValidationTests
             Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
         }
         var invoiceExtendedDto = BaseDtoExtensionTests.GetInvoiceBaseDto();
-        invoiceExtendedDto.AdditionalDocumentReferences = [
-            new()
-            {
-                Id = "1",
-                DocumentDescription = "pdf",
-                MimeCode = "application/pdf",
-                FileName = "invoice.pdf",
-                Content = "R0lGODlhAQABAAAAACw=",
-            }
-        ];
+
         var mapper = new InvoiceExtendedMapper();
         var xmlInvoice = mapper.ToXml(invoiceExtendedDto);
+        var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
+        var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
+        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsTrue(result.IsValid, resultText);
+    }
+
+    [TestMethod]
+    public async Task CanProduceValidSmallBusinessXmlInvoice()
+    {
+        if (!kositServerIsRunning)
+        {
+            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
+        }
+        var dto = BaseDtoTests.GetInvoiceBaseDto();
+        dto.GlobalTax = 0;
+        var mapper = new InvoiceMapper();
+        var xmlInvoice = mapper.ToXml(dto);
+
+        var schemaResult = XmlInvoiceValidator.Validate(xmlInvoice);
+        Assert.IsTrue(schemaResult.IsValid);
+
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
         Assert.IsTrue(result.Validations.Count == 0, resultText);

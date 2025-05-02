@@ -21,6 +21,17 @@ public class XmlTaxCategory
     [XmlElement("Percent", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-119")]
     public decimal Percent { get; set; } = 19;
+        /// <summary>
+    /// Exemption Reason Code
+    /// </summary>
+    [XmlElement("TaxExemptionReasonCode", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    public Code? ExemptionReasonCode { get; set; }
+    /// <summary>
+    /// Exemption Reason (e.g. „Kein Ausweis von Umsatzsteuer, da Kleinunternehmer gemäß § 19UStG“)
+    /// </summary>
+    [XmlElement("TaxExemptionReason", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
+    [SpecificationId("BT-120")]
+    public string? ExemptionReason { get; set; } 
     /// <summary>
     /// TaxScheme
     /// </summary>

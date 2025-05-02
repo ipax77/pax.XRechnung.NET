@@ -1,9 +1,28 @@
 namespace pax.XRechnung.NET.BaseDtos;
 
 /// <summary>
+/// IInvoiceLineBaseDto  used for mapping
+/// </summary>
+public interface IInvoiceLineBaseDto
+{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    string Id { get; set; }
+    string? Note { get; set; }
+    double Quantity { get; set; }
+    string QuantityCode { get; set; }
+    double UnitPrice { get; set; }
+    DateTime? StartDate { get; set; }
+    DateTime? EndDate { get; set; }
+    string? Description { get; set; }
+    string Name { get; set; }
+    double LineTotal { get; }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+}
+
+/// <summary>
 /// Invoice Line
 /// </summary>
-public partial class InvoiceLineBaseDto
+public partial class InvoiceLineBaseDto : IInvoiceLineBaseDto
 {
     /// <summary>
     /// Eindeutige Bezeichnung für die betreffende Rechnungsposition.

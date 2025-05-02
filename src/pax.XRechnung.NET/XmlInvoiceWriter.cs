@@ -123,7 +123,8 @@ public static class XmlInvoiceWriter
 
         RemoveNullElements(xml);
 
-        return WriteToString(xml);
+        var xmlText = WriteToString(xml);
+        return XmlInvoiceValidator.GetRawXmlText(xmlText);
     }
 
     private static void RemoveNullElements(XDocument xml)

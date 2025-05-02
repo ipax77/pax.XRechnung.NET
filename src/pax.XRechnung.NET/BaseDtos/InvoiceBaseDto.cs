@@ -1,11 +1,38 @@
 namespace pax.XRechnung.NET.BaseDtos;
 
 /// <summary>
+/// IInvoiceBaseDto used for mapping
+/// </summary>
+public interface IInvoiceBaseDto
+{
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    string GlobalTaxCategory { get; set; }
+    string GlobalTaxScheme { get; set; }
+    double GlobalTax { get; set; }
+    string Id { get; set; }
+    DateTime IssueDate { get; set; }
+    DateTime? DueDate { get; set; }
+    string InvoiceTypeCode { get; set; }
+    string? Note { get; set; }
+    string DocumentCurrencyCode { get; set; }
+    string BuyerReference { get; set; }
+    List<IDocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; }
+    IPartyBaseDto SellerParty { get; set; }
+    IPartyBaseDto BuyerParty { get; set; }
+    IPaymentMeansBaseDto PaymentMeans { get; set; }
+    string PaymentMeansTypeCode { get; set; }
+    string PaymentTermsNote { get; set; }
+    double PayableAmount { get; set; }
+    List<IInvoiceLineBaseDto> InvoiceLines { get; set; }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+}
+
+/// <summary>
 /// Base DTO for simplified XRechnung invoices.
 /// Supports a single currency and a single VAT category/scheme for all lines.
 /// Amounts are expected to be net (exclusive of tax).
 /// </summary>
-public partial class InvoiceBaseDto
+public partial class InvoiceBaseDto : IInvoiceBaseDto
 {
     /// <summary>
     /// Global tax category (e.g., "S" for Standard rate).
@@ -48,6 +75,11 @@ public partial class InvoiceBaseDto
     /// </summary>
     public string InvoiceTypeCode { get; set; } = "380";
     /// <summary>
+    ///  Eine Gruppe von Informationselementen für rechnungsrelevante Erläuterungen mit Hinweisen auf den 
+    ///  Rechnungsbetreff.
+    /// </summary>
+    public string? Note { get; set; }
+    /// <summary>
     /// ISO 4217 currency code (e.g., "EUR"). Used on all amounts
     /// </summary>
     public string DocumentCurrencyCode { get; set; } = "EUR";
@@ -56,17 +88,21 @@ public partial class InvoiceBaseDto
     /// </summary>
     public string BuyerReference { get; set; } = string.Empty;
     /// <summary>
+    /// Additional documents attached to the invoice (e.g., contract, timesheet)
+    /// </summary>
+    public List<DocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; } = [];
+    /// <summary>
     /// Seller
     /// </summary>
-    public PartyBaseDto SellerParty { get; set; } = new();
+    public PartyBaseDto SellerParty { get; set; } = new PartyBaseDto();
     /// <summary>
     /// Buyer
     /// </summary>
-    public PartyBaseDto BuyerParty { get; set; } = new();
+    public PartyBaseDto BuyerParty { get; set; } = new PartyBaseDto();
     /// <summary>
     /// Bank account info for payment
     /// </summary>
-    public PaymentMeansBaseDto PaymentMeans { get; set; } = new();
+    public PaymentMeansBaseDto PaymentMeans { get; set; } = new PaymentMeansBaseDto();
     /// <summary>
     /// Payment type code, e.g. "30"
     /// </summary>
@@ -83,4 +119,18 @@ public partial class InvoiceBaseDto
     /// Invoice lines
     /// </summary>
     public List<InvoiceLineBaseDto> InvoiceLines { get; set; } = [];
+
+    IPartyBaseDto IInvoiceBaseDto.SellerParty { get => SellerParty; set => SellerParty = (PartyBaseDto)value; }
+    IPartyBaseDto IInvoiceBaseDto.BuyerParty { get => BuyerParty; set => BuyerParty = (PartyBaseDto)value; }
+    IPaymentMeansBaseDto IInvoiceBaseDto.PaymentMeans { get => PaymentMeans; set => PaymentMeans = (PaymentMeansBaseDto)value; }
+    List<IInvoiceLineBaseDto> IInvoiceBaseDto.InvoiceLines
+    {
+        get => InvoiceLines.Cast<IInvoiceLineBaseDto>().ToList();
+        set => InvoiceLines = value.Cast<InvoiceLineBaseDto>().ToList();
+    }
+    List<IDocumentReferenceBaseDto> IInvoiceBaseDto.AdditionalDocumentReferences
+    {
+        get => AdditionalDocumentReferences.Cast<IDocumentReferenceBaseDto>().ToList();
+        set => AdditionalDocumentReferences = value.Cast<DocumentReferenceBaseDto>().ToList();
+    }
 }
