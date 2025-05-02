@@ -23,6 +23,7 @@ public class InvoiceAnnotationDto : IInvoiceBaseDto
     public DateTime IssueDate { get; set; }
     public DateTime? DueDate { get; set; }
     [Required]
+    [ValidCode(CodeListType.UNTDID_1001_4)]
     public string InvoiceTypeCode { get; set; } = string.Empty;
     public string? Note { get; set; } = string.Empty;
     [Required]

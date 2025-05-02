@@ -21,6 +21,7 @@ public class BuyerAnnotationDto : IPartyBaseDto
     public string Telefone { get; set; } = string.Empty;
     [Required]
     public string Email { get; set; } = string.Empty;
+    [Required]  
     public string RegistrationName { get; set; } = string.Empty;
     public string TaxId { get; set; } = string.Empty;
 }
