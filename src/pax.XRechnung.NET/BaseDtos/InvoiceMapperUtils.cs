@@ -60,4 +60,18 @@ public static class InvoiceMapperUtils
     /// <returns></returns>
     public static decimal RoundAmount(decimal value) =>
         Math.Round(value, 2, MidpointRounding.AwayFromZero);
+
+    /// <summary>
+    /// Set empty strings to null -> remove property from xml
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static string? GetNullableString(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return null;
+        }
+        return value;
+    }
 }

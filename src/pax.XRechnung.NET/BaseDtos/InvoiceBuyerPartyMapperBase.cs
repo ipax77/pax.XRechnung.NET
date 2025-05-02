@@ -39,12 +39,12 @@ public abstract class InvoiceBuyerPartyMapperBase<T> where T : IPartyBaseDto, ne
         return new()
         {
             Website = partyBaseDto.Website,
-            LogoReferenceId = partyBaseDto.LogoReferenceId,
+            LogoReferenceId = InvoiceMapperUtils.GetNullableString(partyBaseDto.LogoReferenceId),
             EndpointId = new() { SchemeId = "EM", Content = partyBaseDto.RegistrationName },
             PartyName = new() { Name = partyBaseDto.Name },
             PostalAddress = new()
             {
-                StreetName = partyBaseDto.StreetName,
+                StreetName = InvoiceMapperUtils.GetNullableString(partyBaseDto.StreetName),
                 City = partyBaseDto.City,
                 PostCode = partyBaseDto.PostCode,
                 Country = new() { IdentificationCode = partyBaseDto.CountryCode },
@@ -52,9 +52,9 @@ public abstract class InvoiceBuyerPartyMapperBase<T> where T : IPartyBaseDto, ne
             PartyLegalEntity = new() { RegistrationName = partyBaseDto.RegistrationName },
             Contact = new()
             {
-                Name = partyBaseDto.Name,
-                Email = partyBaseDto.Email,
-                Telephone = partyBaseDto.Telefone,
+                Name = InvoiceMapperUtils.GetNullableString(partyBaseDto.Name),
+                Email = InvoiceMapperUtils.GetNullableString(partyBaseDto.Email),
+                Telephone = InvoiceMapperUtils.GetNullableString(partyBaseDto.Telefone),
             }
         };
     }

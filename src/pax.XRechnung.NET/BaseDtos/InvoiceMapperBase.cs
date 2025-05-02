@@ -151,6 +151,8 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
         {
             Id = new() { Content = dto.Id },
             IssueDate = new DateOnly(dto.IssueDate.Year, dto.IssueDate.Month, dto.IssueDate.Day),
+            DueDate = dto.DueDate == null || dto.DueDate == DateTime.MinValue ? null :
+                new DateOnly(dto.DueDate.Value.Year, dto.DueDate.Value.Month, dto.DueDate.Value.Day),
             InvoiceTypeCode = dto.InvoiceTypeCode,
             DocumentCurrencyCode = dto.DocumentCurrencyCode,
             BuyerReference = dto.BuyerReference,

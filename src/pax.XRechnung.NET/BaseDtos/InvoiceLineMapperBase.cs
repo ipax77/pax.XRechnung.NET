@@ -16,7 +16,7 @@ public abstract class InvoiceLineMapperBase<T> where T : IInvoiceLineBaseDto, ne
         var dto = new T
         {
             Id = xmlLine.Id.Content,
-            Note = xmlLine.Note,
+            Note = InvoiceMapperUtils.GetNullableString(xmlLine.Note),
             Quantity = (double)xmlLine.InvoicedQuantity.Value,
             QuantityCode = xmlLine.InvoicedQuantity.UnitCode,
             UnitPrice = (double)xmlLine.PriceDetails.PriceAmount.Value,
@@ -26,7 +26,7 @@ public abstract class InvoiceLineMapperBase<T> where T : IInvoiceLineBaseDto, ne
             EndDate = xmlLine.InvoicePeriod == null ? null
                 : InvoiceMapperUtils.GetDateTime(xmlLine.InvoicePeriod.EndDate?.Value,
                     xmlLine.InvoicePeriod.EndTime?.Value),
-            Description = xmlLine.Item.Description,
+            Description = InvoiceMapperUtils.GetNullableString(xmlLine.Item.Description),
             Name = xmlLine.Item.Name,
         };
         return dto;
@@ -49,14 +49,14 @@ public abstract class InvoiceLineMapperBase<T> where T : IInvoiceLineBaseDto, ne
         return new XmlInvoiceLine
         {
             Id = new() { Content = dtoLine.Id },
-            Note = dtoLine.Note,
+            Note = InvoiceMapperUtils.GetNullableString(dtoLine.Note),
             InvoicedQuantity = new() { Value = InvoiceMapperUtils.RoundAmount(dtoLine.Quantity), UnitCode = dtoLine.QuantityCode },
             LineExtensionAmount = new() { Value = lineTotal, CurrencyID = currencyId },
             PriceDetails = new() { PriceAmount = new() { Value = InvoiceMapperUtils.RoundAmount(dtoLine.UnitPrice), CurrencyID = currencyId } },
             InvoicePeriod = InvoiceMapperUtils.GetXmlPeriod(dtoLine.StartDate, dtoLine.EndDate),
             Item = new()
             {
-                Description = dtoLine.Description,
+                Description = InvoiceMapperUtils.GetNullableString(dtoLine.Description),
                 Name = dtoLine.Name,
                 ClassifiedTaxCategory = new()
                 {

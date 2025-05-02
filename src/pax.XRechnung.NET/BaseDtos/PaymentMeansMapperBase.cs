@@ -34,8 +34,8 @@ public abstract class PaymentMeansMapperBase<T> where T : IPaymentMeansBaseDto, 
             PayeeFinancialAccount = new()
             {
                 Id = new() { Content = dto.Iban },
-                Name = dto.Name,
-                FinancialInstitutionBranch = new()
+                Name = InvoiceMapperUtils.GetNullableString(dto.Name),
+                FinancialInstitutionBranch = string.IsNullOrEmpty(dto.Bic) ? null : new()
                 {
                     Id = new() { Content = dto.Bic }
                 }
