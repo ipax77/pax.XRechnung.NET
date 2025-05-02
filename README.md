@@ -3,12 +3,13 @@
 
 # Introduction
 
-`pax.XRechnung.NET` is a .NET library for validating and mapping [XRechnung](https://xeinkauf.de/xrechnung/) XML invoices based on [specification 3.0.2](https://xeinkauf.de/app/uploads/2024/07/302-XRechnung-2024-06-20.pdf).
+**pax.XRechnung.NET** is a .NET library that helps validate, map, and generate [XRechnung](https://xeinkauf.de/xrechnung/) XML invoices, following [specification 3.0.2](https://xeinkauf.de/app/uploads/2024/07/302-XRechnung-2024-06-20.pdf).
 
 ## Features
-- Validate XRechnung XML invoices
-- Map XML invoices to DTOs for easier manipulation
-- Generate compliant XML invoices from structured DTOs
+- ✅ **Validation**: Ensure XML invoices conform to XRechnung 3.0.2 schema and Schematron rules.
+- 🔁 **Mapping**: Convert XML invoices into strongly typed DTOs.
+- 🧾 **Generation**: Create compliant XML invoices from C# objects.
+
 
 ## Getting started
 
@@ -19,6 +20,18 @@ dotnet add package pax.XRechnung.NET
 ```
 
 ## Usage
+
+**Validate XML schema**
+```csharp
+    var xmlText = "<Invoice>...</invoice>";
+    var serializer = new XmlSerializer(typeof(XmlInvoice));
+    using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xmlText));
+    stream.Position = 0;
+    var xmlInvoice = (XmlInvoice?)serializer.Deserialize(stream);
+    Assert.IsNotNull(xmlInvoice);
+    var validationResult = XmlInvoiceValidator.Validate(xmlInvoice);
+    Assert.IsTrue(validationresult.IsValid);
+```
 
 ### Handle Sample Invoice
 ```csharp
@@ -79,19 +92,20 @@ public static InvoiceBaseDto GetInvoiceBaseDto()
     };
 }
 ```
-**Validate xml schema**
+
+**Serialize DTO to XML**
 ```csharp
     var invoiceBaseDto = GetInvoiceBaseDto();
-    var mapper = new InvoiceMapper<InvoiceBaseDto>();
+    var mapper = new InvoiceMapper();
     var xmlInvoice = mapper.ToXml(invoiceBaseDto);
-    var result = XmlInvoiceValidator.Validate(xmlInvoice);
-    Assert.IsTrue(result.IsValid);
+    var xmlText = XmlInvoiceWriter.Serialize(xmlInvoice);
 ```
+
 **Validate schematron - requires [Kosit validator](#java-schematron-validator)**
 ```csharp
     var invoiceBaseDto = GetInvoiceBaseDto();
-    InvoiceMapper<InvoiceBaseDto> invoiceMapper = new();
-    XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
+    var mapper = new InvoiceMapper();
+    XmlInvoice xmlInvoice = mapper.ToXml(invoiceBaseDto);
     var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
     var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
     Assert.IsTrue(result.Validations.Count == 0, resultText);
@@ -110,8 +124,8 @@ Server start:
 <details open="open"><summary>v0.3.0</summary>
 
 >- **Breaking Changes**
->- DTO rework to be more flexible
->- InvoiceAnnotationDto now available
+>- DTO rework to be more flexible and robust.
+>- InvoiceAnnotationDto now available with Required fields and CodeList validation
 
 </details>
 

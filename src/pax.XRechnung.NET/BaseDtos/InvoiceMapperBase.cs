@@ -107,7 +107,7 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
             GlobalTax = (double)tax,
             Id = xmlInvoice.Id.Content,
             IssueDate = InvoiceMapperUtils.GetDateTime(xmlInvoice.IssueDate),
-            DueDate = InvoiceMapperUtils.GetDateTime(xmlInvoice.DueDate?.Value),
+            DueDate = xmlInvoice.DueDate == null ? null : InvoiceMapperUtils.GetDateTime(xmlInvoice.DueDate.Value),
             InvoiceTypeCode = xmlInvoice.InvoiceTypeCode,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
             BuyerReference = xmlInvoice.BuyerReference,

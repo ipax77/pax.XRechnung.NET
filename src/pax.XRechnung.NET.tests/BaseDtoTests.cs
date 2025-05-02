@@ -14,7 +14,7 @@ public class BaseDtoTests
             GlobalTaxScheme = "VAT",
             GlobalTax = 19.0,
             Id = "1",
-            IssueDate = DateTime.UtcNow,
+            IssueDate = new DateTime(2025, 05, 01),
             InvoiceTypeCode = "380",
             DocumentCurrencyCode = "EUR",
             BuyerReference = "04011000-12345-34",
