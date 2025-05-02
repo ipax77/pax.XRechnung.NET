@@ -289,4 +289,25 @@ public class SchematronValidationTests
         Assert.IsTrue(result.Validations.Count == 0, resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
+
+    [TestMethod]
+    public async Task CanProduceValidSmallBusinessXmlInvoice()
+    {
+        if (!kositServerIsRunning)
+        {
+            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
+        }
+        var dto = BaseDtoTests.GetInvoiceBaseDto();
+        dto.GlobalTax = 0;
+        var mapper = new InvoiceMapper();
+        var xmlInvoice = mapper.ToXml(dto);
+
+        var schemaResult = XmlInvoiceValidator.Validate(xmlInvoice);
+        Assert.IsTrue(schemaResult.IsValid);
+
+        var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
+        var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
+        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsTrue(result.IsValid, resultText);
+    }
 }

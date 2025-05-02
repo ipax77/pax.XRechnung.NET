@@ -77,6 +77,10 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
     /// </summary>
     protected const string DefaultTaxCategory = "S";
     /// <summary>
+    /// smallBusiness Tax Category § 19UStG
+    /// </summary>
+    protected const string DefaultSmallBusinessTaxCategory = "E";
+    /// <summary>
     /// smallBusinessText § 19UStG
     /// </summary>
     protected const string smallBusinessText = "Kein Ausweis von Umsatzsteuer, da Kleinunternehmer gemäß § 19UStG";
@@ -93,7 +97,8 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
         var xmlTaxCategory = xmlInvoice.TaxTotal.TaxSubTotal.FirstOrDefault()?.TaxCategory;
         var tax = xmlTaxCategory?.Percent ?? DefaultTax;
         var taxScheme = xmlTaxCategory?.TaxScheme.Id.Content ?? DefaultTaxScheme;
-        var taxCategory = xmlTaxCategory?.Id.Content ?? DefaultTaxCategory;
+        var taxCategory = xmlTaxCategory?.Id.Content ??
+            (tax == 0 ? DefaultSmallBusinessTaxCategory : DefaultTaxCategory);
 
         return new()
         {
@@ -136,6 +141,11 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
         decimal payableAmount = InvoiceMapperUtils.RoundAmount(taxExclusiveAmount + taxExclusiveAmount * taxRate);
         bool isSmallBusiness = taxRate == 0; // keine Umsatzsteuer nach § 19 UStG
         decimal taxAmount = isSmallBusiness ? 0 : InvoiceMapperUtils.RoundAmount(payableAmount - taxExclusiveAmount);
+
+        if (isSmallBusiness)
+        {
+            dto.GlobalTaxCategory = DefaultSmallBusinessTaxCategory;
+        }
 
         var xml = new XmlInvoice()
         {
@@ -203,9 +213,10 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
             {
                 xml.SellerParty.Party.PartyTaxScheme = new();
             }
-            xml.SellerParty.Party.PartyTaxScheme.ExemptionReason = smallBusinessText;
             xml.SellerParty.Party.PartyLegalEntity.CompanyLegalForm = smallBusinessText;
+            xml.TaxTotal.TaxSubTotal[0].TaxCategory.ExemptionReason = smallBusinessText;
             xml.TaxTotal.TaxSubTotal[0].TaxCategory.Id.Content = "E";
+
         }
 
         return xml;

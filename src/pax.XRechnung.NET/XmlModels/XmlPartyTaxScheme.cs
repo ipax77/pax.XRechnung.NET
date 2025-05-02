@@ -24,17 +24,6 @@ public class XmlPartyTaxScheme
     [XmlElement("CompanyID", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     public string CompanyId { get; set; } = string.Empty;
     /// <summary>
-    /// Exemption Reason Code
-    /// </summary>
-    [XmlElement("ExemptionReasonCode", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    public Code? ExemptionReasonCode { get; set; }
-    /// <summary>
-    /// Exemption Reason (e.g. „Kein Ausweis von Umsatzsteuer, da Kleinunternehmer gemäß § 19UStG“)
-    /// </summary>
-    [XmlElement("ExemptionReason", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
-    [SpecificationId("BT-120")]
-    public string? ExemptionReason { get; set; } 
-    /// <summary>
     /// TaxScheme
     /// </summary>
     [XmlElement("TaxScheme", Namespace = XmlInvoiceWriter.CommonAggregateComponents)]
