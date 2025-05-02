@@ -1,6 +1,6 @@
 
 using System.Xml.Schema;
-using pax.XRechnung.NET.KostiValidator;
+using pax.XRechnung.NET.KositValidator;
 using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
@@ -18,7 +18,7 @@ public static partial class XmlInvoiceValidator
         try
         {
             var xml = XmlInvoiceWriter.Serialize(invoice);
-            var validationResult = await KositValidator.Validate(xml, kositUri)
+            var validationResult = await InvoiceKositValidator.Validate(xml, kositUri)
                 .ConfigureAwait(false);
             return MapToValidationResult(validationResult);
         }
@@ -42,7 +42,7 @@ public static partial class XmlInvoiceValidator
     {
         try
         {
-            var validationResult = await KositValidator.Validate(xml, kositUri)
+            var validationResult = await InvoiceKositValidator.Validate(xml, kositUri)
                 .ConfigureAwait(false);
             return MapToValidationResult(validationResult);
         }
@@ -80,7 +80,17 @@ public static partial class XmlInvoiceValidator
             validationEvents.Add(new(exception, message, severity));
         }
 
-        return new InvoiceValidationResult(validationEvents);
+        if (!string.IsNullOrEmpty(kositResult.Error) || !kositResult.IsValid)
+        {
+            validationEvents.Add(new(new XmlSchemaException("xml invalid"), kositResult.Error ?? "Unexpected error.", XmlSeverityType.Error));
+        }
+
+        var result = new InvoiceValidationResult(validationEvents)
+        {
+            Evaluation = kositResult.Evaluation,
+            Conformity = kositResult.Conformity
+        };
+        return result;
     }
 }
 

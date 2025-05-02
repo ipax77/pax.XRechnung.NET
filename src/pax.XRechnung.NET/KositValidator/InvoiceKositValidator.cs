@@ -3,12 +3,12 @@ using System.Net.Http.Headers;
 using System.Text;
 using HtmlAgilityPack;
 
-namespace pax.XRechnung.NET.KostiValidator;
+namespace pax.XRechnung.NET.KositValidator;
 
 /// <summary>
 /// KositValidator
 /// </summary>
-public static class KositValidator
+public static class InvoiceKositValidator
 {
     private const string validatorUri = "http://localhost:8080";
 
@@ -35,8 +35,22 @@ public static class KositValidator
             var response = await client.PostAsync(null as Uri, content).ConfigureAwait(false);
             var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             ArgumentNullException.ThrowIfNull(result);
+            SchematronValidationResult validationResult = new()
+            {
+                HttpStatusCode = response.StatusCode
+            };
+
+            SetValidationInfo(result, validationResult);
             var tables = ParseValidatorResponse(result);
-            return ToValidationResult(tables);
+            SetValidationResult(tables, validationResult);
+
+            if (validationResult.HttpStatusCode == HttpStatusCode.OK &&
+                validationResult.Steps.Sum(s => s.Errors) == 0)
+            {
+                validationResult.IsValid = true;
+            }
+
+            return validationResult;
         }
         catch (Exception ex)
         {
@@ -49,6 +63,37 @@ public static class KositValidator
             return validationResult;
             throw;
         }
+    }
+
+    private static void SetValidationInfo(string html, SchematronValidationResult validationResult)
+    {
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+
+        // Extract Referenz
+        var referenz = doc.DocumentNode
+            .SelectSingleNode("//dt[text()='Referenz:']/following-sibling::dd[1]")?.InnerText.Trim();
+
+        // Extract Zeitpunkt der Prüfung
+        var zeitpunkt = doc.DocumentNode
+            .SelectSingleNode("//dt[text()='Zeitpunkt der Prüfung:']/following-sibling::dd[1]")?.InnerText.Trim();
+
+        // Extract Dokumenttyp (b.error inside dd)
+        var dokumenttyp = doc.DocumentNode
+            .SelectSingleNode("//dt[text()='Erkannter Dokumenttyp:']/following-sibling::dd[1]/b")?.InnerText.Trim();
+
+        // Extract Konformität text
+        var konformitaet = doc.DocumentNode
+            .SelectNodes("//p[@class='important']")
+            ?.FirstOrDefault(p => p.InnerText.Contains("Konformitätsprüfung", StringComparison.Ordinal))?
+                .InnerText.Trim();
+
+        // Extract Bewertung (error paragraph)
+        var bewertung = doc.DocumentNode
+            .SelectSingleNode("//p[@class='important error']")?.InnerText.Trim();
+
+        validationResult.Conformity = konformitaet;
+        validationResult.Evaluation = bewertung;
     }
 
     private static List<HtmlTable> ParseValidatorResponse(string response)
@@ -86,12 +131,10 @@ public static class KositValidator
         return htmlTables;
     }
 
-    private static SchematronValidationResult ToValidationResult(List<HtmlTable> htmlTables)
+    private static void SetValidationResult(List<HtmlTable> htmlTables, SchematronValidationResult validationResult)
     {
         if (htmlTables.Count < 2)
-            throw new InvalidOperationException("Expected at least 2 tables.");
-
-        var result = new SchematronValidationResult();
+            return;
 
         // First table: Summary of steps
         var summaryTable = htmlTables[0];
@@ -99,7 +142,7 @@ public static class KositValidator
         {
             if (row.Count < 4) continue;
 
-            result.Steps.Add(new ValidationStep
+            validationResult.Steps.Add(new ValidationStep
             {
                 Step = row[0].Trim(),
                 Errors = int.TryParse(row[1], out var e) ? e : 0,
@@ -127,13 +170,10 @@ public static class KositValidator
             else if (row.Count == 1 && currentMessage != null) // path row
             {
                 currentMessage.Path = row[0].Replace("Pfad: ", "", StringComparison.OrdinalIgnoreCase).Trim();
-                result.Messages.Add(currentMessage);
+                validationResult.Messages.Add(currentMessage);
                 currentMessage = null;
             }
         }
-
-        result.IsValid = result.Steps.Sum(s => s.Errors) == 0;
-        return result;
     }
 
     private static HtmlTable? ExtractHtmlTable(HtmlNode tableNode)

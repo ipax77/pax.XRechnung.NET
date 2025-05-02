@@ -1,4 +1,5 @@
 ﻿using pax.XRechnung.NET.CodeListModel;
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -10,7 +11,7 @@ namespace pax.XRechnung.NET;
 /// </summary>
 public static partial class CodeListRepository
 {
-    private static readonly Dictionary<string, CodeList?> CodeListCache = [];
+    private static readonly ConcurrentDictionary<string, CodeList?> CodeListCache = [];
     private const string CodeListRessourceBasePath = "pax.XRechnung.NET.Resources.CodeListFiles.";
 
     /// <summary>
@@ -60,7 +61,7 @@ public static partial class CodeListRepository
 
         var codeList = JsonSerializer.Deserialize<CodeList>(stream);
         SetDataDictionary(codeList);
-        CodeListCache[resourceName] = codeList;
+        CodeListCache.AddOrUpdate(resourceName, codeList, (k, v) => v = codeList);
         return codeList;
     }
 

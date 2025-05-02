@@ -1,4 +1,4 @@
-namespace pax.XRechnung.NET.KostiValidator;
+namespace pax.XRechnung.NET.KositValidator;
 
 internal sealed record HtmlTable
 {

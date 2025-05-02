@@ -50,6 +50,14 @@ public sealed class InvoiceValidationResult
     /// Error during validation
     /// </summary>
     public string? Error { get; set; }
+    /// <summary>
+    /// Schematron Konformitätsprüfung
+    /// </summary>
+    public string? Conformity { get; set; }
+    /// <summary>
+    /// Schematron Evaluation
+    /// </summary>
+    public string? Evaluation { get; set; }
 }
 
 /// <summary>
@@ -94,5 +102,4 @@ public sealed class ValidationMessage
     /// Severity
     /// </summary>
     public XmlSeverityType Severity { get; }
-
 }
