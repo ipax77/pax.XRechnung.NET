@@ -76,6 +76,10 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
     /// DefaultTaxCategory
     /// </summary>
     protected const string DefaultTaxCategory = "S";
+    /// <summary>
+    /// smallBusinessText § 19UStG
+    /// </summary>
+    protected const string smallBusinessText = "Kein Ausweis von Umsatzsteuer, da Kleinunternehmer gemäß § 19UStG";
 
     /// <summary>
     /// Map xmlInvoice to T
@@ -130,9 +134,10 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
                     * InvoiceMapperUtils.RoundAmount(s.UnitPrice))));
 
         decimal payableAmount = InvoiceMapperUtils.RoundAmount(taxExclusiveAmount + taxExclusiveAmount * taxRate);
-        decimal taxAmount = InvoiceMapperUtils.RoundAmount(payableAmount - taxExclusiveAmount);
+        bool isSmallBusiness = taxRate == 0; // keine Umsatzsteuer nach § 19 UStG
+        decimal taxAmount = isSmallBusiness ? 0 : InvoiceMapperUtils.RoundAmount(payableAmount - taxExclusiveAmount);
 
-        return new()
+        var xml = new XmlInvoice()
         {
             Id = new() { Content = dto.Id },
             IssueDate = new DateOnly(dto.IssueDate.Year, dto.IssueDate.Month, dto.IssueDate.Day),
@@ -191,6 +196,19 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
                     LineToXml(s, dto.DocumentCurrencyCode, dto.GlobalTaxCategory, dto.GlobalTaxScheme, dto.GlobalTax))
                 .ToList(),
         };
+
+        if (isSmallBusiness)
+        {
+            if (xml.SellerParty.Party.PartyTaxScheme is null)
+            {
+                xml.SellerParty.Party.PartyTaxScheme = new();
+            }
+            xml.SellerParty.Party.PartyTaxScheme.ExemptionReason = smallBusinessText;
+            xml.SellerParty.Party.PartyLegalEntity.CompanyLegalForm = smallBusinessText;
+            xml.TaxTotal.TaxSubTotal[0].TaxCategory.Id.Content = "E";
+        }
+
+        return xml;
     }
 
     /// <summary>
