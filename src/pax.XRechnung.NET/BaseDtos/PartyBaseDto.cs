@@ -17,6 +17,7 @@ public interface IPartyBaseDto
     string Email { get; set; }
     string RegistrationName { get; set; }
     string TaxId { get; set; }
+    string? CompanyId { get; set; }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
 
@@ -69,4 +70,8 @@ public class PartyBaseDto : IPartyBaseDto
     /// VAT number or company tax ID.
     /// </summary>
     public string TaxId { get; set; } = string.Empty;
+    /// <summary>
+    /// Umsatzsteuer Id
+    /// </summary>
+    public string? CompanyId { get; set; }
 }
