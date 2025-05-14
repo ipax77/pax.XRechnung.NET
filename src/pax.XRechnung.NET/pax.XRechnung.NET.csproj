@@ -104,6 +104,6 @@
 
     <ItemGroup>
       <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
-      <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.4" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.4.25258.110" />
     </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using pax.XRechnung.NET.BaseDtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace pax.XRechnung.NET.AnnotatedDtos;
 
