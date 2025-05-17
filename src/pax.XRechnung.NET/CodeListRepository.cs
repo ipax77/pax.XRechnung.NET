@@ -13,6 +13,7 @@ public static partial class CodeListRepository
 {
     private static readonly ConcurrentDictionary<string, CodeList?> CodeListCache = [];
     private const string CodeListRessourceBasePath = "pax.XRechnung.NET.Resources.CodeListFiles.";
+    private static readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
 
     /// <summary>
     /// 
@@ -59,7 +60,7 @@ public static partial class CodeListRepository
             return null;
         }
 
-        var codeList = JsonSerializer.Deserialize<CodeList>(stream);
+        var codeList = JsonSerializer.Deserialize<CodeList>(stream, jsonOptions);
         SetDataDictionary(codeList);
         CodeListCache.AddOrUpdate(resourceName, codeList, (k, v) => v = codeList);
         return codeList;

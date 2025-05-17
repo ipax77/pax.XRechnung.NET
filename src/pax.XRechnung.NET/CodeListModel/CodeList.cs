@@ -20,7 +20,6 @@ public class CodeListMetadata
     public List<Name> AenderungZurVorversion { get; set; } = [];
     public string HandbuchVersion { get; set; } = string.Empty;
     public bool XoevHandbuch { get; set; }
-    public DateTime GueltigAb { get; set; }
     public List<string> Bezugsorte { get; set; } = [];
 }
 
