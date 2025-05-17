@@ -27,6 +27,7 @@ public class SellerAnnotationDto : IPartyBaseDto
     [Required]
     public string TaxId { get; set; } = string.Empty;
     public string? CompanyId { get; set; }
+    public string BuyerReference { get; set; } = string.Empty;
 }
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

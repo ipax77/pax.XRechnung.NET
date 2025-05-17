@@ -15,12 +15,10 @@ public interface IInvoiceBaseDto
     string InvoiceTypeCode { get; set; }
     string? Note { get; set; }
     string DocumentCurrencyCode { get; set; }
-    string BuyerReference { get; set; }
     List<IDocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; }
     IPartyBaseDto SellerParty { get; set; }
     IPartyBaseDto BuyerParty { get; set; }
     IPaymentMeansBaseDto PaymentMeans { get; set; }
-    string PaymentMeansTypeCode { get; set; }
     string PaymentTermsNote { get; set; }
     double PayableAmount { get; set; }
     List<IInvoiceLineBaseDto> InvoiceLines { get; set; }
@@ -84,10 +82,6 @@ public partial class InvoiceBaseDto : IInvoiceBaseDto
     /// </summary>
     public string DocumentCurrencyCode { get; set; } = "EUR";
     /// <summary>
-    /// Ein vom Erwerber zugewiesener und für interne Lenkungszwecke benutzter Bezeichner
-    /// </summary>
-    public string BuyerReference { get; set; } = string.Empty;
-    /// <summary>
     /// Additional documents attached to the invoice (e.g., contract, timesheet)
     /// </summary>
     public List<DocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; } = [];
@@ -103,10 +97,6 @@ public partial class InvoiceBaseDto : IInvoiceBaseDto
     /// Bank account info for payment
     /// </summary>
     public PaymentMeansBaseDto PaymentMeans { get; set; } = new PaymentMeansBaseDto();
-    /// <summary>
-    /// Payment type code, e.g. "30"
-    /// </summary>
-    public string PaymentMeansTypeCode { get; set; } = "30";
     /// <summary>
     /// Payment terms note
     /// </summary>

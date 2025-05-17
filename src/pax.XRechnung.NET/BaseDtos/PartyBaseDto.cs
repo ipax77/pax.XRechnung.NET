@@ -18,6 +18,7 @@ public interface IPartyBaseDto
     string RegistrationName { get; set; }
     string TaxId { get; set; }
     string? CompanyId { get; set; }
+    string BuyerReference { get; set; }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
 
@@ -74,4 +75,8 @@ public class PartyBaseDto : IPartyBaseDto
     /// Umsatzsteuer Id
     /// </summary>
     public string? CompanyId { get; set; }
+    /// <summary>
+    /// Ein vom Erwerber zugewiesener und für interne Lenkungszwecke benutzter Bezeichner
+    /// </summary>
+    public string BuyerReference { get; set; } = string.Empty;
 }

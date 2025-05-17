@@ -25,12 +25,12 @@ public abstract class PaymentMeansMapperBase<T> where T : IPaymentMeansBaseDto, 
     /// <summary>
     /// Map IPartyBaseDto to XmlParty
     /// </summary>
-    public virtual XmlPaymentMeans ToXml(IPaymentMeansBaseDto dto, string paymentMeansTypeCode)
+    public virtual XmlPaymentMeans ToXml(IPaymentMeansBaseDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
         return new()
         {
-            PaymentMeansTypeCode = paymentMeansTypeCode,
+            PaymentMeansTypeCode = dto.PaymentMeansTypeCode,
             PayeeFinancialAccount = new()
             {
                 Id = new() { Content = dto.Iban },

@@ -18,7 +18,6 @@ public class BaseDtoExtensionTests
             IssueDate = DateTime.UtcNow,
             InvoiceTypeCode = "380",
             DocumentCurrencyCode = "EUR",
-            BuyerReference = "04011000-12345-34",
             SellerParty = new PartyBaseDto()
             {
                 Name = "Seller Name",
@@ -41,14 +40,15 @@ public class BaseDtoExtensionTests
                 Telefone = "1234/54321",
                 Email = "buyer@example.com",
                 RegistrationName = "Buyer Name",
+                BuyerReference = "04011000-12345-34",
             },
             PaymentMeans = new PaymentMeansBaseDto()
             {
                 Iban = "DE12 1234 1234 1234 1234 12",
                 Bic = "BICABCDE",
-                Name = "Bank Name"
+                Name = "Bank Name",
+                PaymentMeansTypeCode = "30",
             },
-            PaymentMeansTypeCode = "30",
             PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
             PayableAmount = 119.0,
             InvoiceLines = [
@@ -164,12 +164,10 @@ public class InvoiceExtendedDto : IInvoiceBaseDto
     public string InvoiceTypeCode { get; set; } = "380";
     public string? Note { get; set; }
     public string DocumentCurrencyCode { get; set; } = "EUR";
-    public string BuyerReference { get; set; } = string.Empty;
     public List<DocumentReferenceBaseDto> AdditionalDocumentReferences { get; set; } = [];
     public PartyBaseDto SellerParty { get; set; } = new PartyBaseDto();
     public PartyBaseDto BuyerParty { get; set; } = new PartyBaseDto();
     public PaymentMeansBaseDto PaymentMeans { get; set; } = new PaymentMeansBaseDto();
-    public string PaymentMeansTypeCode { get; set; } = "30";
     public string PaymentTermsNote { get; set; } = string.Empty;
     public double PayableAmount { get; set; }
     public List<InvoiceLineExtendedDto> InvoiceLines { get; set; } = [];
