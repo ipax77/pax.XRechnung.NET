@@ -82,11 +82,12 @@ public static partial class XmlInvoiceValidator
 
         if (!string.IsNullOrEmpty(kositResult.Error) || !kositResult.IsValid)
         {
-            validationEvents.Add(new(new XmlSchemaException("xml invalid"), kositResult.Error ?? "Unexpected error.", XmlSeverityType.Error));
+            validationEvents.Add(new(new XmlSchemaException("unknown"), kositResult.Error ?? kositResult.HttpStatusCode.ToString(), XmlSeverityType.Error));
         }
 
         var result = new InvoiceValidationResult(validationEvents)
         {
+            HttpStatusCode = kositResult.HttpStatusCode.ToString(),
             Evaluation = kositResult.Evaluation,
             Conformity = kositResult.Conformity
         };
