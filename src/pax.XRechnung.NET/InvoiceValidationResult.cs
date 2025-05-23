@@ -27,6 +27,10 @@ public sealed class InvoiceValidationResult
         }
     }
     /// <summary>
+    /// HttpStatusCode
+    /// </summary>
+    public string HttpStatusCode { get; set; } = string.Empty;
+    /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="validationMessages"></param>

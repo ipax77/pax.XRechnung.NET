@@ -1,7 +1,7 @@
 namespace pax.XRechnung.NET.XmlModels;
 
-using System.Xml.Serialization;
 using pax.XRechnung.NET.Attributes;
+using System.Xml.Serialization;
 
 /// <summary>
 /// PartyIdentificationType

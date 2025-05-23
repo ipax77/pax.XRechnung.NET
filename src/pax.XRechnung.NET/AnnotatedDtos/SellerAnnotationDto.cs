@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using pax.XRechnung.NET.BaseDtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace pax.XRechnung.NET.AnnotatedDtos;
 
@@ -26,6 +26,8 @@ public class SellerAnnotationDto : IPartyBaseDto
     public string RegistrationName { get; set; } = string.Empty;
     [Required]
     public string TaxId { get; set; } = string.Empty;
+    public string? CompanyId { get; set; }
+    public string BuyerReference { get; set; } = string.Empty;
 }
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

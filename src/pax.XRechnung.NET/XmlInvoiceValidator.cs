@@ -1,6 +1,6 @@
+using pax.XRechnung.NET.XmlModels;
 using System.Xml;
 using System.Xml.Schema;
-using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
 

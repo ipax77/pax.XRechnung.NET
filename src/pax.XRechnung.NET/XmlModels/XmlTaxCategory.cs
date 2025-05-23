@@ -1,5 +1,5 @@
-using System.Xml.Serialization;
 using pax.XRechnung.NET.Attributes;
+using System.Xml.Serialization;
 
 namespace pax.XRechnung.NET.XmlModels;
 
@@ -21,7 +21,7 @@ public class XmlTaxCategory
     [XmlElement("Percent", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-119")]
     public decimal Percent { get; set; } = 19;
-        /// <summary>
+    /// <summary>
     /// Exemption Reason Code
     /// </summary>
     [XmlElement("TaxExemptionReasonCode", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
@@ -31,7 +31,7 @@ public class XmlTaxCategory
     /// </summary>
     [XmlElement("TaxExemptionReason", Namespace = XmlInvoiceWriter.CommonBasicComponents)]
     [SpecificationId("BT-120")]
-    public string? ExemptionReason { get; set; } 
+    public string? ExemptionReason { get; set; }
     /// <summary>
     /// TaxScheme
     /// </summary>

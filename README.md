@@ -43,10 +43,9 @@ public static InvoiceBaseDto GetInvoiceBaseDto()
         GlobalTaxScheme = "VAT",
         GlobalTax = 19.0,
         Id = "1",
-        IssueDate = DateTime.UtcNow,
+        IssueDate = new DateTime(2025, 05, 01),
         InvoiceTypeCode = "380",
         DocumentCurrencyCode = "EUR",
-        BuyerReference = "04011000-12345-34",
         SellerParty = new PartyBaseDto()
         {
             Name = "Seller Name",
@@ -69,15 +68,16 @@ public static InvoiceBaseDto GetInvoiceBaseDto()
             Telefone = "1234/54321",
             Email = "buyer@example.com",
             RegistrationName = "Buyer Name",
+            BuyerReference = "04011000-12345-34",
         },
         PaymentMeans = new PaymentMeansBaseDto()
         {
             Iban = "DE12 1234 1234 1234 1234 12",
             Bic = "BICABCDE",
-            Name = "Bank Name"
+            Name = "Bank Name",
+            PaymentMeansTypeCode = "30",
         },
-        PaymentMeansTypeCode = "30",
-        PaymentTermsNote = "Zahlbar innerhalb 14 Tagen nach Erhalt der Rechnung.",
+        PaymentTermsNote = "Zahlbar innerhalb von 14 Tagen nach Erhalt der Rechnung.",
         PayableAmount = 119.0,
         InvoiceLines = [
             new InvoiceLineBaseDto()
@@ -121,7 +121,17 @@ Server start:
 
 # ChangeLog
 
-<details open="open"><summary>v0.3.0</summary>
+<details open="open"><summary>v0.3.1</summary>
+
+>- **Breaking Changes**
+>- Code Lists fix to receive meta information
+>- DTO rework to be more flexible and robust:
+>- PaymentMeansTypeCode to PaymentMeans
+>- BuyerReference to BuyerParty
+
+</details>
+
+<details><summary>v0.3.0</summary>
 
 >- **Breaking Changes**
 >- DTO rework to be more flexible and robust.

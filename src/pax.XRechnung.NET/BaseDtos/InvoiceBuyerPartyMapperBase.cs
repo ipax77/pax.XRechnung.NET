@@ -26,6 +26,7 @@ public abstract class InvoiceBuyerPartyMapperBase<T> where T : IPartyBaseDto, ne
             TaxId = xmlParty.PartyTaxScheme?.CompanyId ?? string.Empty,
             Telefone = xmlParty.Contact?.Telephone ?? string.Empty,
             Email = xmlParty.Contact?.Email ?? string.Empty,
+            CompanyId = xmlParty.PartyLegalEntity.CompanyId,
         };
         return dto;
     }
@@ -49,7 +50,11 @@ public abstract class InvoiceBuyerPartyMapperBase<T> where T : IPartyBaseDto, ne
                 PostCode = partyBaseDto.PostCode,
                 Country = new() { IdentificationCode = partyBaseDto.CountryCode },
             },
-            PartyLegalEntity = new() { RegistrationName = partyBaseDto.RegistrationName },
+            PartyLegalEntity = new()
+            {
+                RegistrationName = partyBaseDto.RegistrationName,
+                CompanyId = partyBaseDto.CompanyId,
+            },
             Contact = new()
             {
                 Name = InvoiceMapperUtils.GetNullableString(partyBaseDto.Name),

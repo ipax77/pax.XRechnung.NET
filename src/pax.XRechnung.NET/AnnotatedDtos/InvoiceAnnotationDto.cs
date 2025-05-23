@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using pax.XRechnung.NET.BaseDtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace pax.XRechnung.NET.AnnotatedDtos;
 
@@ -29,15 +29,11 @@ public class InvoiceAnnotationDto : IInvoiceBaseDto
     [Required]
     [ValidCode(CodeListType.Currency_Codes_3)]
     public string DocumentCurrencyCode { get; set; } = "EUR";
-    [Required]
-    public string BuyerReference { get; set; } = string.Empty;
     public List<DocumentReferenceAnnotationDto> AdditionalDocumentReferences { get; set; } = [];
     public SellerAnnotationDto SellerParty { get; set; } = new SellerAnnotationDto();
     public BuyerAnnotationDto BuyerParty { get; set; } = new BuyerAnnotationDto();
     public PaymentAnnotationDto PaymentMeans { get; set; } = new PaymentAnnotationDto();
-    [Required]
-    [ValidCode(CodeListType.UNTDID_4461_3)]
-    public string PaymentMeansTypeCode { get; set; } = "30";
+
     public string PaymentTermsNote { get; set; } = string.Empty;
     public double PayableAmount { get; set; }
     public List<InvoiceLineAnnotationDto> InvoiceLines { get; set; } = [];

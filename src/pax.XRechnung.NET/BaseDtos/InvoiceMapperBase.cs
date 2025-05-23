@@ -100,7 +100,7 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
         var taxCategory = xmlTaxCategory?.Id.Content ??
             (tax == 0 ? DefaultSmallBusinessTaxCategory : DefaultTaxCategory);
 
-        return new()
+        var invoice = new TInvoiceDto()
         {
             GlobalTaxCategory = taxCategory,
             GlobalTaxScheme = taxScheme,
@@ -108,20 +108,22 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
             Id = xmlInvoice.Id.Content,
             IssueDate = InvoiceMapperUtils.GetDateTime(xmlInvoice.IssueDate),
             DueDate = xmlInvoice.DueDate == null ? null : InvoiceMapperUtils.GetDateTime(xmlInvoice.DueDate.Value),
+            Note = xmlInvoice.Note,
             InvoiceTypeCode = xmlInvoice.InvoiceTypeCode,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
-            BuyerReference = xmlInvoice.BuyerReference,
             AdditionalDocumentReferences = xmlInvoice.AdditionalDocumentReferences
                 .Select(s => AdditionalDocumentToDto(s)).ToList(),
             SellerParty = SellerPartyToDto(xmlInvoice.SellerParty.Party),
             BuyerParty = BuyerPartyToDto(xmlInvoice.BuyerParty.Party),
             PaymentMeans = PaymentMeansMapper.FromXml(xmlInvoice.PaymentMeans),
-            PaymentMeansTypeCode = xmlInvoice.PaymentMeans.PaymentMeansTypeCode,
             PaymentTermsNote = xmlInvoice.PaymentTerms?.Note ?? string.Empty,
             PayableAmount = (double)(xmlInvoice.LegalMonetaryTotal.PayableAmount?.Value ?? 0),
             InvoiceLines = xmlInvoice.InvoiceLines.Select(s => LineToDto(s)).ToList(),
 
         };
+        invoice.BuyerParty.BuyerReference = xmlInvoice.BuyerReference;
+        invoice.PaymentMeans.PaymentMeansTypeCode = xmlInvoice.PaymentMeans.PaymentMeansTypeCode;
+        return invoice;
     }
     /// <summary>
     /// Map T to XmlInvoice
@@ -147,22 +149,28 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
             dto.GlobalTaxCategory = DefaultSmallBusinessTaxCategory;
         }
 
+        if (string.IsNullOrEmpty(dto.PaymentMeans.PaymentMeansTypeCode))
+        {
+            dto.PaymentMeans.PaymentMeansTypeCode = DefaultPaymentMeansTypeCode;
+        }
+
         var xml = new XmlInvoice()
         {
             Id = new() { Content = dto.Id },
             IssueDate = new DateOnly(dto.IssueDate.Year, dto.IssueDate.Month, dto.IssueDate.Day),
             DueDate = dto.DueDate == null || dto.DueDate == DateTime.MinValue ? null :
                 new DateOnly(dto.DueDate.Value.Year, dto.DueDate.Value.Month, dto.DueDate.Value.Day),
+            Note = dto.Note,
             InvoiceTypeCode = dto.InvoiceTypeCode,
             DocumentCurrencyCode = dto.DocumentCurrencyCode,
-            BuyerReference = dto.BuyerReference,
+            BuyerReference = dto.BuyerParty.BuyerReference,
             AdditionalDocumentReferences = dto.AdditionalDocumentReferences.Select(s => AdditionalDocumentToXml(s))
                 .ToList(),
 
             SellerParty = new() { Party = SellerPartyToXml(dto.SellerParty, dto) },
             BuyerParty = new() { Party = BuyerPartyToXml(dto.BuyerParty) },
-            PaymentMeans = PaymentMeansMapper.ToXml(dto.PaymentMeans, string.IsNullOrEmpty(dto.PaymentMeansTypeCode)
-                 ? DefaultPaymentMeansTypeCode : dto.PaymentMeansTypeCode),
+            PaymentMeans = PaymentMeansMapper.ToXml(dto.PaymentMeans),
+
             PaymentTerms = string.IsNullOrEmpty(dto.PaymentTermsNote) ? null : new() { Note = dto.PaymentTermsNote },
             TaxTotal = new()
             {

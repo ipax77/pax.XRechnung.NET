@@ -9,6 +9,7 @@ public interface IPaymentMeansBaseDto
     string Iban { get; set; }
     string Bic { get; set; }
     string Name { get; set; }
+    string PaymentMeansTypeCode { get; set; }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
 
@@ -29,4 +30,8 @@ public partial class PaymentMeansBaseDto : IPaymentMeansBaseDto
     /// Bank Name
     /// </summary>
     public string Name { get; set; } = string.Empty;
+    /// <summary>
+    /// Payment type code, e.g. "30"
+    /// </summary>
+    public string PaymentMeansTypeCode { get; set; } = "30";
 }

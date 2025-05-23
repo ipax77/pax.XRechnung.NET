@@ -1,5 +1,5 @@
-﻿using System.Xml.Serialization;
-using pax.XRechnung.NET.Attributes;
+﻿using pax.XRechnung.NET.Attributes;
+using System.Xml.Serialization;
 
 namespace pax.XRechnung.NET.XmlModels;
 

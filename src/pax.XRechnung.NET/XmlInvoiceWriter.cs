@@ -1,12 +1,10 @@
-
-using System.Globalization;
+using pax.XRechnung.NET.XmlModels;
 using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using pax.XRechnung.NET.XmlModels;
 
 namespace pax.XRechnung.NET;
 
