@@ -108,6 +108,7 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
             Id = xmlInvoice.Id.Content,
             IssueDate = InvoiceMapperUtils.GetDateTime(xmlInvoice.IssueDate),
             DueDate = xmlInvoice.DueDate == null ? null : InvoiceMapperUtils.GetDateTime(xmlInvoice.DueDate.Value),
+            Note = xmlInvoice.Note,
             InvoiceTypeCode = xmlInvoice.InvoiceTypeCode,
             DocumentCurrencyCode = xmlInvoice.DocumentCurrencyCode,
             AdditionalDocumentReferences = xmlInvoice.AdditionalDocumentReferences
@@ -159,6 +160,7 @@ public abstract class InvoiceMapperBase<TInvoiceDto, TDocumentReferenceDto, TSel
             IssueDate = new DateOnly(dto.IssueDate.Year, dto.IssueDate.Month, dto.IssueDate.Day),
             DueDate = dto.DueDate == null || dto.DueDate == DateTime.MinValue ? null :
                 new DateOnly(dto.DueDate.Value.Year, dto.DueDate.Value.Month, dto.DueDate.Value.Day),
+            Note = dto.Note,
             InvoiceTypeCode = dto.InvoiceTypeCode,
             DocumentCurrencyCode = dto.DocumentCurrencyCode,
             BuyerReference = dto.BuyerParty.BuyerReference,
