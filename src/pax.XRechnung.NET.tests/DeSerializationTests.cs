@@ -11,7 +11,7 @@ namespace pax.XRechnung.NET.tests;
 [TestClass]
 public sealed class DeSerializationTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("02.01a-INVOICE_ubl.xml")]
     [DataRow("02.02a-INVOICE_ubl.xml")]
     [DataRow("02.03a-INVOICE_ubl.xml")]

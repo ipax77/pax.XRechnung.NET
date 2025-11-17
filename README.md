@@ -121,7 +121,13 @@ Server start:
 
 # ChangeLog
 
-<details open="open"><summary>v0.3.1</summary>
+<details open="open"><summary>v0.3.2</summary>
+
+>- Update to dotnet 10
+
+</details>
+
+<details><summary>v0.3.1</summary>
 
 >- **Breaking Changes**
 >- Code Lists fix to receive meta information

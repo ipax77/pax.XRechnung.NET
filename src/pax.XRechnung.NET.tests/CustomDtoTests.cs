@@ -85,7 +85,7 @@ public class CustomDtoTests
         Assert.AreEqual(xml.Id.Content, dto.Id);
         Assert.AreEqual(xml.DocumentCurrencyCode, dto.DocumentCurrencyCode);
         Assert.AreEqual(xml.SellerParty.Party.PartyName.Name, dto.SellerParty.Name);
-        Assert.AreEqual(xml.InvoiceLines.Count, dto.InvoiceLines.Count);
+        Assert.HasCount(xml.InvoiceLines.Count, dto.InvoiceLines);
     }
 
     [TestMethod]
@@ -98,7 +98,7 @@ public class CustomDtoTests
         var roundtripXml = mapper.ToXml(dto);
 
         Assert.AreEqual(original.Id.Content, roundtripXml.Id.Content);
-        Assert.AreEqual(original.InvoiceLines.Count, roundtripXml.InvoiceLines.Count);
+        Assert.HasCount(original.InvoiceLines.Count, roundtripXml.InvoiceLines);
         Assert.AreEqual(original.SellerParty.Party.PartyName.Name, roundtripXml.SellerParty.Party.PartyName.Name);
     }
 
@@ -117,7 +117,7 @@ public class CustomDtoTests
         var mapper = new MyCustomInvoiceMapper();
         var xmlInvoice = mapper.ToXml(invoiceAnnDto);
 
-        Assert.AreEqual(2, xmlInvoice.InvoiceLines.Count);
+        Assert.HasCount(2, xmlInvoice.InvoiceLines);
 
         var result = XmlInvoiceValidator.Validate(xmlInvoice);
         Assert.IsTrue(result.IsValid);
