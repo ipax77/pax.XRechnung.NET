@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Description>dotnet XRechnung import, export and validate</Description>
@@ -9,17 +9,17 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ipax77/pax.XRechnung.NET</RepositoryUrl>
     <PackageTags>dotnet;XRechnung;import;export;validate</PackageTags>
-    <AssemblyVersion>0.3.1</AssemblyVersion>
+    <AssemblyVersion>0.3.2</AssemblyVersion>
     <Owners>Philipp Hetzner</Owners>
     <Authors>Philipp Hetzner</Authors>
-    <Version>0.3.1</Version>
-	  <FileVersion>0.3.1.0</FileVersion>
-    <PackageVersion>0.3.1</PackageVersion>
+    <Version>0.3.2</Version>
+	  <FileVersion>0.3.2.0</FileVersion>
+    <PackageVersion>0.3.2</PackageVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>    
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisMode>All</AnalysisMode>
-    <AnalysisLevel>8</AnalysisLevel>
+    <AnalysisLevel>latest</AnalysisLevel>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
@@ -27,7 +27,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <LangVersion>12.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <WarningsNotAsErrors></WarningsNotAsErrors>
     <DisabledWarnings></DisabledWarnings>
     <NoWarn>CA2227,CA1002</NoWarn>
@@ -103,7 +103,7 @@
   </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
-      <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
     </ItemGroup>
 </Project>

@@ -200,7 +200,7 @@ public class SchematronValidationTests
 
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsEmpty(result.Validations, resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
@@ -233,7 +233,7 @@ public class SchematronValidationTests
         XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsEmpty(result.Validations, resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
@@ -256,7 +256,7 @@ public class SchematronValidationTests
         XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsEmpty(result.Validations, resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
@@ -277,7 +277,7 @@ public class SchematronValidationTests
 
         var result = await XmlInvoiceValidator.ValidateSchematron(mappedXmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsEmpty(result.Validations, resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
@@ -294,7 +294,7 @@ public class SchematronValidationTests
         var xmlInvoice = mapper.ToXml(invoiceExtendedDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsEmpty(result.Validations, resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
@@ -315,7 +315,7 @@ public class SchematronValidationTests
 
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsTrue(result.Validations.Count == 0, resultText);
+        Assert.IsEmpty(result.Validations, resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 }

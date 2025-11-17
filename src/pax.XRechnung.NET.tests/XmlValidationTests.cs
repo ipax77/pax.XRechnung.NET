@@ -10,7 +10,7 @@ namespace pax.XRechnung.NET.tests;
 [TestClass]
 public sealed class ValidationTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("02.01a-INVOICE_ubl.xml")]
     [DataRow("02.02a-INVOICE_ubl.xml")]
     [DataRow("02.03a-INVOICE_ubl.xml")]
@@ -53,9 +53,9 @@ public sealed class ValidationTests
         XmlInvoice invoice = fixture.Create<XmlInvoice>();
 
         var result = XmlInvoiceValidator.Validate(invoice);
-        Assert.IsNull(result.Error, result.Error, result.Error);
-        Assert.IsTrue(result.IsValid, string.Join(Environment.NewLine, result.Validations
-            .Where(x => x.Severity == System.Xml.Schema.XmlSeverityType.Error).Select(s => s.Message)));
+        Assert.IsNull(result.Error, result.Error, result?.Error ?? string.Empty);
+        Assert.IsTrue(result?.IsValid, string.Join(Environment.NewLine, result?.Validations
+            .Where(x => x.Severity == System.Xml.Schema.XmlSeverityType.Error).Select(s => s.Message) ?? []));
     }
 }
 
