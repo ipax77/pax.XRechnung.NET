@@ -101,25 +101,111 @@ public static InvoiceBaseDto GetInvoiceBaseDto()
     var xmlText = XmlInvoiceWriter.Serialize(xmlInvoice);
 ```
 
-**Validate schematron - requires [Kosit validator](#java-schematron-validator)**
+**Validate schema and Schematron locally (.NET and Blazor WASM)**
 ```csharp
     var invoiceBaseDto = GetInvoiceBaseDto();
     var mapper = new InvoiceMapper();
     XmlInvoice xmlInvoice = mapper.ToXml(invoiceBaseDto);
     var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
-    var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-    Assert.IsTrue(result.Validations.Count == 0, resultText);
+    var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.RuleSeverity}:\t{s.Code}: {s.Message}"));
     Assert.IsTrue(result.IsValid, resultText);
 ```
 **The InvoiceBaseDto is designed to be easily extended see [BaseDtoExtensionTests](src/pax.XRechnung.NET.tests/BaseDtoExtensionTests.cs)**
 
+`ValidateSchematron` now runs locally when no server URI is supplied. It supports
+standard XRechnung 3.0 UBL Invoice documents with customization ID
+`urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0`.
+The embedded rules are pinned to KoSIT configuration **2026-08-31**, using
+EN 16931 **1.3.16** and XRechnung Schematron **2.6.0**. Extension, CVD, UBL
+CreditNote, CII, and other profiles require an external validator.
+
+The validator uses **[The Saxon XSLT and XQuery Processor from Saxonica Limited](https://www.saxonica.com/)**
+(SaxonCS-HE 13.0.0). It works offline after application assets load and caches
+compiled stylesheets. `Code`, `Path`, and `RuleSeverity` preserve business-rule
+details. Warnings and information do not invalidate an invoice. Because
+`XmlSeverityType` has only Error and Warning, informational messages have
+`Severity == Warning` and `RuleSeverity == "information"`. Processing failures
+set `Error`; ordinary rule failures appear in `Validations`. Local results have
+an empty `HttpStatusCode`.
+
+Release-published, trimmed .NET 10 Blazor WASM was tested in Chromium, including
+validation with networking disabled. This is not a guarantee for all browsers
+or AOT builds. The measured cold validation took about **10.7 seconds**, and
+cached validations about **100 ms**, for the small test fixture on this machine.
+The validation executes on the calling thread, so cold compilation can block
+the browser UI. The probe's framework assets total **13.4 MB Brotli-compressed**,
+compared with **2.5 MB** for a minimal matching Blazor app. These are artifact
+sizes, not measured BeInX download sizes. See [the reproducible browser probe](tools/Validator.WasmProbe/README.md).
+
+For a consumer such as BeInX, invoke `ValidateSchematron(invoice)` even when the
+configured server URL is empty. If an external validator is configured, pass
+its URI explicitly:
+
+```csharp
+var result = await XmlInvoiceValidator.ValidateSchematron(
+    xmlInvoice,
+    string.IsNullOrWhiteSpace(config.SchematronValidationUri)
+        ? null
+        : new Uri(config.SchematronValidationUri));
+```
+
+This library change does not modify BeInX's export flow. That flow currently
+skips Schematron validation when no server URL is configured.
+
+## ZUGFeRD XML validation (EN16931 / Comfort)
+
+```csharp
+var xml = GetGeneratedCiiXml();
+var result = ZugferdXmlValidator.Validate(xml);
+if (!result.IsValid)
+{
+    var details = result.Error ?? string.Join(Environment.NewLine,
+        result.Validations.Select(m => $"{m.Code}: {m.Message} ({m.Path})"));
+    // Report the errors before passing this exact XML to PDF generation.
+}
+```
+
+This API validates CII with guideline ID `urn:cen.eu:en16931:2017` against
+**ZUGFeRD 2.3.3 / Factur-X 1.07.3 EN16931**. Other profiles and syntaxes are
+rejected. Validation checks the profile XSD first, then its compiled Schematron
+XSLT and code lists; it runs locally on .NET and Blazor WASM. Compiled resources
+are cached and each call uses its own validation state. Warnings do not reject
+invoices; processing failures set `Error`. No invoice data leaves the process.
+
+All normative artifacts and the test fixture come directly from the official
+FeRD `ZF233_EN_01.zip`. Official filenames, relative paths, import paths, and
+bytes are preserved. The complete schema dependency closure and six embedded
+resource hashes are verified. See [provenance and licenses](src/pax.XRechnung.NET/Resources/Zugferd/2.3.3/PROVENANCE.md)
+and [offline browser measurements](tools/Validator.WasmProbe/README.md).
+
+This API validates the XML only. It does not certify the PDF carrier, upgrade
+an invoice writer, or apply XRechnung/Peppol CIUS rules to the Comfort profile.
+
 ## Java Schematron Validator
-Requires a running [Kosit](https://github.com/itplr-kosit/validator) validation server. Setup: [xrechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md)
+External validation remains available through an explicit URI, or directly
+through `InvoiceKositValidator.Validate(xmlText)`, whose default is still
+`http://localhost:8080`. It requires a running [KoSIT](https://github.com/itplr-kosit/validator)
+validation server. Setup: [XRechnung usage](https://github.com/itplr-kosit/validator-configuration-xrechnung/blob/master/docs/usage.md).
+
+```csharp
+var result = await XmlInvoiceValidator.ValidateSchematron(
+    xmlInvoice, new Uri("http://localhost:9090"));
+```
+
+The supplied URI must expose KoSIT's raw XML/HTML response; a JSON API wrapper
+requires its own client. Browser HTTP validation also requires the server to
+permit the application's origin through CORS.
 
 Server start:
 `java -jar .\validationtool-1.5.0-standalone.jar -s .\scenarios.xml  -r ${PWD} -D`
 
 # ChangeLog
+
+<details open="open"><summary>v0.3.3</summary>
+
+>- Add local ZUGFeRD 2.3.3 / Factur-X 1.07.3 EN16931 (Comfort) XML validation using untouched official FeRD schemas, compiled XSLT, and code lists. Includes offline browser verification and pinned artifact hashes.
+
+</details>
 
 <details open="open"><summary>v0.3.2</summary>
 

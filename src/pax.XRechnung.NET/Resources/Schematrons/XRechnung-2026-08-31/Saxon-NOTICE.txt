@@ -1,0 +1,19 @@
+The Saxon XSLT and XQuery Processor from Saxonica Limited
+https://www.saxonica.com/
+
+This library requires unmodified SaxonCS-HE 13.0.0 through NuGet.
+SaxonCS-HE is made available as an executable form under Mozilla Public License
+2.0. See Saxon-MPL-2.0.txt and the product-specific licensing documentation:
+https://www.saxonica.com/html/documentation13/conditions/index.html
+
+Original source made available by Saxonica:
+https://github.com/Saxonica/Saxon-HE
+https://saxonica.plan.io/projects/saxonmirrorhe/repository
+
+Saxonica's third-party contributions and licensing notices are documented at:
+https://www.saxonica.com/html/documentation13/conditions/contributors.html
+https://www.saxonica.com/html/documentation13/conditions/third-party-components.html
+https://www.saxonica.com/html/documentation13/conditions/redistributed.html
+
+No Saxon executable or source code is modified by this project.
+Each additional NuGet dependency retains its own license and notices.

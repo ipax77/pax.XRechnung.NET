@@ -106,4 +106,16 @@ public sealed class ValidationMessage
     /// Severity
     /// </summary>
     public XmlSeverityType Severity { get; }
+
+    /// <summary>Business rule identifier, when supplied by the validator.</summary>
+    public string? Code { get; init; }
+
+    /// <summary>Location of the finding in the XML document.</summary>
+    public string? Path { get; init; }
+
+    /// <summary>
+    /// Rule severity: error, warning, or information. Information is represented
+    /// by Warning in <see cref="Severity"/> because XmlSeverityType has no information value.
+    /// </summary>
+    public string? RuleSeverity { get; init; }
 }
