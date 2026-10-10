@@ -152,6 +152,35 @@ var result = await XmlInvoiceValidator.ValidateSchematron(
 This library change does not modify BeInX's export flow. That flow currently
 skips Schematron validation when no server URL is configured.
 
+## ZUGFeRD XML validation (EN16931 / Comfort)
+
+```csharp
+var xml = GetGeneratedCiiXml();
+var result = ZugferdXmlValidator.Validate(xml);
+if (!result.IsValid)
+{
+    var details = result.Error ?? string.Join(Environment.NewLine,
+        result.Validations.Select(m => $"{m.Code}: {m.Message} ({m.Path})"));
+    // Report the errors before passing this exact XML to PDF generation.
+}
+```
+
+This API validates CII with guideline ID `urn:cen.eu:en16931:2017` against
+**ZUGFeRD 2.3.3 / Factur-X 1.07.3 EN16931**. Other profiles and syntaxes are
+rejected. Validation checks the profile XSD first, then its compiled Schematron
+XSLT and code lists; it runs locally on .NET and Blazor WASM. Compiled resources
+are cached and each call uses its own validation state. Warnings do not reject
+invoices; processing failures set `Error`. No invoice data leaves the process.
+
+All normative artifacts and the test fixture come directly from the official
+FeRD `ZF233_EN_01.zip`. Official filenames, relative paths, import paths, and
+bytes are preserved. The complete schema dependency closure and six embedded
+resource hashes are verified. See [provenance and licenses](src/pax.XRechnung.NET/Resources/Zugferd/2.3.3/PROVENANCE.md)
+and [offline browser measurements](tools/Validator.WasmProbe/README.md).
+
+This API validates the XML only. It does not certify the PDF carrier, upgrade
+an invoice writer, or apply XRechnung/Peppol CIUS rules to the Comfort profile.
+
 ## Java Schematron Validator
 External validation remains available through an explicit URI, or directly
 through `InvoiceKositValidator.Validate(xmlText)`, whose default is still
@@ -171,6 +200,12 @@ Server start:
 `java -jar .\validationtool-1.5.0-standalone.jar -s .\scenarios.xml  -r ${PWD} -D`
 
 # ChangeLog
+
+<details open="open"><summary>v0.3.3</summary>
+
+>- Add local ZUGFeRD 2.3.3 / Factur-X 1.07.3 EN16931 (Comfort) XML validation using untouched official FeRD schemas, compiled XSLT, and code lists. Includes offline browser verification and pinned artifact hashes.
+
+</details>
 
 <details open="open"><summary>v0.3.2</summary>
 

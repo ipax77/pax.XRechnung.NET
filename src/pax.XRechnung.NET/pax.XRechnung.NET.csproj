@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -9,12 +9,12 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ipax77/pax.XRechnung.NET</RepositoryUrl>
     <PackageTags>dotnet;XRechnung;import;export;validate</PackageTags>
-    <AssemblyVersion>0.3.2</AssemblyVersion>
+    <AssemblyVersion>0.3.3</AssemblyVersion>
     <Owners>Philipp Hetzner</Owners>
     <Authors>Philipp Hetzner</Authors>
-    <Version>0.3.2</Version>
-	  <FileVersion>0.3.2.0</FileVersion>
-    <PackageVersion>0.3.2</PackageVersion>
+    <Version>0.3.3</Version>
+	  <FileVersion>0.3.3.0</FileVersion>
+    <PackageVersion>0.3.3</PackageVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>    
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -112,4 +112,10 @@
       <PackageReference Include="AngleSharp" Version="1.8.4" />
       <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.12" />
     </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources/Zugferd/2.3.3/Schema/3. Factur-X_1.07.3_EN16931/*.xsd" LogicalName="pax.XRechnung.NET.Resources.Zugferd.2.3.3.Schema/3. Factur-X_1.07.3_EN16931/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="Resources/Zugferd/2.3.3/Schema/3. Factur-X_1.07.3_EN16931/_XSLT_EN16931/*.xslt;Resources/Zugferd/2.3.3/Schema/3. Factur-X_1.07.3_EN16931/_XSLT_EN16931/*_codedb.xml" LogicalName="pax.XRechnung.NET.Resources.Zugferd.2.3.3.Schema/3. Factur-X_1.07.3_EN16931/_XSLT_EN16931/%(Filename)%(Extension)" />
+    <None Remove="Resources/Zugferd/2.3.3/**/*" />
+    <None Include="Resources/Zugferd/2.3.3/**/*" Pack="true" PackagePath="validation-rules/Zugferd-2.3.3/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
 </Project>

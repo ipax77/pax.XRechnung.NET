@@ -11,5 +11,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.11" PrivateAssets="all" />
     <ProjectReference Include="../../src/pax.XRechnung.NET/pax.XRechnung.NET.csproj" />
     <EmbeddedResource Include="../../src/pax.XRechnung.NET.tests/Resources/standard/01.01a-INVOICE_ubl.xml" LogicalName="invoice.xml" />
+    <EmbeddedResource Include="../../src/pax.XRechnung.NET.tests/Resources/zugferd/Examples/3. EN16931/EN16931_Einfach/EN16931_Einfach.xml" LogicalName="zugferd-invoice.xml" />
   </ItemGroup>
 </Project>

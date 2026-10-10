@@ -5,7 +5,7 @@
 @using System.Text.Json
 @using pax.XRechnung.NET
 
-<h1>XRechnung WASM validation</h1>
+<h1>XRechnung and ZUGFeRD WASM validation</h1>
 <p>Runs embedded fixtures through the library's public API. Disconnect networking after loading to check offline validation.</p>
 <button @onclick="Run">Run validation</button>
 <pre id="result">@result</pre>
@@ -51,6 +51,49 @@
             var timer = Stopwatch.StartNew();
             var validation = await XmlInvoiceValidator.ValidateSchematron(input);
             var ok = validation.IsValid == expectedValid && (expectedCode is null || validation.Validations.Any(m => m.Code == expectedCode));
+            passed &= ok;
+            outputs.Add(new {
+                name, passed = ok, ms = timer.ElapsedMilliseconds,
+                validation.IsValid, validation.Error, validation.HttpStatusCode,
+                findings = validation.Validations.Select(m => new { m.Code, m.RuleSeverity, m.Path, m.Message }).ToArray()
+            });
+        }
+        using var ciiStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("zugferd-invoice.xml")!;
+        var cii = XDocument.Load(ciiStream);
+        XNamespace ram = "urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100";
+        var badCiiTotal = new XDocument(cii);
+        badCiiTotal.Descendants(ram + "DuePayableAmount").Single().Value = "1.00";
+        var badCiiCode = new XDocument(cii);
+        badCiiCode.Descendants(ram + "InvoiceCurrencyCode").Single().Value = "ZZZ";
+        var missingCiiName = new XDocument(cii);
+        missingCiiName.Descendants(ram + "SellerTradeParty").Single().Element(ram + "Name")!.Remove();
+        var badCiiSchema = new XDocument(cii);
+        badCiiSchema.Descendants(ram + "InvoiceCurrencyCode").Single().AddBeforeSelf(new XElement(ram + "Unexpected"));
+        var ciiWarning = new XDocument(cii);
+        ciiWarning.Root!.Elements().Single(e => e.Name.LocalName == "ExchangedDocument").Element(ram + "ID")!.SetAttributeValue("schemeID", "unused");
+        var ciiProfile = new XDocument(cii);
+        ciiProfile.Descendants(ram + "GuidelineSpecifiedDocumentContextParameter").Single().Element(ram + "ID")!.Value = "urn:factur-x.eu:1p0:basic";
+        var ciiInputs = new[] {
+            ("ciiValid", cii.ToString(), true),
+            ("ciiRepeat", cii.ToString(), true),
+            ("ciiBadTotals", badCiiTotal.ToString(), false),
+            ("ciiBadCode", badCiiCode.ToString(), false),
+            ("ciiMissingName", missingCiiName.ToString(), false),
+            ("ciiSchemaError", badCiiSchema.ToString(), false),
+            ("ciiWarning", ciiWarning.ToString(), true),
+            ("ciiUnsupportedProfile", ciiProfile.ToString(), false),
+            ("ciiMalformed", "<CrossIndustryInvoice>", false),
+            ("ciiDtd", "<!DOCTYPE CrossIndustryInvoice [<!ENTITY test 'test'>]><CrossIndustryInvoice>&test;</CrossIndustryInvoice>", false)
+        };
+        foreach (var (name, input, expectedValid) in ciiInputs)
+        {
+            var timer = Stopwatch.StartNew();
+            var validation = ZugferdXmlValidator.Validate(input);
+            var ok = validation.IsValid == expectedValid;
+            if (name == "ciiBadTotals") ok &= validation.Validations.Any(m => m.Message.Contains("BR-CO-16"));
+            if (name == "ciiBadCode") ok &= validation.Error is null && validation.Validations.Any(m => m.Message.Contains("not allowed"));
+            if (name == "ciiMissingName") ok &= validation.Validations.Any(m => m.Message.Contains("BR-06"));
+            if (name == "ciiWarning") ok &= validation.Validations.Any(m => m.RuleSeverity == "warning");
             passed &= ok;
             outputs.Add(new {
                 name, passed = ok, ms = timer.ElapsedMilliseconds,

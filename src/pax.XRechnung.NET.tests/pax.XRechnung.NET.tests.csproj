@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\pax.XRechnung.NET\pax.XRechnung.NET.csproj" />
+    <EmbeddedResource Include="Resources/zugferd/Examples/3. EN16931/EN16931_Einfach/EN16931_Einfach.xml" LogicalName="zugferd-invoice.xml" />
   </ItemGroup>
 
   

@@ -1,0 +1,3 @@
+# Preserve official FeRD artifact bytes, including original line endings.
+src/pax.XRechnung.NET/Resources/Zugferd/2.3.3/Schema/** -text
+src/pax.XRechnung.NET.tests/Resources/zugferd/** -text

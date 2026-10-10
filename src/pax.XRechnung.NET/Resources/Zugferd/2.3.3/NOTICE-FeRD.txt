@@ -1,0 +1,22 @@
+FeRD / FNFE-MPE technical validation artifacts
+ZUGFeRD 2.3.3 / Factur-X 1.07.3 EN16931
+Copyright (c) 2025 FNFE-MPE | FeRD. All rights reserved.
+
+Source: official FeRD ZF233_EN_01.zip, published 07 May 2025.
+https://www.ferd-net.de/fileadmin/user_upload/FeRD/Downloads/ZF233_EN_01.zip
+
+The official Factur-X Specification 1.07.3, Documentation/1. FACTUR-X 1.07.3 EN.pdf,
+page 9 (Disclaimer), states that the document and its appendices fall under
+Apache License 2.0 terms. The technical validation artifacts are provided under
+those terms, on an AS IS basis. A full Apache-2.0 license is supplied separately
+as LICENSE-FeRD-Apache-2.0.txt. See the source specification for its limitations
+and references to third-party EN16931 source documents.
+
+All copied schemas, Schematron source, compiled XSLT, and code lists are
+unmodified. Their official archive-relative paths and SHA-256 hashes are
+recorded in PROVENANCE.md. This notice is supplied by this package for
+attribution; it is not an original NOTICE file extracted from the FeRD ZIP.
+
+No Mustangproject source, license notice, or validation resource is included
+in these resources. SaxonCS-HE and the existing ZUGFeRD-csharp writer retain
+their own independent licenses and notices.

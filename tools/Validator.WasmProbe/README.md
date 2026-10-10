@@ -1,5 +1,29 @@
 # Browser acceptance probe
 
+## Official ZUGFeRD acceptance, 2026-10-10
+
+The probe additionally uses the unchanged FeRD `EN16931_Einfach.xml` example
+and `ZugferdXmlValidator.Validate` with the official ZUGFeRD 2.3.3 / Factur-X
+1.07.3 resources. See the library's
+[resource provenance](../../src/pax.XRechnung.NET/Resources/Zugferd/2.3.3/PROVENANCE.md).
+
+Ten CII cases cover valid/repeated invoices, bad payable totals (`BR-CO-16`),
+invalid currency (embedded code-list lookup), missing seller name (`BR-06`),
+schema-invalid XML, warning-only XML, unsupported profiles, malformed XML, and DTDs.
+
+Release-trimmed .NET 10.0.400, Chromium: all twenty UBL/CII cases passed in an
+isolated browser context with networking disabled **before the first validation**.
+Cold and repeated offline runs produced identical findings and **zero requests**.
+The UBL first call took 4,557 ms; the CII first call took 1,745 ms after the UBL
+engine had warmed. CII repeat took 68 ms; subsequent full-validation cases took
+60-62 ms. On the second run, CII valid/repeat took 57/56 ms. These are probe
+measurements on this machine, not latency guarantees for BeInX.
+
+Published framework assets total 53,454,457 raw bytes (excluding .br/.gz files)
+and 13,765,842 Brotli bytes, including culture resources. The earlier UBL-only
+probe recorded 13,408,722 Brotli bytes; the measured increase is 357,120 bytes.
+Compilation still runs on the calling browser thread.
+
 This small .NET 10 Blazor WebAssembly app calls the actual library API with valid,
 repeated, incorrect-total, missing-reference, invalid-currency, warning-only,
 schema-invalid, malformed, unsupported, and DTD-containing inputs. It embeds a
