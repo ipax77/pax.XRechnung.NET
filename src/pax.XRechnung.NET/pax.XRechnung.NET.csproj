@@ -19,7 +19,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisMode>All</AnalysisMode>
-    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisLevel>10</AnalysisLevel>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
@@ -27,7 +27,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>14</LangVersion>
     <WarningsNotAsErrors></WarningsNotAsErrors>
     <DisabledWarnings></DisabledWarnings>
     <NoWarn>CA2227,CA1002</NoWarn>
