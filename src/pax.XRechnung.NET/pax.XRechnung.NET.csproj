@@ -93,6 +93,9 @@
     <EmbeddedResource Include="Resources/XmlSchemas/ubl/2.1/xsd/maindoc/UBL-Invoice-2.1.xsd" />
     <EmbeddedResource Include="Resources/Schematrons/iso_schematron_skeleton_for_saxon.xsl" />
     <EmbeddedResource Include="Resources/Schematrons/PEPPOL-EN16931-UBL.sch" />
+    <EmbeddedResource Include="Resources/Schematrons/XRechnung-2026-08-31/*.xsl" LogicalName="pax.XRechnung.NET.Resources.Schematrons.XRechnung-2026-08-31.%(Filename)%(Extension)" />
+    <None Update="Resources/Schematrons/XRechnung-2026-08-31/*.txt" Pack="true" PackagePath="licenses/%(Filename)%(Extension)" />
+    <None Update="Resources/Schematrons/XRechnung-2026-08-31/*.xsl" Pack="true" PackagePath="validation-rules/XRechnung-2026-08-31/%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -105,5 +108,8 @@
     <ItemGroup>
       <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
+      <PackageReference Include="SaxonCS-HE" Version="13.0.0" />
+      <PackageReference Include="AngleSharp" Version="1.8.4" />
+      <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.12" />
     </ItemGroup>
 </Project>

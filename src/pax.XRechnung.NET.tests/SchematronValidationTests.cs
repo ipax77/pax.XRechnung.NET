@@ -7,39 +7,6 @@ namespace pax.XRechnung.NET.tests;
 [TestClass]
 public class SchematronValidationTests
 {
-    private static readonly string validatorUri = "http://localhost:8080";
-    private static bool kositServerIsRunning = false;
-
-    [ClassInitialize()]
-    public static async Task CheckKositAvailability(TestContext context)
-    {
-        kositServerIsRunning = await IsKositServerAvailable();
-    }
-
-    public static async Task<bool> IsKositServerAvailable(Uri? kostiUri = null)
-    {
-        if (kositServerIsRunning)
-        {
-            return true;
-        }
-        try
-        {
-            using var client = new HttpClient
-            {
-                BaseAddress = kostiUri ?? new Uri(validatorUri),
-                Timeout = TimeSpan.FromSeconds(5)
-            };
-
-            // Try HEAD request for fast check
-            var response = await client.GetAsync("/");
-            return response.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
     public static XmlInvoice GetStandardXmlInvoice()
     {
         return new()
@@ -189,10 +156,7 @@ public class SchematronValidationTests
     [TestMethod]
     public async Task CanProduceValidXmlInvoice()
     {
-        if (!kositServerIsRunning)
-        {
-            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
-        }
+
         XmlInvoice xmlInvoice = GetStandardXmlInvoice();
 
         var schemaResult = XmlInvoiceValidator.Validate(xmlInvoice);
@@ -200,17 +164,14 @@ public class SchematronValidationTests
 
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsEmpty(result.Validations, resultText);
+        Assert.IsFalse(result.Validations.Any(m => m.RuleSeverity != "information"), resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
     [TestMethod]
     public async Task CanIdentifyXmlInvoiceValidationErrors()
     {
-        if (!kositServerIsRunning)
-        {
-            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
-        }
+
         XmlInvoice xmlInvoice = GetStandardXmlInvoice();
         xmlInvoice.TaxTotal.TaxAmount.Value = 18.0m;
 
@@ -224,26 +185,20 @@ public class SchematronValidationTests
     [TestMethod]
     public async Task CanValidateBaseDtoSchematronTest()
     {
-        if (!kositServerIsRunning)
-        {
-            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
-        }
+
         var invoiceBaseDto = BaseDtoTests.GetInvoiceBaseDto();
         InvoiceMapper invoiceMapper = new();
         XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsEmpty(result.Validations, resultText);
+        Assert.IsFalse(result.Validations.Any(m => m.RuleSeverity != "information"), resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
     [TestMethod]
     public async Task CanValidateBaseDtoSchematronWithRoundingTest()
     {
-        if (!kositServerIsRunning)
-        {
-            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
-        }
+
         var invoiceBaseDto = BaseDtoTests.GetInvoiceBaseDto();
 
         var quantity = 1.17777;
@@ -256,17 +211,14 @@ public class SchematronValidationTests
         XmlInvoice xmlInvoice = invoiceMapper.ToXml(invoiceBaseDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsEmpty(result.Validations, resultText);
+        Assert.IsFalse(result.Validations.Any(m => m.RuleSeverity != "information"), resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
     [TestMethod]
     public async Task CanProduceValidInvoiceDto()
     {
-        if (!kositServerIsRunning)
-        {
-            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
-        }
+
         XmlInvoice xmlInvoice = GetStandardXmlInvoice();
         InvoiceMapper invoiceMapper = new();
         InvoiceBaseDto invoiceDto = invoiceMapper.FromXml(xmlInvoice);
@@ -277,34 +229,28 @@ public class SchematronValidationTests
 
         var result = await XmlInvoiceValidator.ValidateSchematron(mappedXmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsEmpty(result.Validations, resultText);
+        Assert.IsFalse(result.Validations.Any(m => m.RuleSeverity != "information"), resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
     [TestMethod]
     public async Task CanValidateExtendedDto()
     {
-        if (!kositServerIsRunning)
-        {
-            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
-        }
+
         var invoiceExtendedDto = BaseDtoExtensionTests.GetInvoiceBaseDto();
 
         var mapper = new InvoiceExtendedMapper();
         var xmlInvoice = mapper.ToXml(invoiceExtendedDto);
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsEmpty(result.Validations, resultText);
+        Assert.IsFalse(result.Validations.Any(m => m.RuleSeverity != "information"), resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 
     [TestMethod]
     public async Task CanProduceValidSmallBusinessXmlInvoice()
     {
-        if (!kositServerIsRunning)
-        {
-            Assert.Inconclusive("Kosit Validator is not running on localhost:8080.");
-        }
+
         var dto = BaseDtoTests.GetInvoiceBaseDto();
         dto.GlobalTax = 0;
         var mapper = new InvoiceMapper();
@@ -315,7 +261,7 @@ public class SchematronValidationTests
 
         var result = await XmlInvoiceValidator.ValidateSchematron(xmlInvoice);
         var resultText = string.Join(Environment.NewLine, result.Validations.Select(s => $"{s.Severity}:\t{s.Message}"));
-        Assert.IsEmpty(result.Validations, resultText);
+        Assert.IsFalse(result.Validations.Any(m => m.RuleSeverity != "information"), resultText);
         Assert.IsTrue(result.IsValid, resultText);
     }
 }

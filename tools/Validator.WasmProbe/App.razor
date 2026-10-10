@@ -1,0 +1,63 @@
+@using Microsoft.AspNetCore.Components.Web
+@using System.Diagnostics
+@using System.Reflection
+@using System.Xml.Linq
+@using System.Text.Json
+@using pax.XRechnung.NET
+
+<h1>XRechnung WASM validation</h1>
+<p>Runs embedded fixtures through the library's public API. Disconnect networking after loading to check offline validation.</p>
+<button @onclick="Run">Run validation</button>
+<pre id="result">@result</pre>
+
+@code {
+    private string result = "Ready";
+
+    private async Task Run()
+    {
+        result = "Running";
+        await Task.Yield();
+        var cbc = XNamespace.Get(XmlInvoiceWriter.CommonBasicComponents);
+        var cac = XNamespace.Get(XmlInvoiceWriter.CommonAggregateComponents);
+        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("invoice.xml")!;
+        var xml = XDocument.Load(stream);
+        var valid = xml.ToString();
+        var totals = new XDocument(xml);
+        totals.Descendants(cac + "TaxTotal").First().Element(cbc + "TaxAmount")!.Value = "18.00";
+        var reference = new XDocument(xml);
+        reference.Descendants(cbc + "BuyerReference").Remove();
+        var code = new XDocument(xml);
+        code.Descendants(cbc + "DocumentCurrencyCode").Single().Value = "ZZZ";
+        var warning = new XDocument(xml);
+        warning.Descendants(cbc + "InvoicedQuantity").First().SetAttributeValue("unitCode", "ZZZ");
+        var schema = new XDocument(xml);
+        schema.Descendants(cbc + "IssueDate").Single().Value = "invalid";
+        var inputs = new[] {
+            ("valid", valid, true, (string?)null),
+            ("repeat", valid, true, (string?)null),
+            ("badTotals", totals.ToString(), false, "BR-CO-15"),
+            ("missingReference", reference.ToString(), false, "BR-DE-15"),
+            ("badCode", code.ToString(), false, "BR-CL-04"),
+            ("warning", warning.ToString(), true, "BR-CL-23"),
+            ("schemaError", schema.ToString(), false, (string?)null),
+            ("malformed", "<Invoice>", false, (string?)null),
+            ("unsupported", "<CreditNote/>", false, (string?)null),
+            ("dtd", "<!DOCTYPE Invoice [<!ENTITY test 'test'>]><Invoice>&test;</Invoice>", false, (string?)null)
+        };
+        var outputs = new List<object>();
+        var passed = true;
+        foreach (var (name, input, expectedValid, expectedCode) in inputs)
+        {
+            var timer = Stopwatch.StartNew();
+            var validation = await XmlInvoiceValidator.ValidateSchematron(input);
+            var ok = validation.IsValid == expectedValid && (expectedCode is null || validation.Validations.Any(m => m.Code == expectedCode));
+            passed &= ok;
+            outputs.Add(new {
+                name, passed = ok, ms = timer.ElapsedMilliseconds,
+                validation.IsValid, validation.Error, validation.HttpStatusCode,
+                findings = validation.Validations.Select(m => new { m.Code, m.RuleSeverity, m.Path, m.Message }).ToArray()
+            });
+        }
+        result = JsonSerializer.Serialize(new { passed, outputs }, new JsonSerializerOptions { WriteIndented = true });
+    }
+}
